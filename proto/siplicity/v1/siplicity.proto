@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package siplicity.v1;
+
+option go_package = "./;siplicityv1";
+
+service SiplicityService {
+    rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {}
+    rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
+    rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
+    rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse) {}
+    rpc GetRecord(GetRecordRequest) returns (GetRecordResponse) {}
+}
+
+message GetStatusRequest {
+    int32 status = 1;
+}
+
+message GetStatusResponse {
+    bool done = 1;
+}
+
+message PutFilePathRequest {
+    string path = 1;
+}
+
+message PutFilePathResponse {
+    int32 status = 1;
+}
+
+message PutJobRequest {
+    optional string filter = 1;
+    string action = 2;
+}
+
+message PutJobResponse {
+    int32 status = 1;
+}
+
+message ListRecordsResponse {
+    int32 id = 1;
+    RecordType typ = 2;
+    string name = 3;
+    repeated ListRecordsResponse children = 4;
+}
+
+message ListRecordsRequest {
+    optional int32 id = 1;
+    optional string filter = 2;
+    optional bool output = 3;
+}
+
+enum RecordType {
+  RECORD_TYPE_UNSPECIFIED = 0;
+  RECORD_TYPE_FILE = 1;
+  RECORD_TYPE_VIRTUAL_FILE = 2;
+  RECORD_TYPE_DIRECTORY = 3;
+  RECORD_TYPE_VIRTUAL_DIRECTORY = 4;
+  RECORD_TYPE_COMPRESSED_FILE = 5;
+  RECORD_TYPE_COMPRESSED_DIRECTORY = 6;
+}
+
+message GetRecordRequest {
+    int32 id = 1;
+}
+
+message Field {
+    string namespace = 1;
+    string name = 2;
+    string value = 3;
+}
+
+message Metadata {
+    repeated Field fields = 1;
+    repeated Metadata children = 2;
+}
+
+message GetRecordResponse {
+    RecordType typ = 1;
+    string name = 2;
+    int64 size = 3;
+    string modtime = 4;
+    repeated Metadata metadata = 5;
+}
