@@ -1,9 +1,12 @@
 import 'screens/home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'dart:io';
 
-void main() => runApp(const ProviderScope(child: MyApp()));
+void main() {
+  Process.run('server', []);
+  runApp(const ProviderScope(child: MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
