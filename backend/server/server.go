@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 
@@ -71,6 +72,11 @@ func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRec
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {
 	return s.store.Get(in.GetId()), nil
+}
+
+func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
+	os.Exit(0)
+	return nil, nil
 }
 
 func main() {

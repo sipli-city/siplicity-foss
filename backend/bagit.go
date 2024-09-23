@@ -15,7 +15,7 @@ func Bagit(filter string, store Store) {
 	for _, id := range ids {
 		rec := store.Get(id)
 		rec.Metadata = append(rec.Metadata, &pb.Metadata{
-			Fields: []*pb.Field{{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(rec.GetName())}},
+			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(rec.GetName())},
 		})
 		store.AttachChild(data, id, true)
 	}

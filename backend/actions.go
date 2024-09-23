@@ -38,7 +38,7 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse) error {
 		puid = ids[0].String()
 	}
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
-		Fields: []*pb.Field{{Namespace: "pronom", Name: "puid", Value: puid}},
+		Field: &pb.Field{Namespace: "pronom", Name: "puid", Value: puid},
 	})
 	return nil
 }
@@ -60,7 +60,7 @@ func (h *hashAction) Do(rec *pb.GetRecordResponse) error {
 		return err
 	}
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
-		Fields: []*pb.Field{{Namespace: "checksum", Name: "sha256", Value: fmt.Sprintf("%x", h.Sum(nil))}},
+		Field: &pb.Field{Namespace: "checksum", Name: "sha256", Value: fmt.Sprintf("%x", h.Sum(nil))},
 	})
 	h.Reset()
 	return nil
