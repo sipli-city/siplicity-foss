@@ -4,7 +4,7 @@ import 'screens/home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
-import 'package:siplicity/constants.dart';
+import 'package:siplicity/client.dart';
 import 'package:siplicity/gen/siplicity/v1/siplicity.pb.dart';
 
 void main() {
@@ -25,8 +25,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _listener = AppLifecycleListener(onExitRequested: () async {
-      final client = ref.read(siplicityClientProvider);
-      client.shutdown(ShutdownRequest());
+      siplicityServiceClient.shutdown(ShutdownRequest());
       return AppExitResponse.exit;
     });
   }

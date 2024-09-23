@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:siplicity/constants.dart';
+import 'package:siplicity/client.dart';
 import 'package:siplicity/gen/siplicity/v1/siplicity.pb.dart';
 
 part 'records_provider.g.dart';
@@ -9,9 +9,8 @@ part 'records_provider.g.dart';
 class Records extends _$Records {
   @override
   Future<List<TreeViewItem>> build() async {
-    final response = await ref
-        .read(siplicityClientProvider)
-        .listRecords(ListRecordsRequest(id: -1));
+    final response =
+        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: Text(response.name),
@@ -26,12 +25,10 @@ class Records extends _$Records {
     if (p == null) {
       return;
     }
-    final status = await ref
-        .read(siplicityClientProvider)
-        .putFilePath(PutFilePathRequest(path: p));
+    final status =
+        await siplicityServiceClient.putFilePath(PutFilePathRequest(path: p));
     while (true) {
-      final done = await ref
-          .read(siplicityClientProvider)
+      final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
       if (done.done) {
         ref.invalidateSelf();
