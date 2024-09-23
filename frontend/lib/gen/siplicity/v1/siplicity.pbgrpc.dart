@@ -41,6 +41,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/GetRecord',
       ($0.GetRecordRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.GetRecordResponse.fromBuffer(value));
+  static final _$shutdown = $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
+      '/siplicity.v1.SiplicityService/Shutdown',
+      ($0.ShutdownRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.ShutdownResponse.fromBuffer(value));
 
   SiplicityServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -66,6 +70,10 @@ class SiplicityServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.GetRecordResponse> getRecord($0.GetRecordRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getRecord, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.ShutdownResponse> shutdown($0.ShutdownRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$shutdown, request, options: options);
   }
 }
 
@@ -109,6 +117,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GetRecordRequest.fromBuffer(value),
         ($0.GetRecordResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
+        'Shutdown',
+        shutdown_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.ShutdownRequest.fromBuffer(value),
+        ($0.ShutdownResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GetStatusResponse> getStatus_Pre($grpc.ServiceCall call, $async.Future<$0.GetStatusRequest> request) async {
@@ -131,9 +146,14 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return getRecord(call, await request);
   }
 
+  $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall call, $async.Future<$0.ShutdownRequest> request) async {
+    return shutdown(call, await request);
+  }
+
   $async.Future<$0.GetStatusResponse> getStatus($grpc.ServiceCall call, $0.GetStatusRequest request);
   $async.Future<$0.PutFilePathResponse> putFilePath($grpc.ServiceCall call, $0.PutFilePathRequest request);
   $async.Future<$0.PutJobResponse> putJob($grpc.ServiceCall call, $0.PutJobRequest request);
   $async.Future<$0.ListRecordsResponse> listRecords($grpc.ServiceCall call, $0.ListRecordsRequest request);
   $async.Future<$0.GetRecordResponse> getRecord($grpc.ServiceCall call, $0.GetRecordRequest request);
+  $async.Future<$0.ShutdownResponse> shutdown($grpc.ServiceCall call, $0.ShutdownRequest request);
 }

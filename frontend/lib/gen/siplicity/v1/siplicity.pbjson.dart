@@ -22,8 +22,8 @@ const RecordType$json = {
     {'1': 'RECORD_TYPE_VIRTUAL_FILE', '2': 2},
     {'1': 'RECORD_TYPE_DIRECTORY', '2': 3},
     {'1': 'RECORD_TYPE_VIRTUAL_DIRECTORY', '2': 4},
-    {'1': 'RECORD_TYPE_COMPRESSED_FILE', '2': 5},
-    {'1': 'RECORD_TYPE_COMPRESSED_DIRECTORY', '2': 6},
+    {'1': 'RECORD_TYPE_COMPRESSED', '2': 5},
+    {'1': 'RECORD_TYPE_VIRTUAL_COMPRESSED', '2': 6},
   ],
 };
 
@@ -31,9 +31,8 @@ const RecordType$json = {
 final $typed_data.Uint8List recordTypeDescriptor = $convert.base64Decode(
     'CgpSZWNvcmRUeXBlEhsKF1JFQ09SRF9UWVBFX1VOU1BFQ0lGSUVEEAASFAoQUkVDT1JEX1RZUE'
     'VfRklMRRABEhwKGFJFQ09SRF9UWVBFX1ZJUlRVQUxfRklMRRACEhkKFVJFQ09SRF9UWVBFX0RJ'
-    'UkVDVE9SWRADEiEKHVJFQ09SRF9UWVBFX1ZJUlRVQUxfRElSRUNUT1JZEAQSHwobUkVDT1JEX1'
-    'RZUEVfQ09NUFJFU1NFRF9GSUxFEAUSJAogUkVDT1JEX1RZUEVfQ09NUFJFU1NFRF9ESVJFQ1RP'
-    'UlkQBg==');
+    'UkVDVE9SWRADEiEKHVJFQ09SRF9UWVBFX1ZJUlRVQUxfRElSRUNUT1JZEAQSGgoWUkVDT1JEX1'
+    'RZUEVfQ09NUFJFU1NFRBAFEiIKHlJFQ09SRF9UWVBFX1ZJUlRVQUxfQ09NUFJFU1NFRBAG');
 
 @$core.Deprecated('Use getStatusRequestDescriptor instead')
 const GetStatusRequest$json = {
@@ -134,21 +133,21 @@ const ListRecordsRequest$json = {
   '1': 'ListRecordsRequest',
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
-    {'1': 'filter', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'filter', '17': true},
-    {'1': 'output', '3': 3, '4': 1, '5': 8, '9': 2, '10': 'output', '17': true},
+    {'1': 'output', '3': 2, '4': 1, '5': 8, '9': 1, '10': 'output', '17': true},
+    {'1': 'name', '3': 3, '4': 1, '5': 11, '6': '.siplicity.v1.GetField', '9': 2, '10': 'name', '17': true},
   ],
   '8': [
     {'1': '_id'},
-    {'1': '_filter'},
     {'1': '_output'},
+    {'1': '_name'},
   ],
 };
 
 /// Descriptor for `ListRecordsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listRecordsRequestDescriptor = $convert.base64Decode(
-    'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESGwoGZmlsdGVyGAIgAS'
-    'gJSAFSBmZpbHRlcogBARIbCgZvdXRwdXQYAyABKAhIAlIGb3V0cHV0iAEBQgUKA19pZEIJCgdf'
-    'ZmlsdGVyQgkKB19vdXRwdXQ=');
+    'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESGwoGb3V0cHV0GAIgAS'
+    'gISAFSBm91dHB1dIgBARIvCgRuYW1lGAMgASgLMhYuc2lwbGljaXR5LnYxLkdldEZpZWxkSAJS'
+    'BG5hbWWIAQFCBQoDX2lkQgkKB19vdXRwdXRCBwoFX25hbWU=');
 
 @$core.Deprecated('Use getRecordRequestDescriptor instead')
 const GetRecordRequest$json = {
@@ -161,6 +160,20 @@ const GetRecordRequest$json = {
 /// Descriptor for `GetRecordRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getRecordRequestDescriptor = $convert.base64Decode(
     'ChBHZXRSZWNvcmRSZXF1ZXN0Eg4KAmlkGAEgASgFUgJpZA==');
+
+@$core.Deprecated('Use getFieldDescriptor instead')
+const GetField$json = {
+  '1': 'GetField',
+  '2': [
+    {'1': 'namespace', '3': 1, '4': 1, '5': 9, '10': 'namespace'},
+    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+  ],
+};
+
+/// Descriptor for `GetField`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getFieldDescriptor = $convert.base64Decode(
+    'CghHZXRGaWVsZBIcCgluYW1lc3BhY2UYASABKAlSCW5hbWVzcGFjZRISCgRuYW1lGAIgASgJUg'
+    'RuYW1l');
 
 @$core.Deprecated('Use fieldDescriptor instead')
 const Field$json = {
@@ -181,15 +194,15 @@ final $typed_data.Uint8List fieldDescriptor = $convert.base64Decode(
 const Metadata$json = {
   '1': 'Metadata',
   '2': [
-    {'1': 'fields', '3': 1, '4': 3, '5': 11, '6': '.siplicity.v1.Field', '10': 'fields'},
+    {'1': 'field', '3': 1, '4': 1, '5': 11, '6': '.siplicity.v1.Field', '10': 'field'},
     {'1': 'children', '3': 2, '4': 3, '5': 11, '6': '.siplicity.v1.Metadata', '10': 'children'},
   ],
 };
 
 /// Descriptor for `Metadata`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List metadataDescriptor = $convert.base64Decode(
-    'CghNZXRhZGF0YRIrCgZmaWVsZHMYASADKAsyEy5zaXBsaWNpdHkudjEuRmllbGRSBmZpZWxkcx'
-    'IyCghjaGlsZHJlbhgCIAMoCzIWLnNpcGxpY2l0eS52MS5NZXRhZGF0YVIIY2hpbGRyZW4=');
+    'CghNZXRhZGF0YRIpCgVmaWVsZBgBIAEoCzITLnNpcGxpY2l0eS52MS5GaWVsZFIFZmllbGQSMg'
+    'oIY2hpbGRyZW4YAiADKAsyFi5zaXBsaWNpdHkudjEuTWV0YWRhdGFSCGNoaWxkcmVu');
 
 @$core.Deprecated('Use getRecordResponseDescriptor instead')
 const GetRecordResponse$json = {
@@ -209,4 +222,22 @@ final $typed_data.Uint8List getRecordResponseDescriptor = $convert.base64Decode(
     'lwZVIDdHlwEhIKBG5hbWUYAiABKAlSBG5hbWUSEgoEc2l6ZRgDIAEoA1IEc2l6ZRIYCgdtb2R0'
     'aW1lGAQgASgJUgdtb2R0aW1lEjIKCG1ldGFkYXRhGAUgAygLMhYuc2lwbGljaXR5LnYxLk1ldG'
     'FkYXRhUghtZXRhZGF0YQ==');
+
+@$core.Deprecated('Use shutdownRequestDescriptor instead')
+const ShutdownRequest$json = {
+  '1': 'ShutdownRequest',
+};
+
+/// Descriptor for `ShutdownRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List shutdownRequestDescriptor = $convert.base64Decode(
+    'Cg9TaHV0ZG93blJlcXVlc3Q=');
+
+@$core.Deprecated('Use shutdownResponseDescriptor instead')
+const ShutdownResponse$json = {
+  '1': 'ShutdownResponse',
+};
+
+/// Descriptor for `ShutdownResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List shutdownResponseDescriptor = $convert.base64Decode(
+    'ChBTaHV0ZG93blJlc3BvbnNl');
 

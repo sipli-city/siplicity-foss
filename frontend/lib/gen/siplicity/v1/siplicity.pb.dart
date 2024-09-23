@@ -421,18 +421,18 @@ class ListRecordsResponse extends $pb.GeneratedMessage {
 class ListRecordsRequest extends $pb.GeneratedMessage {
   factory ListRecordsRequest({
     $core.int? id,
-    $core.String? filter,
     $core.bool? output,
+    GetField? name,
   }) {
     final $result = create();
     if (id != null) {
       $result.id = id;
     }
-    if (filter != null) {
-      $result.filter = filter;
-    }
     if (output != null) {
       $result.output = output;
+    }
+    if (name != null) {
+      $result.name = name;
     }
     return $result;
   }
@@ -442,8 +442,8 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
-    ..aOS(2, _omitFieldNames ? '' : 'filter')
-    ..aOB(3, _omitFieldNames ? '' : 'output')
+    ..aOB(2, _omitFieldNames ? '' : 'output')
+    ..aOM<GetField>(3, _omitFieldNames ? '' : 'name', subBuilder: GetField.create)
     ..hasRequiredFields = false
   ;
 
@@ -478,22 +478,24 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   void clearId() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get filter => $_getSZ(1);
+  $core.bool get output => $_getBF(1);
   @$pb.TagNumber(2)
-  set filter($core.String v) { $_setString(1, v); }
+  set output($core.bool v) { $_setBool(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFilter() => $_has(1);
+  $core.bool hasOutput() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFilter() => clearField(2);
+  void clearOutput() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.bool get output => $_getBF(2);
+  GetField get name => $_getN(2);
   @$pb.TagNumber(3)
-  set output($core.bool v) { $_setBool(2, v); }
+  set name(GetField v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasOutput() => $_has(2);
+  $core.bool hasName() => $_has(2);
   @$pb.TagNumber(3)
-  void clearOutput() => clearField(3);
+  void clearName() => clearField(3);
+  @$pb.TagNumber(3)
+  GetField ensureName() => $_ensure(2);
 }
 
 class GetRecordRequest extends $pb.GeneratedMessage {
@@ -544,6 +546,70 @@ class GetRecordRequest extends $pb.GeneratedMessage {
   $core.bool hasId() => $_has(0);
   @$pb.TagNumber(1)
   void clearId() => clearField(1);
+}
+
+class GetField extends $pb.GeneratedMessage {
+  factory GetField({
+    $core.String? namespace,
+    $core.String? name,
+  }) {
+    final $result = create();
+    if (namespace != null) {
+      $result.namespace = namespace;
+    }
+    if (name != null) {
+      $result.name = name;
+    }
+    return $result;
+  }
+  GetField._() : super();
+  factory GetField.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetField.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetField', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'namespace')
+    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetField clone() => GetField()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetField copyWith(void Function(GetField) updates) => super.copyWith((message) => updates(message as GetField)) as GetField;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetField create() => GetField._();
+  GetField createEmptyInstance() => create();
+  static $pb.PbList<GetField> createRepeated() => $pb.PbList<GetField>();
+  @$core.pragma('dart2js:noInline')
+  static GetField getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetField>(create);
+  static GetField? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get namespace => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set namespace($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasNamespace() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearNamespace() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get name => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set name($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasName() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearName() => clearField(2);
 }
 
 class Field extends $pb.GeneratedMessage {
@@ -626,12 +692,12 @@ class Field extends $pb.GeneratedMessage {
 
 class Metadata extends $pb.GeneratedMessage {
   factory Metadata({
-    $core.Iterable<Field>? fields,
+    Field? field_1,
     $core.Iterable<Metadata>? children,
   }) {
     final $result = create();
-    if (fields != null) {
-      $result.fields.addAll(fields);
+    if (field_1 != null) {
+      $result.field_1 = field_1;
     }
     if (children != null) {
       $result.children.addAll(children);
@@ -643,7 +709,7 @@ class Metadata extends $pb.GeneratedMessage {
   factory Metadata.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'Metadata', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..pc<Field>(1, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: Field.create)
+    ..aOM<Field>(1, _omitFieldNames ? '' : 'field', subBuilder: Field.create)
     ..pc<Metadata>(2, _omitFieldNames ? '' : 'children', $pb.PbFieldType.PM, subBuilder: Metadata.create)
     ..hasRequiredFields = false
   ;
@@ -670,7 +736,15 @@ class Metadata extends $pb.GeneratedMessage {
   static Metadata? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<Field> get fields => $_getList(0);
+  Field get field_1 => $_getN(0);
+  @$pb.TagNumber(1)
+  set field_1(Field v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasField_1() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearField_1() => clearField(1);
+  @$pb.TagNumber(1)
+  Field ensureField_1() => $_ensure(0);
 
   @$pb.TagNumber(2)
   $core.List<Metadata> get children => $_getList(1);
@@ -774,6 +848,70 @@ class GetRecordResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(5)
   $core.List<Metadata> get metadata => $_getList(4);
+}
+
+class ShutdownRequest extends $pb.GeneratedMessage {
+  factory ShutdownRequest() => create();
+  ShutdownRequest._() : super();
+  factory ShutdownRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ShutdownRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ShutdownRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ShutdownRequest clone() => ShutdownRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ShutdownRequest copyWith(void Function(ShutdownRequest) updates) => super.copyWith((message) => updates(message as ShutdownRequest)) as ShutdownRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ShutdownRequest create() => ShutdownRequest._();
+  ShutdownRequest createEmptyInstance() => create();
+  static $pb.PbList<ShutdownRequest> createRepeated() => $pb.PbList<ShutdownRequest>();
+  @$core.pragma('dart2js:noInline')
+  static ShutdownRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ShutdownRequest>(create);
+  static ShutdownRequest? _defaultInstance;
+}
+
+class ShutdownResponse extends $pb.GeneratedMessage {
+  factory ShutdownResponse() => create();
+  ShutdownResponse._() : super();
+  factory ShutdownResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory ShutdownResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ShutdownResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  ShutdownResponse clone() => ShutdownResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  ShutdownResponse copyWith(void Function(ShutdownResponse) updates) => super.copyWith((message) => updates(message as ShutdownResponse)) as ShutdownResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ShutdownResponse create() => ShutdownResponse._();
+  ShutdownResponse createEmptyInstance() => create();
+  static $pb.PbList<ShutdownResponse> createRepeated() => $pb.PbList<ShutdownResponse>();
+  @$core.pragma('dart2js:noInline')
+  static ShutdownResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<ShutdownResponse>(create);
+  static ShutdownResponse? _defaultInstance;
 }
 
 
