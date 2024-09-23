@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 
 	"google.golang.org/grpc"
 
@@ -25,6 +24,7 @@ var (
 
 type siplicityServiceServer struct {
 	pb.UnimplementedSiplicityServiceServer
+	srv      *grpc.Server
 	store    siplicity.Store
 	statuses []bool
 }
@@ -75,7 +75,7 @@ func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecord
 }
 
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
-	os.Exit(0)
+	s.srv.GracefulStop()
 	return nil, nil
 }
 
@@ -83,10 +83,15 @@ func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("grpc server tcp failure: %v\n", err)
 	}
-	log.Printf("starting server at localhost:%d", *port)
+	log.Printf("starting grpc server at localhost:%d\n", *port)
 	grpcServer := grpc.NewServer()
-	pb.RegisterSiplicityServiceServer(grpcServer, &siplicityServiceServer{store: siplicity.NewMemStore()})
-	grpcServer.Serve(lis)
+	sss := &siplicityServiceServer{srv: grpcServer, store: siplicity.NewMemStore()}
+	pb.RegisterSiplicityServiceServer(grpcServer, sss)
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		log.Fatalf("grpc server failure: %v\n", err)
+	}
+	log.Print("grpc server shutting down\n")
 }
