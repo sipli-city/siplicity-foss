@@ -6,16 +6,40 @@ import 'package:siplicity/gen/siplicity/v1/siplicity.pb.dart';
 part 'records_provider.g.dart';
 
 @riverpod
-Future<List<TreeViewItem>> records(RecordsRef ref) async {
-  final response =
-      await ref.read(siplicityClientProvider).listRecords(ListRecordsRequest());
-  final tvi = TreeViewItem(
-      content: Text(response.name),
-      value: Text(response.name),
-      children: addChildren(response.children));
-  return <TreeViewItem>[
-    tvi,
-  ];
+class Records extends _$Records {
+  @override
+  Future<List<TreeViewItem>> build() async {
+    final response = await ref
+        .read(siplicityClientProvider)
+        .listRecords(ListRecordsRequest(id: -1));
+    final tvi = TreeViewItem(
+        content: Text(response.name),
+        value: Text(response.name),
+        children: addChildren(response.children));
+    return <TreeViewItem>[
+      tvi,
+    ];
+  }
+
+  Future<void> putFilePath(Future<String?> path) async {
+    final p = await path;
+    if (p == null) {
+      return;
+    }
+    final status = await ref
+        .read(siplicityClientProvider)
+        .putFilePath(PutFilePathRequest(path: p));
+    while (true) {
+      final done = await ref
+          .read(siplicityClientProvider)
+          .getStatus(GetStatusRequest(status: status.status));
+      if (done.done) {
+        ref.invalidateSelf();
+        break;
+      }
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+  }
 }
 
 List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
