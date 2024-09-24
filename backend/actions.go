@@ -22,13 +22,13 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse) error {
 	if rec.GetTyp() != pb.RecordType_RECORD_TYPE_FILE {
 		return nil
 	}
-	f, err := os.Open(rec.GetName())
+	f, err := os.Open(rec.GetPath())
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	var puid string
-	ids, err := sa.sf.Identify(f, rec.GetName(), "")
+	ids, err := sa.sf.Identify(f, rec.GetPath(), "")
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (h *hashAction) Do(rec *pb.GetRecordResponse) error {
 	if rec.GetTyp() != pb.RecordType_RECORD_TYPE_FILE {
 		return nil
 	}
-	f, err := os.Open(rec.GetName())
+	f, err := os.Open(rec.GetPath())
 	if err != nil {
 		return err
 	}

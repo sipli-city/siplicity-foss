@@ -56,12 +56,47 @@ func (m *MemStore) AttachChild(parent, child int32, output bool) {
 	m.lChildren[parent] = append(m.lChildren[parent], child)
 }
 
+// For a set of children, give them a new parent, and remove them from the list of children of their old parent(s)
+func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
+	if output {
+		var grandparent int32
+		for i, child := range children {
+			if i == 0 {
+				grandparent = m.rParent[child]
+				m.AttachChild(grandparent, parent, output) // give the new parent a parent
+				m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+			} else {
+				if grandparent != m.rParent[child] {
+					grandparent = m.rParent[child]
+					m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+				}
+			}
+			m.AttachChild(parent, child, output)
+		}
+		return
+	}
+	var grandparent int32
+	for i, child := range children {
+		if i == 0 {
+			grandparent = m.lParent[child]
+			m.AttachChild(grandparent, parent, output) // give the new parent a parent
+			m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+		} else {
+			if grandparent != m.lParent[child] {
+				grandparent = m.lParent[child]
+				m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+			}
+		}
+		m.AttachChild(parent, child, output)
+	}
+}
+
 func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 	return m.records[int(n)]
 }
 
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecordsResponse {
-	name := m.records[int(id)].GetName()
+	name := m.records[int(id)].GetPath()
 	display := getField(m.records[int(id)].GetMetadata(), "siplicity", "display_name")
 	if display != "" {
 		name = display

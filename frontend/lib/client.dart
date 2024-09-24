@@ -1,5 +1,5 @@
 import 'package:grpc/grpc.dart';
-import 'package:siplicity/gen/siplicity/v1/siplicity.pbgrpc.dart';
+import 'package:siplicity/protogen/siplicity/v1/siplicity.pbgrpc.dart';
 
 final siplicityServiceClient = SiplicityServiceClient(
   ClientChannel(

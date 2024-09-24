@@ -5,7 +5,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:io';
 import 'package:siplicity/client.dart';
-import 'package:siplicity/gen/siplicity/v1/siplicity.pb.dart';
+import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 void main() {
   Process.run('server', []);

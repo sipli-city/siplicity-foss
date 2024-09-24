@@ -15,21 +15,23 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class RecordType extends $pb.ProtobufEnum {
   static const RecordType RECORD_TYPE_UNSPECIFIED = RecordType._(0, _omitEnumNames ? '' : 'RECORD_TYPE_UNSPECIFIED');
-  static const RecordType RECORD_TYPE_FILE = RecordType._(1, _omitEnumNames ? '' : 'RECORD_TYPE_FILE');
-  static const RecordType RECORD_TYPE_VIRTUAL_FILE = RecordType._(2, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_FILE');
-  static const RecordType RECORD_TYPE_DIRECTORY = RecordType._(3, _omitEnumNames ? '' : 'RECORD_TYPE_DIRECTORY');
-  static const RecordType RECORD_TYPE_VIRTUAL_DIRECTORY = RecordType._(4, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_DIRECTORY');
-  static const RecordType RECORD_TYPE_COMPRESSED = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_COMPRESSED');
-  static const RecordType RECORD_TYPE_VIRTUAL_COMPRESSED = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_COMPRESSED');
+  static const RecordType RECORD_TYPE_ROOT = RecordType._(1, _omitEnumNames ? '' : 'RECORD_TYPE_ROOT');
+  static const RecordType RECORD_TYPE_FILE = RecordType._(2, _omitEnumNames ? '' : 'RECORD_TYPE_FILE');
+  static const RecordType RECORD_TYPE_VIRTUAL_FILE = RecordType._(3, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_FILE');
+  static const RecordType RECORD_TYPE_DIRECTORY = RecordType._(4, _omitEnumNames ? '' : 'RECORD_TYPE_DIRECTORY');
+  static const RecordType RECORD_TYPE_VIRTUAL_DIRECTORY = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_DIRECTORY');
+  static const RecordType RECORD_TYPE_ARCHIVE = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_ARCHIVE');
+  static const RecordType RECORD_TYPE_VIRTUAL_ARCHIVE = RecordType._(7, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_ARCHIVE');
 
   static const $core.List<RecordType> values = <RecordType> [
     RECORD_TYPE_UNSPECIFIED,
+    RECORD_TYPE_ROOT,
     RECORD_TYPE_FILE,
     RECORD_TYPE_VIRTUAL_FILE,
     RECORD_TYPE_DIRECTORY,
     RECORD_TYPE_VIRTUAL_DIRECTORY,
-    RECORD_TYPE_COMPRESSED,
-    RECORD_TYPE_VIRTUAL_COMPRESSED,
+    RECORD_TYPE_ARCHIVE,
+    RECORD_TYPE_VIRTUAL_ARCHIVE,
   ];
 
   static final $core.Map<$core.int, RecordType> _byValue = $pb.ProtobufEnum.initByValue(values);

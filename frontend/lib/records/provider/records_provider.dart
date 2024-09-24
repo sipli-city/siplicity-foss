@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
-import 'package:siplicity/gen/siplicity/v1/siplicity.pb.dart';
+import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 part 'records_provider.g.dart';
 
@@ -9,10 +9,13 @@ part 'records_provider.g.dart';
 class Records extends _$Records {
   @override
   Future<List<TreeViewItem>> build(bool output) async {
-    final request = 
-    output ? ListRecordsRequest(id: -1, output: output, GetField(namespace: "siplicity", name: "display_name")) : ListRecordsRequest(id: -1)
-    final response =
-        await siplicityServiceClient.listRecords(request);
+    final request = output
+        ? ListRecordsRequest(
+            id: -1,
+            output: output,
+            display: GetField(namespace: "siplicity", name: "display_name"))
+        : ListRecordsRequest(id: -1);
+    final response = await siplicityServiceClient.listRecords(request);
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: Text(response.name),

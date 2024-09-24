@@ -422,7 +422,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   factory ListRecordsRequest({
     $core.int? id,
     $core.bool? output,
-    GetField? name,
+    GetField? display,
   }) {
     final $result = create();
     if (id != null) {
@@ -431,8 +431,8 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
     if (output != null) {
       $result.output = output;
     }
-    if (name != null) {
-      $result.name = name;
+    if (display != null) {
+      $result.display = display;
     }
     return $result;
   }
@@ -443,7 +443,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..aOB(2, _omitFieldNames ? '' : 'output')
-    ..aOM<GetField>(3, _omitFieldNames ? '' : 'name', subBuilder: GetField.create)
+    ..aOM<GetField>(3, _omitFieldNames ? '' : 'display', subBuilder: GetField.create)
     ..hasRequiredFields = false
   ;
 
@@ -487,15 +487,15 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   void clearOutput() => clearField(2);
 
   @$pb.TagNumber(3)
-  GetField get name => $_getN(2);
+  GetField get display => $_getN(2);
   @$pb.TagNumber(3)
-  set name(GetField v) { setField(3, v); }
+  set display(GetField v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasName() => $_has(2);
+  $core.bool hasDisplay() => $_has(2);
   @$pb.TagNumber(3)
-  void clearName() => clearField(3);
+  void clearDisplay() => clearField(3);
   @$pb.TagNumber(3)
-  GetField ensureName() => $_ensure(2);
+  GetField ensureDisplay() => $_ensure(2);
 }
 
 class GetRecordRequest extends $pb.GeneratedMessage {
@@ -753,23 +753,19 @@ class Metadata extends $pb.GeneratedMessage {
 class GetRecordResponse extends $pb.GeneratedMessage {
   factory GetRecordResponse({
     RecordType? typ,
-    $core.String? name,
+    $core.String? path,
     $fixnum.Int64? size,
-    $core.String? modtime,
     $core.Iterable<Metadata>? metadata,
   }) {
     final $result = create();
     if (typ != null) {
       $result.typ = typ;
     }
-    if (name != null) {
-      $result.name = name;
+    if (path != null) {
+      $result.path = path;
     }
     if (size != null) {
       $result.size = size;
-    }
-    if (modtime != null) {
-      $result.modtime = modtime;
     }
     if (metadata != null) {
       $result.metadata.addAll(metadata);
@@ -782,10 +778,9 @@ class GetRecordResponse extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetRecordResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..e<RecordType>(1, _omitFieldNames ? '' : 'typ', $pb.PbFieldType.OE, defaultOrMaker: RecordType.RECORD_TYPE_UNSPECIFIED, valueOf: RecordType.valueOf, enumValues: RecordType.values)
-    ..aOS(2, _omitFieldNames ? '' : 'name')
+    ..aOS(2, _omitFieldNames ? '' : 'path')
     ..aInt64(3, _omitFieldNames ? '' : 'size')
-    ..aOS(4, _omitFieldNames ? '' : 'modtime')
-    ..pc<Metadata>(5, _omitFieldNames ? '' : 'metadata', $pb.PbFieldType.PM, subBuilder: Metadata.create)
+    ..pc<Metadata>(4, _omitFieldNames ? '' : 'metadata', $pb.PbFieldType.PM, subBuilder: Metadata.create)
     ..hasRequiredFields = false
   ;
 
@@ -820,13 +815,13 @@ class GetRecordResponse extends $pb.GeneratedMessage {
   void clearTyp() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get name => $_getSZ(1);
+  $core.String get path => $_getSZ(1);
   @$pb.TagNumber(2)
-  set name($core.String v) { $_setString(1, v); }
+  set path($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasName() => $_has(1);
+  $core.bool hasPath() => $_has(1);
   @$pb.TagNumber(2)
-  void clearName() => clearField(2);
+  void clearPath() => clearField(2);
 
   @$pb.TagNumber(3)
   $fixnum.Int64 get size => $_getI64(2);
@@ -838,16 +833,7 @@ class GetRecordResponse extends $pb.GeneratedMessage {
   void clearSize() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.String get modtime => $_getSZ(3);
-  @$pb.TagNumber(4)
-  set modtime($core.String v) { $_setString(3, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasModtime() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearModtime() => clearField(4);
-
-  @$pb.TagNumber(5)
-  $core.List<Metadata> get metadata => $_getList(4);
+  $core.List<Metadata> get metadata => $_getList(3);
 }
 
 class ShutdownRequest extends $pb.GeneratedMessage {

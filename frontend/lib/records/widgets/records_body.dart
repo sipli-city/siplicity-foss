@@ -2,9 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/records/provider/provider.dart';
 
 class RecordsBody extends ConsumerWidget {
+  const RecordsBody({super.key, this.output = false});
+
   final bool output;
-  
-  const RecordsBody({Key? key, bool output = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

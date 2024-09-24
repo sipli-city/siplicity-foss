@@ -48,7 +48,7 @@ message ListRecordsResponse {
 message ListRecordsRequest {
     optional int32 id = 1;
     optional bool output = 2;
-    optional GetField field = 3;
+    optional GetField display = 3;
 }
 
 enum RecordType {
