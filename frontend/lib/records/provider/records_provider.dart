@@ -9,8 +9,10 @@ part 'records_provider.g.dart';
 class Records extends _$Records {
   @override
   Future<List<TreeViewItem>> build(bool output) async {
+    final request = 
+    output ? ListRecordsRequest(id: -1, output: output, GetField(namespace: "siplicity", name: "display_name")) : ListRecordsRequest(id: -1)
     final response =
-        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1, output: output));
+        await siplicityServiceClient.listRecords(request);
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: Text(response.name),

@@ -98,7 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           onPressed: () => debugPrint('pressed button'),
                         ),
                       ]),
-                      Expanded(child: TreeView(items: outputTreeViewItems)),
+                      Expanded(child: RecordsBody(output: true)),
                     ],
                   )))),
       onClosed: () {
