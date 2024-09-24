@@ -8,9 +8,9 @@ part 'records_provider.g.dart';
 @riverpod
 class Records extends _$Records {
   @override
-  Future<List<TreeViewItem>> build() async {
+  Future<List<TreeViewItem>> build(bool output) async {
     final response =
-        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1));
+        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1, output: output));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: Text(response.name),
