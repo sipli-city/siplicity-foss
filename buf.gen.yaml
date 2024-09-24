@@ -7,7 +7,7 @@ plugins:
   - remote: buf.build/grpc/go
     out: backend/gen/siplicityv1
   - remote: buf.build/protocolbuffers/dart
-    out: frontend/lib/gen
+    out: frontend/lib/protogen
     opt: 
       - grpc
 inputs:
