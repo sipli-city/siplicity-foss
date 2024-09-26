@@ -42,6 +42,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
   fixnum: ^1.1.0
+  animated_tree_view: ^2.3.0
 
 dev_dependencies:
   flutter_test:

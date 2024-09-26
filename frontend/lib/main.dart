@@ -1,14 +1,14 @@
 import 'dart:ui';
-
-import 'screens/home.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'dart:io';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 void main() {
-  Process.run('server', []);
+  if (kReleaseMode) Process.run('server', []);
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -25,7 +25,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _listener = AppLifecycleListener(onExitRequested: () async {
-      siplicityServiceClient.shutdown(ShutdownRequest());
+      if (kReleaseMode) siplicityServiceClient.shutdown(ShutdownRequest());
       return AppExitResponse.exit;
     });
   }
@@ -41,7 +41,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return FluentApp(
       title: 'Siplicity',
-      home: const HomePage(),
+      home: HomePage(),
       theme: FluentThemeData(
         brightness: Brightness.light,
         accentColor: Colors.teal,

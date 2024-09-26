@@ -75,7 +75,7 @@ func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecord
 }
 
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
-	s.srv.GracefulStop()
+	s.srv.Stop()
 	return nil, nil
 }
 
