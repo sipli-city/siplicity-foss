@@ -13,11 +13,6 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
           children: addChildren(item.children)))
       .toList();
 }
-/*
-Iterable<TreeNode<String>> _addChildren(List<ListRecordsResponse> list) {
-  return list.map((item) => TreeNode(data: item.name)
-    ..addAll(addChildren(item.children) as Iterable<Node>));
-}*/
 
 @riverpod
 class InputRecords extends _$InputRecords {

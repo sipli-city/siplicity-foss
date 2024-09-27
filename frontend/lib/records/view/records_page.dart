@@ -1,9 +1,10 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:siplicity/records/records.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:siplicity/records/provider/records_provider.dart';
+import 'package:siplicity/records/widgets/records_body.dart';
 
 class RecordsPage extends ConsumerWidget {
-  /// {@macro records_page}
   const RecordsPage({super.key});
 
   @override

@@ -1,5 +1,4 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:siplicity/records/records.dart';
 import 'package:siplicity/records/view/records_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +28,7 @@ class _HomePageState extends State<HomePage> {
           ),
           PaneItemSeparator(),
           PaneItem(
-            icon: const Icon(FluentIcons.issue_tracking),
+            icon: const Icon(FluentIcons.pie_double),
             title: const Text('Analysis'),
             body: const Text("Todo"),
           ),
