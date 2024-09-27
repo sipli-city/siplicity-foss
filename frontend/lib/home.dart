@@ -1,5 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:siplicity/records/view/records_page.dart';
+import 'package:siplicity/workspace/view/workspace_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

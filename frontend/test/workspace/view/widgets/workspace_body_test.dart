@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:siplicity/records/widgets/records_body.dart';
+import 'package:siplicity/workspace/widgets/record_trees.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('RecordsBody', () {
+  group('WorkspaceBody', () {
     testWidgets('renders Text', (tester) async {
       await tester.pumpWidget(
         MaterialApp(home: InputRecordsBody()),
