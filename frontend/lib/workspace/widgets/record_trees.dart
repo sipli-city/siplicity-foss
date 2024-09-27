@@ -9,7 +9,14 @@ class InputRecordsBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final records = ref.watch(inputRecordsProvider);
     return switch (records) {
-      AsyncData(:final value) => TreeView(items: value),
+      AsyncData(:final value) => TreeView(
+       selectionMode: TreeViewSelectionMode.multiple,
+      shrinkWrap: true,
+      items: value,
+  onItemInvoked: (item, details) async {},
+  onSelectionChanged: (selectedItems) async {},
+  onSecondaryTap: (item, details) async {},
+  ),
       _ => const Text('loading'),
     };
   }
