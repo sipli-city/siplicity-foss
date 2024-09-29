@@ -115,16 +115,16 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecord
 }
 
 func (m *MemStore) ListRecords(id int32, output bool) *pb.ListRecordsResponse {
-	if len(m.records) == 2 {
+	if len(m.records) == 2 && id > 1 {
 		return nil
 	}
 	if output {
-		if id == -1 {
+		if id < 0 {
 			id = 1
 		}
 		return m.addNode(id, m.rChildren)
 	}
-	if id == -1 {
+	if id < 0 {
 		id = 0
 	}
 	return m.addNode(id, m.lChildren)

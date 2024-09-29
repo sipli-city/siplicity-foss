@@ -7,7 +7,7 @@ import (
 )
 
 func Bagit(filter string, store Store) {
-	root := store.PutChild(-1, &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY, Path: "Output"}, true)
+	root := int32(-1)
 	_ = store.PutChild(root, &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_FILE, Path: "bagit.txt"}, true)
 	_ = store.PutChild(root, &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_FILE, Path: "manifest-sha256.txt"}, true)
 	data := store.PutChild(root, &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY, Path: "data"}, true)
