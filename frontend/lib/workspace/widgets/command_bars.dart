@@ -64,8 +64,8 @@ class InputCommandBar extends ConsumerWidget {
                       child: w,
                     ),
                 wrappedItem: CommandBarButton(
-                  icon: const Icon(FluentIcons.developer_tools),
-                  label: const Text('Actions'),
+                  icon: const Icon(FluentIcons.set_action),
+                  label: const Text('Input actions'),
                   onPressed: () {
                     menuController.showFlyout(
                       autoModeConfiguration: FlyoutAutoConfiguration(
@@ -158,8 +158,8 @@ class OutputCommandBar extends ConsumerWidget {
               ),
             ),
             CommandBarButton(
-              icon: const Icon(FluentIcons.developer_tools),
-              label: const Text('Actions'),
+              icon: const Icon(FluentIcons.set_action),
+              label: const Text('Output actions'),
               onPressed: () {},
             ),
             CommandBarButton(

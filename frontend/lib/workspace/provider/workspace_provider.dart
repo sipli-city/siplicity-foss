@@ -10,7 +10,7 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
   return list
       .map((item) => TreeViewItem(
           content: Text(item.name),
-          value: Text(item.name),
+          value: item.id,
           children: addChildren(item.children)))
       .toList();
 }
@@ -19,11 +19,13 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
 class InputRecords extends _$InputRecords {
   @override
   Future<List<TreeViewItem>> build() async {
-    final response =
-        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1));
+    final response = await siplicityServiceClient.listRecords(
+        ListRecordsRequest(
+            id: -1,
+            display: GetField(namespace: "siplicity", name: "display_name")));
     final tvi = TreeViewItem(
         content: Text(response.name),
-        value: Text(response.name),
+        value: response.id,
         children: addChildren(response.children));
     return <TreeViewItem>[
       tvi,
@@ -90,7 +92,7 @@ class OutputRecords extends _$OutputRecords {
             display: GetField(namespace: "siplicity", name: "display_name")));
     final tvi = TreeViewItem(
         content: Text(response.name),
-        value: Text(response.name),
+        value: response.id,
         children: addChildren(response.children));
     return <TreeViewItem>[
       tvi,
