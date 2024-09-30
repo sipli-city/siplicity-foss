@@ -13,7 +13,8 @@ func Filter(filter string, rec *pb.GetRecordResponse) bool {
 	parts := strings.SplitN(filter, ":", 2)
 	switch parts[0] {
 	case "puid":
-		if getField(rec.GetMetadata(), "pronom", "puid") == parts[1] {
+		ns := "pronom"
+		if getField(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &ns, Name: "puid"}}}) == parts[1] {
 			return true
 		}
 	}

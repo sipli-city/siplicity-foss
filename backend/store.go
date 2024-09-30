@@ -12,7 +12,7 @@ type Store interface {
 	PutChild(int32, *pb.GetRecordResponse, bool) int32 // -1 = root
 	AttachChild(int32, int32, bool)
 	Get(int32) *pb.GetRecordResponse
-	ListRecords(int32, pb.GraphType) *pb.ListRecordsResponse
+	ListRecords(int32, pb.GraphType, string, *pb.FieldPath, []*pb.FieldPath) *pb.ListRecordsResponse
 	Ids(string) []int32
 }
 

@@ -215,14 +215,13 @@ const ListRecordsRequest$json = {
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
     {'1': 'filter', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'filter', '17': true},
     {'1': 'display', '3': 4, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath', '9': 3, '10': 'display', '17': true},
-    {'1': 'fields', '3': 5, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath', '9': 4, '10': 'fields', '17': true},
+    {'1': 'fields', '3': 5, '4': 3, '5': 11, '6': '.siplicity.v1.FieldPath', '10': 'fields'},
   ],
   '8': [
     {'1': '_id'},
     {'1': '_graph'},
     {'1': '_filter'},
     {'1': '_display'},
-    {'1': '_fields'},
   ],
 };
 
@@ -231,9 +230,8 @@ final $typed_data.Uint8List listRecordsRequestDescriptor = $convert.base64Decode
     'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESMgoFZ3JhcGgYAiABKA'
     '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlSAFSBWdyYXBoiAEBEhsKBmZpbHRlchgDIAEoCUgC'
     'UgZmaWx0ZXKIAQESNgoHZGlzcGxheRgEIAEoCzIXLnNpcGxpY2l0eS52MS5GaWVsZFBhdGhIA1'
-    'IHZGlzcGxheYgBARI0CgZmaWVsZHMYBSABKAsyFy5zaXBsaWNpdHkudjEuRmllbGRQYXRoSARS'
-    'BmZpZWxkc4gBAUIFCgNfaWRCCAoGX2dyYXBoQgkKB19maWx0ZXJCCgoIX2Rpc3BsYXlCCQoHX2'
-    'ZpZWxkcw==');
+    'IHZGlzcGxheYgBARIvCgZmaWVsZHMYBSADKAsyFy5zaXBsaWNpdHkudjEuRmllbGRQYXRoUgZm'
+    'aWVsZHNCBQoDX2lkQggKBl9ncmFwaEIJCgdfZmlsdGVyQgoKCF9kaXNwbGF5');
 
 @$core.Deprecated('Use fieldDescriptor instead')
 const Field$json = {

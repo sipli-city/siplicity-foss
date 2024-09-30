@@ -81,7 +81,7 @@ message ListRecordsRequest {
   optional GraphType graph = 2;
   optional string filter = 3;
   optional FieldPath display = 4;
-  optional FieldPath fields = 5;
+  repeated FieldPath fields = 5;
 }
 
 enum RecordType {

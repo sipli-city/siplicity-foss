@@ -648,7 +648,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
     GraphType? graph,
     $core.String? filter,
     FieldPath? display,
-    FieldPath? fields,
+    $core.Iterable<FieldPath>? fields,
   }) {
     final $result = create();
     if (id != null) {
@@ -664,7 +664,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
       $result.display = display;
     }
     if (fields != null) {
-      $result.fields = fields;
+      $result.fields.addAll(fields);
     }
     return $result;
   }
@@ -677,7 +677,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
     ..aOS(3, _omitFieldNames ? '' : 'filter')
     ..aOM<FieldPath>(4, _omitFieldNames ? '' : 'display', subBuilder: FieldPath.create)
-    ..aOM<FieldPath>(5, _omitFieldNames ? '' : 'fields', subBuilder: FieldPath.create)
+    ..pc<FieldPath>(5, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldPath.create)
     ..hasRequiredFields = false
   ;
 
@@ -741,15 +741,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   FieldPath ensureDisplay() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  FieldPath get fields => $_getN(4);
-  @$pb.TagNumber(5)
-  set fields(FieldPath v) { setField(5, v); }
-  @$pb.TagNumber(5)
-  $core.bool hasFields() => $_has(4);
-  @$pb.TagNumber(5)
-  void clearFields() => clearField(5);
-  @$pb.TagNumber(5)
-  FieldPath ensureFields() => $_ensure(4);
+  $core.List<FieldPath> get fields => $_getList(4);
 }
 
 class Field extends $pb.GeneratedMessage {

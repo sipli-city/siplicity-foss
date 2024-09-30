@@ -58,12 +58,40 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 	return &pb.PutJobResponse{Status: sidx}, nil
 }
 
+func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountRecordsRequest) (*pb.CountRecordsResponse, error) {
+	return nil, nil
+}
+
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	return s.store.ListRecords(in.GetId(), in.GetGraph(), nil
+	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetFilter(), in.GetDisplay(), in.GetFields()), nil
 }
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {
 	return s.store.Get(in.GetId()), nil
+}
+
+func (s *siplicityServiceServer) PutRecord(ctx context.Context, in *pb.PutRecordRequest) (*pb.PutRecordResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) UpdateRecord(ctx context.Context, in *pb.UpdateRecordRequest) (*pb.UpdateRecordResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) UpdateField(ctx context.Context, in *pb.UpdateFieldRequest) (*pb.UpdateFieldResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) LinkRecords(ctx context.Context, in *pb.LinkRecordsRequest) (*pb.LinkRecordsResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.UnlinkRecordsRequest) (*pb.UnlinkRecordsResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) Commit(ctx context.Context, in *pb.CommitRequest) (*pb.CommitResponse, error) {
+	return nil, nil
 }
 
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {

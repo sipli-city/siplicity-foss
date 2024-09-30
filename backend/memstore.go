@@ -10,20 +10,24 @@ type MemStore struct {
 	records   []*pb.GetRecordResponse
 	lParent   map[int32]int32
 	rParent   map[int32]int32
+	dParent   map[int32]int32
 	lChildren map[int32][]int32
 	rChildren map[int32][]int32
+	dChildren map[int32][]int32
 }
 
 func NewMemStore() *MemStore {
 	records := make([]*pb.GetRecordResponse, 2, 1000)
-	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Input"}
-	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Output"}
+	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Input - Add files or directories"}
+	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Output - Move files or directories from the input graph here"}
 	return &MemStore{
 		records:   records,
 		lParent:   make(map[int32]int32), // child -> parent
 		rParent:   make(map[int32]int32),
+		dParent:   make(map[int32]int32),
 		lChildren: make(map[int32][]int32), // parent -> children
 		rChildren: make(map[int32][]int32),
+		dChildren: make(map[int32][]int32),
 	}
 }
 
@@ -96,11 +100,13 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 }
 
 // recursive function to build a tree of records based on a given hierarchy
-func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecordsResponse {
+func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
-	display := getField(m.records[int(id)].GetMetadata(), "siplicity", "display_name")
-	if display != "" {
-		name = display
+	if display != nil {
+		nm := getField(m.records[int(id)].GetMetadata(), display)
+		if nm != "" {
+			name = nm
+		}
 	}
 	ret := &pb.ListRecordsResponse{
 		Id:   id,
@@ -110,25 +116,25 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecord
 	children := hierarchy[id]
 	ret.Children = make([]*pb.ListRecordsResponse, len(children))
 	for i, v := range children {
-		ret.Children[i] = m.addNode(v, hierarchy)
+		ret.Children[i] = m.addNode(v, hierarchy, filter, display, fields)
 	}
 	return ret
 }
 
-func (m *MemStore) ListRecords(id int32, graphtyp pb.GraphType) *pb.ListRecordsResponse {
+func (m *MemStore) ListRecords(id int32, graphtyp pb.GraphType, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	if len(m.records) == 2 && id > 1 {
 		return nil
 	}
-	if output {
+	if graphtyp == pb.GraphType_GRAPH_TYPE_OUTPUT {
 		if id < 0 {
 			id = 1
 		}
-		return m.addNode(id, m.rChildren)
+		return m.addNode(id, m.rChildren, filter, display, fields)
 	}
 	if id < 0 {
 		id = 0
 	}
-	return m.addNode(id, m.lChildren)
+	return m.addNode(id, m.lChildren, filter, display, fields)
 }
 
 func (m *MemStore) Drop(n int32, output bool) {
