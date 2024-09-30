@@ -13,6 +13,25 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class GraphType extends $pb.ProtobufEnum {
+  static const GraphType GRAPH_TYPE_UNSPECIFIED = GraphType._(0, _omitEnumNames ? '' : 'GRAPH_TYPE_UNSPECIFIED');
+  static const GraphType GRAPH_TYPE_INPUT = GraphType._(1, _omitEnumNames ? '' : 'GRAPH_TYPE_INPUT');
+  static const GraphType GRAPH_TYPE_OUTPUT = GraphType._(2, _omitEnumNames ? '' : 'GRAPH_TYPE_OUTPUT');
+  static const GraphType GRAPH_TYPE_DUPLICATE = GraphType._(3, _omitEnumNames ? '' : 'GRAPH_TYPE_DUPLICATE');
+
+  static const $core.List<GraphType> values = <GraphType> [
+    GRAPH_TYPE_UNSPECIFIED,
+    GRAPH_TYPE_INPUT,
+    GRAPH_TYPE_OUTPUT,
+    GRAPH_TYPE_DUPLICATE,
+  ];
+
+  static final $core.Map<$core.int, GraphType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static GraphType? valueOf($core.int value) => _byValue[value];
+
+  const GraphType._($core.int v, $core.String n) : super(v, n);
+}
+
 class RecordType extends $pb.ProtobufEnum {
   static const RecordType RECORD_TYPE_UNSPECIFIED = RecordType._(0, _omitEnumNames ? '' : 'RECORD_TYPE_UNSPECIFIED');
   static const RecordType RECORD_TYPE_ROOT = RecordType._(1, _omitEnumNames ? '' : 'RECORD_TYPE_ROOT');

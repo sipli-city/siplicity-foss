@@ -19,12 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SiplicityService_GetStatus_FullMethodName   = "/siplicity.v1.SiplicityService/GetStatus"
-	SiplicityService_PutFilePath_FullMethodName = "/siplicity.v1.SiplicityService/PutFilePath"
-	SiplicityService_PutJob_FullMethodName      = "/siplicity.v1.SiplicityService/PutJob"
-	SiplicityService_ListRecords_FullMethodName = "/siplicity.v1.SiplicityService/ListRecords"
-	SiplicityService_GetRecord_FullMethodName   = "/siplicity.v1.SiplicityService/GetRecord"
-	SiplicityService_Shutdown_FullMethodName    = "/siplicity.v1.SiplicityService/Shutdown"
+	SiplicityService_GetStatus_FullMethodName     = "/siplicity.v1.SiplicityService/GetStatus"
+	SiplicityService_PutFilePath_FullMethodName   = "/siplicity.v1.SiplicityService/PutFilePath"
+	SiplicityService_PutJob_FullMethodName        = "/siplicity.v1.SiplicityService/PutJob"
+	SiplicityService_CountRecords_FullMethodName  = "/siplicity.v1.SiplicityService/CountRecords"
+	SiplicityService_ListRecords_FullMethodName   = "/siplicity.v1.SiplicityService/ListRecords"
+	SiplicityService_GetRecord_FullMethodName     = "/siplicity.v1.SiplicityService/GetRecord"
+	SiplicityService_PutRecord_FullMethodName     = "/siplicity.v1.SiplicityService/PutRecord"
+	SiplicityService_UpdateRecord_FullMethodName  = "/siplicity.v1.SiplicityService/UpdateRecord"
+	SiplicityService_UpdateField_FullMethodName   = "/siplicity.v1.SiplicityService/UpdateField"
+	SiplicityService_LinkRecords_FullMethodName   = "/siplicity.v1.SiplicityService/LinkRecords"
+	SiplicityService_UnlinkRecords_FullMethodName = "/siplicity.v1.SiplicityService/UnlinkRecords"
+	SiplicityService_Commit_FullMethodName        = "/siplicity.v1.SiplicityService/Commit"
+	SiplicityService_Shutdown_FullMethodName      = "/siplicity.v1.SiplicityService/Shutdown"
 )
 
 // SiplicityServiceClient is the client API for SiplicityService service.
@@ -34,8 +41,15 @@ type SiplicityServiceClient interface {
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
 	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
+	CountRecords(ctx context.Context, in *CountRecordsRequest, opts ...grpc.CallOption) (*CountRecordsResponse, error)
 	ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
 	GetRecord(ctx context.Context, in *GetRecordRequest, opts ...grpc.CallOption) (*GetRecordResponse, error)
+	PutRecord(ctx context.Context, in *PutRecordRequest, opts ...grpc.CallOption) (*PutRecordResponse, error)
+	UpdateRecord(ctx context.Context, in *UpdateRecordRequest, opts ...grpc.CallOption) (*UpdateRecordResponse, error)
+	UpdateField(ctx context.Context, in *UpdateFieldRequest, opts ...grpc.CallOption) (*UpdateFieldResponse, error)
+	LinkRecords(ctx context.Context, in *LinkRecordsRequest, opts ...grpc.CallOption) (*LinkRecordsResponse, error)
+	UnlinkRecords(ctx context.Context, in *UnlinkRecordsRequest, opts ...grpc.CallOption) (*UnlinkRecordsResponse, error)
+	Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 }
 
@@ -77,6 +91,16 @@ func (c *siplicityServiceClient) PutJob(ctx context.Context, in *PutJobRequest, 
 	return out, nil
 }
 
+func (c *siplicityServiceClient) CountRecords(ctx context.Context, in *CountRecordsRequest, opts ...grpc.CallOption) (*CountRecordsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CountRecordsResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_CountRecords_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *siplicityServiceClient) ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListRecordsResponse)
@@ -91,6 +115,66 @@ func (c *siplicityServiceClient) GetRecord(ctx context.Context, in *GetRecordReq
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetRecordResponse)
 	err := c.cc.Invoke(ctx, SiplicityService_GetRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) PutRecord(ctx context.Context, in *PutRecordRequest, opts ...grpc.CallOption) (*PutRecordResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PutRecordResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_PutRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) UpdateRecord(ctx context.Context, in *UpdateRecordRequest, opts ...grpc.CallOption) (*UpdateRecordResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateRecordResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_UpdateRecord_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) UpdateField(ctx context.Context, in *UpdateFieldRequest, opts ...grpc.CallOption) (*UpdateFieldResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateFieldResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_UpdateField_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) LinkRecords(ctx context.Context, in *LinkRecordsRequest, opts ...grpc.CallOption) (*LinkRecordsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LinkRecordsResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_LinkRecords_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) UnlinkRecords(ctx context.Context, in *UnlinkRecordsRequest, opts ...grpc.CallOption) (*UnlinkRecordsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UnlinkRecordsResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_UnlinkRecords_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CommitResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_Commit_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -114,8 +198,15 @@ type SiplicityServiceServer interface {
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	PutFilePath(context.Context, *PutFilePathRequest) (*PutFilePathResponse, error)
 	PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error)
+	CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error)
 	ListRecords(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error)
 	GetRecord(context.Context, *GetRecordRequest) (*GetRecordResponse, error)
+	PutRecord(context.Context, *PutRecordRequest) (*PutRecordResponse, error)
+	UpdateRecord(context.Context, *UpdateRecordRequest) (*UpdateRecordResponse, error)
+	UpdateField(context.Context, *UpdateFieldRequest) (*UpdateFieldResponse, error)
+	LinkRecords(context.Context, *LinkRecordsRequest) (*LinkRecordsResponse, error)
+	UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error)
+	Commit(context.Context, *CommitRequest) (*CommitResponse, error)
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	mustEmbedUnimplementedSiplicityServiceServer()
 }
@@ -136,11 +227,32 @@ func (UnimplementedSiplicityServiceServer) PutFilePath(context.Context, *PutFile
 func (UnimplementedSiplicityServiceServer) PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutJob not implemented")
 }
+func (UnimplementedSiplicityServiceServer) CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CountRecords not implemented")
+}
 func (UnimplementedSiplicityServiceServer) ListRecords(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRecords not implemented")
 }
 func (UnimplementedSiplicityServiceServer) GetRecord(context.Context, *GetRecordRequest) (*GetRecordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRecord not implemented")
+}
+func (UnimplementedSiplicityServiceServer) PutRecord(context.Context, *PutRecordRequest) (*PutRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutRecord not implemented")
+}
+func (UnimplementedSiplicityServiceServer) UpdateRecord(context.Context, *UpdateRecordRequest) (*UpdateRecordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateRecord not implemented")
+}
+func (UnimplementedSiplicityServiceServer) UpdateField(context.Context, *UpdateFieldRequest) (*UpdateFieldResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateField not implemented")
+}
+func (UnimplementedSiplicityServiceServer) LinkRecords(context.Context, *LinkRecordsRequest) (*LinkRecordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LinkRecords not implemented")
+}
+func (UnimplementedSiplicityServiceServer) UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnlinkRecords not implemented")
+}
+func (UnimplementedSiplicityServiceServer) Commit(context.Context, *CommitRequest) (*CommitResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Commit not implemented")
 }
 func (UnimplementedSiplicityServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shutdown not implemented")
@@ -220,6 +332,24 @@ func _SiplicityService_PutJob_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SiplicityService_CountRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CountRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).CountRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_CountRecords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).CountRecords(ctx, req.(*CountRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SiplicityService_ListRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListRecordsRequest)
 	if err := dec(in); err != nil {
@@ -252,6 +382,114 @@ func _SiplicityService_GetRecord_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SiplicityServiceServer).GetRecord(ctx, req.(*GetRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_PutRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).PutRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_PutRecord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).PutRecord(ctx, req.(*PutRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_UpdateRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRecordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).UpdateRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_UpdateRecord_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).UpdateRecord(ctx, req.(*UpdateRecordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_UpdateField_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateFieldRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).UpdateField(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_UpdateField_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).UpdateField(ctx, req.(*UpdateFieldRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_LinkRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LinkRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).LinkRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_LinkRecords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).LinkRecords(ctx, req.(*LinkRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_UnlinkRecords_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnlinkRecordsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).UnlinkRecords(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_UnlinkRecords_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).UnlinkRecords(ctx, req.(*UnlinkRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_Commit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).Commit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_Commit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).Commit(ctx, req.(*CommitRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -294,12 +532,40 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _SiplicityService_PutJob_Handler,
 		},
 		{
+			MethodName: "CountRecords",
+			Handler:    _SiplicityService_CountRecords_Handler,
+		},
+		{
 			MethodName: "ListRecords",
 			Handler:    _SiplicityService_ListRecords_Handler,
 		},
 		{
 			MethodName: "GetRecord",
 			Handler:    _SiplicityService_GetRecord_Handler,
+		},
+		{
+			MethodName: "PutRecord",
+			Handler:    _SiplicityService_PutRecord_Handler,
+		},
+		{
+			MethodName: "UpdateRecord",
+			Handler:    _SiplicityService_UpdateRecord_Handler,
+		},
+		{
+			MethodName: "UpdateField",
+			Handler:    _SiplicityService_UpdateField_Handler,
+		},
+		{
+			MethodName: "LinkRecords",
+			Handler:    _SiplicityService_LinkRecords_Handler,
+		},
+		{
+			MethodName: "UnlinkRecords",
+			Handler:    _SiplicityService_UnlinkRecords_Handler,
+		},
+		{
+			MethodName: "Commit",
+			Handler:    _SiplicityService_Commit_Handler,
 		},
 		{
 			MethodName: "Shutdown",

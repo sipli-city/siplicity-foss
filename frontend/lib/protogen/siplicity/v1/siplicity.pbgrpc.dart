@@ -33,6 +33,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/PutJob',
       ($0.PutJobRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.PutJobResponse.fromBuffer(value));
+  static final _$countRecords = $grpc.ClientMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
+      '/siplicity.v1.SiplicityService/CountRecords',
+      ($0.CountRecordsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.CountRecordsResponse.fromBuffer(value));
   static final _$listRecords = $grpc.ClientMethod<$0.ListRecordsRequest, $0.ListRecordsResponse>(
       '/siplicity.v1.SiplicityService/ListRecords',
       ($0.ListRecordsRequest value) => value.writeToBuffer(),
@@ -41,6 +45,30 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/GetRecord',
       ($0.GetRecordRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.GetRecordResponse.fromBuffer(value));
+  static final _$putRecord = $grpc.ClientMethod<$0.PutRecordRequest, $0.PutRecordResponse>(
+      '/siplicity.v1.SiplicityService/PutRecord',
+      ($0.PutRecordRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.PutRecordResponse.fromBuffer(value));
+  static final _$updateRecord = $grpc.ClientMethod<$0.UpdateRecordRequest, $0.UpdateRecordResponse>(
+      '/siplicity.v1.SiplicityService/UpdateRecord',
+      ($0.UpdateRecordRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.UpdateRecordResponse.fromBuffer(value));
+  static final _$updateField = $grpc.ClientMethod<$0.UpdateFieldRequest, $0.UpdateFieldResponse>(
+      '/siplicity.v1.SiplicityService/UpdateField',
+      ($0.UpdateFieldRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.UpdateFieldResponse.fromBuffer(value));
+  static final _$linkRecords = $grpc.ClientMethod<$0.LinkRecordsRequest, $0.LinkRecordsResponse>(
+      '/siplicity.v1.SiplicityService/LinkRecords',
+      ($0.LinkRecordsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.LinkRecordsResponse.fromBuffer(value));
+  static final _$unlinkRecords = $grpc.ClientMethod<$0.UnlinkRecordsRequest, $0.UnlinkRecordsResponse>(
+      '/siplicity.v1.SiplicityService/UnlinkRecords',
+      ($0.UnlinkRecordsRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.UnlinkRecordsResponse.fromBuffer(value));
+  static final _$commit = $grpc.ClientMethod<$0.CommitRequest, $0.CommitResponse>(
+      '/siplicity.v1.SiplicityService/Commit',
+      ($0.CommitRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.CommitResponse.fromBuffer(value));
   static final _$shutdown = $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
       '/siplicity.v1.SiplicityService/Shutdown',
       ($0.ShutdownRequest value) => value.writeToBuffer(),
@@ -64,12 +92,40 @@ class SiplicityServiceClient extends $grpc.Client {
     return $createUnaryCall(_$putJob, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.CountRecordsResponse> countRecords($0.CountRecordsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$countRecords, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.ListRecordsResponse> listRecords($0.ListRecordsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$listRecords, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.GetRecordResponse> getRecord($0.GetRecordRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$getRecord, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.PutRecordResponse> putRecord($0.PutRecordRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$putRecord, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.UpdateRecordResponse> updateRecord($0.UpdateRecordRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateRecord, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.UpdateFieldResponse> updateField($0.UpdateFieldRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$updateField, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.LinkRecordsResponse> linkRecords($0.LinkRecordsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$linkRecords, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.UnlinkRecordsResponse> unlinkRecords($0.UnlinkRecordsRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$unlinkRecords, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.CommitResponse> commit($0.CommitRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$commit, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.ShutdownResponse> shutdown($0.ShutdownRequest request, {$grpc.CallOptions? options}) {
@@ -103,6 +159,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.PutJobRequest.fromBuffer(value),
         ($0.PutJobResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
+        'CountRecords',
+        countRecords_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.CountRecordsRequest.fromBuffer(value),
+        ($0.CountRecordsResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ListRecordsRequest, $0.ListRecordsResponse>(
         'ListRecords',
         listRecords_Pre,
@@ -117,6 +180,48 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GetRecordRequest.fromBuffer(value),
         ($0.GetRecordResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.PutRecordRequest, $0.PutRecordResponse>(
+        'PutRecord',
+        putRecord_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.PutRecordRequest.fromBuffer(value),
+        ($0.PutRecordResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UpdateRecordRequest, $0.UpdateRecordResponse>(
+        'UpdateRecord',
+        updateRecord_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.UpdateRecordRequest.fromBuffer(value),
+        ($0.UpdateRecordResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UpdateFieldRequest, $0.UpdateFieldResponse>(
+        'UpdateField',
+        updateField_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.UpdateFieldRequest.fromBuffer(value),
+        ($0.UpdateFieldResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.LinkRecordsRequest, $0.LinkRecordsResponse>(
+        'LinkRecords',
+        linkRecords_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.LinkRecordsRequest.fromBuffer(value),
+        ($0.LinkRecordsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.UnlinkRecordsRequest, $0.UnlinkRecordsResponse>(
+        'UnlinkRecords',
+        unlinkRecords_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.UnlinkRecordsRequest.fromBuffer(value),
+        ($0.UnlinkRecordsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.CommitRequest, $0.CommitResponse>(
+        'Commit',
+        commit_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.CommitRequest.fromBuffer(value),
+        ($0.CommitResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
         'Shutdown',
         shutdown_Pre,
@@ -138,12 +243,40 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return putJob(call, await request);
   }
 
+  $async.Future<$0.CountRecordsResponse> countRecords_Pre($grpc.ServiceCall call, $async.Future<$0.CountRecordsRequest> request) async {
+    return countRecords(call, await request);
+  }
+
   $async.Future<$0.ListRecordsResponse> listRecords_Pre($grpc.ServiceCall call, $async.Future<$0.ListRecordsRequest> request) async {
     return listRecords(call, await request);
   }
 
   $async.Future<$0.GetRecordResponse> getRecord_Pre($grpc.ServiceCall call, $async.Future<$0.GetRecordRequest> request) async {
     return getRecord(call, await request);
+  }
+
+  $async.Future<$0.PutRecordResponse> putRecord_Pre($grpc.ServiceCall call, $async.Future<$0.PutRecordRequest> request) async {
+    return putRecord(call, await request);
+  }
+
+  $async.Future<$0.UpdateRecordResponse> updateRecord_Pre($grpc.ServiceCall call, $async.Future<$0.UpdateRecordRequest> request) async {
+    return updateRecord(call, await request);
+  }
+
+  $async.Future<$0.UpdateFieldResponse> updateField_Pre($grpc.ServiceCall call, $async.Future<$0.UpdateFieldRequest> request) async {
+    return updateField(call, await request);
+  }
+
+  $async.Future<$0.LinkRecordsResponse> linkRecords_Pre($grpc.ServiceCall call, $async.Future<$0.LinkRecordsRequest> request) async {
+    return linkRecords(call, await request);
+  }
+
+  $async.Future<$0.UnlinkRecordsResponse> unlinkRecords_Pre($grpc.ServiceCall call, $async.Future<$0.UnlinkRecordsRequest> request) async {
+    return unlinkRecords(call, await request);
+  }
+
+  $async.Future<$0.CommitResponse> commit_Pre($grpc.ServiceCall call, $async.Future<$0.CommitRequest> request) async {
+    return commit(call, await request);
   }
 
   $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall call, $async.Future<$0.ShutdownRequest> request) async {
@@ -153,7 +286,14 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.GetStatusResponse> getStatus($grpc.ServiceCall call, $0.GetStatusRequest request);
   $async.Future<$0.PutFilePathResponse> putFilePath($grpc.ServiceCall call, $0.PutFilePathRequest request);
   $async.Future<$0.PutJobResponse> putJob($grpc.ServiceCall call, $0.PutJobRequest request);
+  $async.Future<$0.CountRecordsResponse> countRecords($grpc.ServiceCall call, $0.CountRecordsRequest request);
   $async.Future<$0.ListRecordsResponse> listRecords($grpc.ServiceCall call, $0.ListRecordsRequest request);
   $async.Future<$0.GetRecordResponse> getRecord($grpc.ServiceCall call, $0.GetRecordRequest request);
+  $async.Future<$0.PutRecordResponse> putRecord($grpc.ServiceCall call, $0.PutRecordRequest request);
+  $async.Future<$0.UpdateRecordResponse> updateRecord($grpc.ServiceCall call, $0.UpdateRecordRequest request);
+  $async.Future<$0.UpdateFieldResponse> updateField($grpc.ServiceCall call, $0.UpdateFieldRequest request);
+  $async.Future<$0.LinkRecordsResponse> linkRecords($grpc.ServiceCall call, $0.LinkRecordsRequest request);
+  $async.Future<$0.UnlinkRecordsResponse> unlinkRecords($grpc.ServiceCall call, $0.UnlinkRecordsRequest request);
+  $async.Future<$0.CommitResponse> commit($grpc.ServiceCall call, $0.CommitRequest request);
   $async.Future<$0.ShutdownResponse> shutdown($grpc.ServiceCall call, $0.ShutdownRequest request);
 }
