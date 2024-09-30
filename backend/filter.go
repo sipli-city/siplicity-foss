@@ -3,7 +3,7 @@ package siplicity
 import (
 	"strings"
 
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 func Filter(filter string, rec *pb.GetRecordResponse) bool {

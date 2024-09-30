@@ -1,7 +1,7 @@
 package siplicity
 
 import (
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 func Bagit(filter string, store Store) {

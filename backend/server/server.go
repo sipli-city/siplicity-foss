@@ -15,7 +15,7 @@ import (
 
 	"github.com/sipli-city/siplicity"
 
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 var (
@@ -28,14 +28,6 @@ type siplicityServiceServer struct {
 	store    siplicity.Store
 	statuses []bool
 }
-
-/*
-rpc GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
-	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
-	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
-	ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
-	GetRecord(ctx context.Context, in *GetRecordRequest, opts ...grpc.CallOption) (*GetRecordResponse, error)
-*/
 
 func (s *siplicityServiceServer) GetStatus(ctx context.Context, in *pb.GetStatusRequest) (*pb.GetStatusResponse, error) {
 	return &pb.GetStatusResponse{

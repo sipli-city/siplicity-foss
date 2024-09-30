@@ -3,9 +3,13 @@ package siplicity
 import (
 	"fmt"
 	"io/fs"
+	"os"
 	"path/filepath"
 
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	msoleps "github.com/richardlehane/msoleps/types"
+	"golang.org/x/sys/windows"
+
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 type Store interface {
@@ -14,6 +18,28 @@ type Store interface {
 	Get(int32) *pb.GetRecordResponse
 	ListRecords(int32, bool) *pb.ListRecordsResponse
 	Ids(string) []int32
+}
+
+func winMetatadata(path string) (string, string, string, string) {
+	f, err := os.Open(path)
+	if err != nil {
+		return "", "", "", ""
+	}
+	defer f.Close()
+	buf := make([]byte, 40)
+	if err := windows.GetFileInformationByHandleEx(
+		windows.Handle(f.Fd()),
+		windows.FileBasicInfo,
+		&buf,
+		uint32(len(buf)),
+	); err != nil {
+		return "", "", "", ""
+	}
+	creationTime := msoleps.MustFileTime(buf[0:8])
+	lastAccessTime := msoleps.MustFileTime(buf[8:16])
+	lastWriteTime := msoleps.MustFileTime(buf[16:24])
+	changeTime := msoleps.MustFileTime(buf[24:32])
+	return creationTime.String(), lastAccessTime.String(), lastWriteTime.String(), changeTime.String()
 }
 
 func AddPath(path string, s Store) error {
@@ -41,7 +67,44 @@ func AddPath(path string, s Store) error {
 			//Modtime: info.ModTime().Format(time.RFC3339),
 		}
 		rec.Metadata = append(rec.Metadata, &pb.Metadata{
-			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
+			Field: &pb.Field{Namespace: "siplicity", Name: "base_name", Value: filepath.Base(p)},
+		})
+		creation, access, write, change := winMetatadata(p)
+		rec.Metadata = append(rec.Metadata, &pb.Metadata{
+			Field: &pb.Field{
+				Namespace: "siplicity_windows",
+				Name:      "file_information_basic",
+			},
+			Children: []*pb.Metadata{
+				&pb.Metadata{
+					Field: &pb.Field{
+						Namespace: "siplicity_windows",
+						Name:      "CreationTime",
+						Value:     creation,
+					},
+				},
+				&pb.Metadata{
+					Field: &pb.Field{
+						Namespace: "siplicity_windows",
+						Name:      "LastAccessTime",
+						Value:     access,
+					},
+				},
+				&pb.Metadata{
+					Field: &pb.Field{
+						Namespace: "siplicity_windows",
+						Name:      "LastWriteTime",
+						Value:     write,
+					},
+				},
+				&pb.Metadata{
+					Field: &pb.Field{
+						Namespace: "siplicity_windows",
+						Name:      "ChangeTime",
+						Value:     change,
+					},
+				},
+			},
 		})
 		if root {
 			strStack[idx] = p
