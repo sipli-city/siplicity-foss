@@ -95,6 +95,7 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 	return m.records[int(n)]
 }
 
+// recursive function to build a tree of records based on a given hierarchy
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
 	display := getField(m.records[int(id)].GetMetadata(), "siplicity", "display_name")
@@ -114,7 +115,7 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecord
 	return ret
 }
 
-func (m *MemStore) ListRecords(id int32, output bool) *pb.ListRecordsResponse {
+func (m *MemStore) ListRecords(id int32, graphtyp pb.GraphType) *pb.ListRecordsResponse {
 	if len(m.records) == 2 && id > 1 {
 		return nil
 	}

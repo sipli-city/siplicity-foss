@@ -59,7 +59,7 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 }
 
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	return s.store.ListRecords(in.GetId(), in.GetOutput()), nil
+	return s.store.ListRecords(in.GetId(), in.GetGraph(), nil
 }
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {
