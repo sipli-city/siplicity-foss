@@ -31,10 +31,10 @@ func NewMemStore() *MemStore {
 	}
 }
 
-func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, output bool) int32 {
+func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, graph pb.GraphType) int32 {
 	m.records = append(m.records, r)
 	idx := int32(len(m.records) - 1)
-	if output {
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
 		if n == -1 {
 			n = 1
 		}
@@ -50,8 +50,27 @@ func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, output bool) int32
 	return idx
 }
 
-func (m *MemStore) AttachChild(parent, child int32, output bool) {
-	if output {
+func (m *MemStore) UpdateRecord(id int32, r *pb.GetRecordResponse) {
+	if id > 0 && int(id) < len(m.records) {
+		m.records[int(id)] = r
+	}
+}
+
+func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, f *pb.Field) {
+	if id > 0 && int(id) < len(m.records) {
+		meta := &pb.Metadata{}
+		if p != nil {
+			parent := getParent(m.records[int(id)].GetMetadata(), p)
+			parent.Children = append(parent.Children, meta)
+		} else {
+			m.records[int(id)].Metadata = append(m.records[int(id)].Metadata, meta)
+		}
+		meta.Field = f
+	}
+}
+
+func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
 		m.rParent[child] = parent
 		m.rChildren[parent] = append(m.rChildren[parent], child)
 		return
@@ -61,13 +80,13 @@ func (m *MemStore) AttachChild(parent, child int32, output bool) {
 }
 
 // For a set of children, give them a new parent, and remove them from the list of children of their old parent(s)
-func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
-	if output {
+func (m *MemStore) AttachParent(parent int32, children []int32, graph pb.GraphType) {
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
 		var grandparent int32
 		for i, child := range children {
 			if i == 0 {
 				grandparent = m.rParent[child]
-				m.AttachChild(grandparent, parent, output) // give the new parent a parent
+				m.AttachChild(grandparent, parent, graph) // give the new parent a parent
 				m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
 			} else {
 				if grandparent != m.rParent[child] {
@@ -75,7 +94,7 @@ func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
 					m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
 				}
 			}
-			m.AttachChild(parent, child, output)
+			m.AttachChild(parent, child, graph)
 		}
 		return
 	}
@@ -83,7 +102,7 @@ func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
 	for i, child := range children {
 		if i == 0 {
 			grandparent = m.lParent[child]
-			m.AttachChild(grandparent, parent, output) // give the new parent a parent
+			m.AttachChild(grandparent, parent, graph) // give the new parent a parent
 			m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
 		} else {
 			if grandparent != m.lParent[child] {
@@ -91,7 +110,7 @@ func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
 				m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
 			}
 		}
-		m.AttachChild(parent, child, output)
+		m.AttachChild(parent, child, graph)
 	}
 }
 

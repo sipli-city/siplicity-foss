@@ -9,8 +9,10 @@ import (
 )
 
 type Store interface {
-	PutChild(int32, *pb.GetRecordResponse, bool) int32 // -1 = root
-	AttachChild(int32, int32, bool)
+	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
+	UpdateRecord(int32, *pb.GetRecordResponse)
+	UpdateField(int32, *pb.FieldPath, *pb.Field)
+	AttachChild(int32, int32, pb.GraphType)
 	Get(int32) *pb.GetRecordResponse
 	ListRecords(int32, pb.GraphType, string, *pb.FieldPath, []*pb.FieldPath) *pb.ListRecordsResponse
 	Ids(string) []int32
@@ -48,7 +50,7 @@ func AddPath(path string, s Store) error {
 		}
 		if root {
 			strStack[idx] = p
-			nidStack[idx] = s.PutChild(-1, rec, false)
+			nidStack[idx] = s.PutChild(-1, rec, pb.GraphType_GRAPH_TYPE_INPUT)
 			root = false
 			return nil
 		}
@@ -61,7 +63,7 @@ func AddPath(path string, s Store) error {
 			}
 			idx -= 1
 		}
-		nid := s.PutChild(nidStack[idx], rec, false)
+		nid := s.PutChild(nidStack[idx], rec, pb.GraphType_GRAPH_TYPE_INPUT)
 		idx += 1
 		// expand stacks if needed
 		if idx >= stackSize {

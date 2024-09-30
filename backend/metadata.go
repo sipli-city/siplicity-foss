@@ -28,17 +28,25 @@ func findMeta(meta []*pb.Metadata, entry *pb.FieldPath_Entry) *pb.Metadata {
 	return nil
 }
 
-func getField(meta []*pb.Metadata, path *pb.FieldPath) string {
+func getParent(meta []*pb.Metadata, path *pb.FieldPath) *pb.Metadata {
 	entries := path.GetEntries()
 	for idx, entry := range entries {
 		m := findMeta(meta, entry)
 		if m == nil {
-			return ""
+			return nil
 		}
 		if idx == len(entries)-1 {
-			return m.GetField().GetValue()
+			return m
 		}
 		meta = m.GetChildren()
 	}
-	return ""
+	return nil
+}
+
+func getField(meta []*pb.Metadata, path *pb.FieldPath) string {
+	p := getParent(meta, path)
+	if p == nil {
+		return ""
+	}
+	return p.GetField().GetValue()
 }

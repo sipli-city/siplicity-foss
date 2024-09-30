@@ -71,14 +71,16 @@ func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecord
 }
 
 func (s *siplicityServiceServer) PutRecord(ctx context.Context, in *pb.PutRecordRequest) (*pb.PutRecordResponse, error) {
-	return nil, nil
+	return &pb.PutRecordResponse{Id: s.store.PutChild(in.GetId(), in.GetRecord(), in.GetGraph())}, nil
 }
 
 func (s *siplicityServiceServer) UpdateRecord(ctx context.Context, in *pb.UpdateRecordRequest) (*pb.UpdateRecordResponse, error) {
+	s.store.UpdateRecord(in.GetId(), in.GetRecord())
 	return nil, nil
 }
 
 func (s *siplicityServiceServer) UpdateField(ctx context.Context, in *pb.UpdateFieldRequest) (*pb.UpdateFieldResponse, error) {
+	s.store.UpdateField(in.GetId(), in.GetPath(), in.GetField())
 	return nil, nil
 }
 
