@@ -16,7 +16,6 @@ service SiplicityService {
   rpc UpdateField(UpdateFieldRequest) returns (UpdateFieldResponse) {}
   rpc LinkRecords(LinkRecordsRequest) returns (LinkRecordsResponse) {}
   rpc UnlinkRecords(UnlinkRecordsRequest) returns (UnlinkRecordsResponse) {}
-  rpc Commit(CommitRequest) returns (CommitResponse) {}
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
 }
 
@@ -166,10 +165,6 @@ message UnlinkRecordsRequest {
 }
 
 message UnlinkRecordsResponse {}
-
-message CommitRequest {}
-
-message CommitResponse {}
 
 message ShutdownRequest {}
 

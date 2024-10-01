@@ -65,10 +65,6 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/UnlinkRecords',
       ($0.UnlinkRecordsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.UnlinkRecordsResponse.fromBuffer(value));
-  static final _$commit = $grpc.ClientMethod<$0.CommitRequest, $0.CommitResponse>(
-      '/siplicity.v1.SiplicityService/Commit',
-      ($0.CommitRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.CommitResponse.fromBuffer(value));
   static final _$shutdown = $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
       '/siplicity.v1.SiplicityService/Shutdown',
       ($0.ShutdownRequest value) => value.writeToBuffer(),
@@ -122,10 +118,6 @@ class SiplicityServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.UnlinkRecordsResponse> unlinkRecords($0.UnlinkRecordsRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$unlinkRecords, request, options: options);
-  }
-
-  $grpc.ResponseFuture<$0.CommitResponse> commit($0.CommitRequest request, {$grpc.CallOptions? options}) {
-    return $createUnaryCall(_$commit, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.ShutdownResponse> shutdown($0.ShutdownRequest request, {$grpc.CallOptions? options}) {
@@ -215,13 +207,6 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.UnlinkRecordsRequest.fromBuffer(value),
         ($0.UnlinkRecordsResponse value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.CommitRequest, $0.CommitResponse>(
-        'Commit',
-        commit_Pre,
-        false,
-        false,
-        ($core.List<$core.int> value) => $0.CommitRequest.fromBuffer(value),
-        ($0.CommitResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
         'Shutdown',
         shutdown_Pre,
@@ -275,10 +260,6 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return unlinkRecords(call, await request);
   }
 
-  $async.Future<$0.CommitResponse> commit_Pre($grpc.ServiceCall call, $async.Future<$0.CommitRequest> request) async {
-    return commit(call, await request);
-  }
-
   $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall call, $async.Future<$0.ShutdownRequest> request) async {
     return shutdown(call, await request);
   }
@@ -294,6 +275,5 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.UpdateFieldResponse> updateField($grpc.ServiceCall call, $0.UpdateFieldRequest request);
   $async.Future<$0.LinkRecordsResponse> linkRecords($grpc.ServiceCall call, $0.LinkRecordsRequest request);
   $async.Future<$0.UnlinkRecordsResponse> unlinkRecords($grpc.ServiceCall call, $0.UnlinkRecordsRequest request);
-  $async.Future<$0.CommitResponse> commit($grpc.ServiceCall call, $0.CommitRequest request);
   $async.Future<$0.ShutdownResponse> shutdown($grpc.ServiceCall call, $0.ShutdownRequest request);
 }

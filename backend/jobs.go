@@ -5,11 +5,14 @@ import (
 	"fmt"
 
 	"github.com/richardlehane/siegfried/pkg/static"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 func Job(action string, filter string, store Store) error {
 	var act Action
 	switch action {
+	case "commit":
+		store.Walk(pb.GraphType_GRAPH_TYPE_OUTPUT, commit)
 	case "bagit":
 		Bagit(filter, store)
 		return nil

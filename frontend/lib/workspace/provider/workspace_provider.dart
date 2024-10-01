@@ -22,7 +22,8 @@ class InputRecords extends _$InputRecords {
     final response = await siplicityServiceClient.listRecords(
         ListRecordsRequest(
             id: -1,
-            display: GetField(namespace: "siplicity", name: "display_name")));
+            graph: GraphType.GRAPH_TYPE_INPUT,
+            display: FieldPath(entries: <FieldPath_Entry>[FieldPath_Entry(namespace: "siplicity", name: "display_name")])));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,
@@ -88,8 +89,8 @@ class OutputRecords extends _$OutputRecords {
     final response = await siplicityServiceClient.listRecords(
         ListRecordsRequest(
             id: -1,
-            output: true,
-            display: GetField(namespace: "siplicity", name: "display_name")));
+            graph: GraphType.GRAPH_TYPE_OUTPUT,
+            display: FieldPath(entries: <FieldPath_Entry>[FieldPath_Entry(namespace: "siplicity", name: "display_name")])));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,

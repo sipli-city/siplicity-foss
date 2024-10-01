@@ -6,7 +6,7 @@ part of 'workspace_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$inputRecordsHash() => r'e9bd577bc62e5e98ed63b013d73dfd76782eb8b3';
+String _$inputRecordsHash() => r'feb2194c282b6d8257ca391233581cc8b92dab30';
 
 /// See also [InputRecords].
 @ProviderFor(InputRecords)
@@ -21,7 +21,7 @@ final inputRecordsProvider =
 );
 
 typedef _$InputRecords = AutoDisposeAsyncNotifier<List<TreeViewItem>>;
-String _$outputRecordsHash() => r'3e0e8642f0d0ffd427ea7d34bba825dff79c8438';
+String _$outputRecordsHash() => r'9a61c33f42947d6239624937ba06f4ec84ba19b6';
 
 /// See also [OutputRecords].
 @ProviderFor(OutputRecords)

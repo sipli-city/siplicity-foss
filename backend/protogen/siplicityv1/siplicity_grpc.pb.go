@@ -30,7 +30,6 @@ const (
 	SiplicityService_UpdateField_FullMethodName   = "/siplicity.v1.SiplicityService/UpdateField"
 	SiplicityService_LinkRecords_FullMethodName   = "/siplicity.v1.SiplicityService/LinkRecords"
 	SiplicityService_UnlinkRecords_FullMethodName = "/siplicity.v1.SiplicityService/UnlinkRecords"
-	SiplicityService_Commit_FullMethodName        = "/siplicity.v1.SiplicityService/Commit"
 	SiplicityService_Shutdown_FullMethodName      = "/siplicity.v1.SiplicityService/Shutdown"
 )
 
@@ -49,7 +48,6 @@ type SiplicityServiceClient interface {
 	UpdateField(ctx context.Context, in *UpdateFieldRequest, opts ...grpc.CallOption) (*UpdateFieldResponse, error)
 	LinkRecords(ctx context.Context, in *LinkRecordsRequest, opts ...grpc.CallOption) (*LinkRecordsResponse, error)
 	UnlinkRecords(ctx context.Context, in *UnlinkRecordsRequest, opts ...grpc.CallOption) (*UnlinkRecordsResponse, error)
-	Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 }
 
@@ -171,16 +169,6 @@ func (c *siplicityServiceClient) UnlinkRecords(ctx context.Context, in *UnlinkRe
 	return out, nil
 }
 
-func (c *siplicityServiceClient) Commit(ctx context.Context, in *CommitRequest, opts ...grpc.CallOption) (*CommitResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CommitResponse)
-	err := c.cc.Invoke(ctx, SiplicityService_Commit_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *siplicityServiceClient) Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ShutdownResponse)
@@ -206,7 +194,6 @@ type SiplicityServiceServer interface {
 	UpdateField(context.Context, *UpdateFieldRequest) (*UpdateFieldResponse, error)
 	LinkRecords(context.Context, *LinkRecordsRequest) (*LinkRecordsResponse, error)
 	UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error)
-	Commit(context.Context, *CommitRequest) (*CommitResponse, error)
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	mustEmbedUnimplementedSiplicityServiceServer()
 }
@@ -250,9 +237,6 @@ func (UnimplementedSiplicityServiceServer) LinkRecords(context.Context, *LinkRec
 }
 func (UnimplementedSiplicityServiceServer) UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlinkRecords not implemented")
-}
-func (UnimplementedSiplicityServiceServer) Commit(context.Context, *CommitRequest) (*CommitResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Commit not implemented")
 }
 func (UnimplementedSiplicityServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shutdown not implemented")
@@ -476,24 +460,6 @@ func _SiplicityService_UnlinkRecords_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _SiplicityService_Commit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CommitRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SiplicityServiceServer).Commit(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SiplicityService_Commit_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SiplicityServiceServer).Commit(ctx, req.(*CommitRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _SiplicityService_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShutdownRequest)
 	if err := dec(in); err != nil {
@@ -562,10 +528,6 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnlinkRecords",
 			Handler:    _SiplicityService_UnlinkRecords_Handler,
-		},
-		{
-			MethodName: "Commit",
-			Handler:    _SiplicityService_Commit_Handler,
 		},
 		{
 			MethodName: "Shutdown",

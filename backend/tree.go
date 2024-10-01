@@ -36,6 +36,15 @@ func (t *tree) link(parent, child int32) {
 	t.children[parent] = append(t.children[parent], child)
 }
 
+func (t *tree) adopt(old, new int32) {
+	t.children[new] = t.children[old]
+	t.children[new] = slices.DeleteFunc(t.children[new], func(e int32) bool { return e == new })
+	for _, id := range t.children[new] {
+		t.parents[id] = new
+	}
+	t.children[old] = []int32{new}
+}
+
 // links a list of nodes to a single parent
 func (t *tree) linkList(parent int32, children []int32) {
 	for _, child := range children {

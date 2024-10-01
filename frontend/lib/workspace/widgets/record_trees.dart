@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
 
 class InputRecordsTree extends ConsumerWidget {
@@ -34,7 +35,7 @@ class OutputRecordsTree extends ConsumerWidget {
           shrinkWrap: true,
           items: value,
           onItemInvoked: (item, details) async {},
-          onSelectionChanged: (selectedItems) async {},
+          onSelectionChanged: (selectedItems) async { ref.read(inputSelectionProvider) = selectedItems.map((item) => item.value ).toList();},
           onSecondaryTap: (item, details) async {},
         ),
       _ => const Text('loading'),

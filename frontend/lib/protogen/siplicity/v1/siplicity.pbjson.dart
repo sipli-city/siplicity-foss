@@ -451,24 +451,6 @@ const UnlinkRecordsResponse$json = {
 final $typed_data.Uint8List unlinkRecordsResponseDescriptor = $convert.base64Decode(
     'ChVVbmxpbmtSZWNvcmRzUmVzcG9uc2U=');
 
-@$core.Deprecated('Use commitRequestDescriptor instead')
-const CommitRequest$json = {
-  '1': 'CommitRequest',
-};
-
-/// Descriptor for `CommitRequest`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commitRequestDescriptor = $convert.base64Decode(
-    'Cg1Db21taXRSZXF1ZXN0');
-
-@$core.Deprecated('Use commitResponseDescriptor instead')
-const CommitResponse$json = {
-  '1': 'CommitResponse',
-};
-
-/// Descriptor for `CommitResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List commitResponseDescriptor = $convert.base64Decode(
-    'Cg5Db21taXRSZXNwb25zZQ==');
-
 @$core.Deprecated('Use shutdownRequestDescriptor instead')
 const ShutdownRequest$json = {
   '1': 'ShutdownRequest',

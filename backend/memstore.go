@@ -13,8 +13,9 @@ type MemStore struct {
 
 func NewMemStore() *MemStore {
 	records := make([]*pb.GetRecordResponse, 3, 1000)
-	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Input - Add files or directories"}
-	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Output - Move files or directories from the input graph here"}
+	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - Add files or directories to get started"}}}}
+	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - Move content here and set output path before committing"}}}}
+	records[2] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Duplicates"}}}}
 	return &MemStore{
 		records: records,
 		lTree:   newTree(0),
@@ -37,7 +38,7 @@ func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, graph pb.GraphType
 	m.records = append(m.records, r)
 	idx := int32(len(m.records) - 1)
 	t := m.getTree(graph)
-	if n == -1 {
+	if n < 0 {
 		n = t.root
 	}
 	t.link(n, idx)
@@ -45,6 +46,9 @@ func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, graph pb.GraphType
 }
 
 func (m *MemStore) UpdateRecord(id int32, r *pb.GetRecordResponse) {
+	if id == m.rTree.root && r.Path != "" {
+		m.UpdateField(id, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + r.Path})
+	}
 	if id > 0 && int(id) < len(m.records) {
 		m.records[int(id)] = r
 	}
@@ -65,6 +69,10 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, f *pb.Field) {
 
 func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {
 	m.getTree(graph).link(parent, child)
+}
+
+func (m *MemStore) AdoptChildren(old, new int32, graph pb.GraphType) {
+	m.getTree(graph).adopt(old, new)
 }
 
 func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
@@ -140,4 +148,26 @@ func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32,
 
 func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {
 	m.getTree(g).unlinkList(nodes)
+}
+
+func (m *MemStore) walkChildren(t *tree, nodes []int32, str string, fn func(string, *pb.GetRecordResponse) (string, error)) error {
+	for _, n := range nodes {
+		nstr, err := fn(str, m.records[n])
+		if err != nil {
+			return err
+		}
+		if err = m.walkChildren(t, t.children[n], nstr, fn); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (m *MemStore) Walk(g pb.GraphType, fn func(string, *pb.GetRecordResponse) (string, error)) error {
+	t := m.getTree(g)
+	str, err := fn("", m.records[t.root])
+	if err != nil {
+		return err
+	}
+	return m.walkChildren(t, t.children[t.root], str, fn)
 }

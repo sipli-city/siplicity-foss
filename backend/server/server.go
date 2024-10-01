@@ -94,10 +94,6 @@ func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.Unlin
 	return nil, nil
 }
 
-func (s *siplicityServiceServer) Commit(ctx context.Context, in *pb.CommitRequest) (*pb.CommitResponse, error) {
-	return nil, nil
-}
-
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
 	s.srv.Stop()
 	return nil, nil
