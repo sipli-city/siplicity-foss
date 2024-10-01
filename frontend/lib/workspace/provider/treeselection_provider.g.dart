@@ -6,12 +6,13 @@ part of 'treeselection_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$inputSelectionHash() => r'b0c80c30dad90e7fa08e4935753063dfe70d0fa9';
+String _$inputSelectionHash() => r'e571cb8b4662cfdb0992f29898200ad054cc3186';
 
-/// See also [inputSelection].
-@ProviderFor(inputSelection)
-final inputSelectionProvider = AutoDisposeProvider<List<dynamic>>.internal(
-  inputSelection,
+/// See also [InputSelection].
+@ProviderFor(InputSelection)
+final inputSelectionProvider =
+    AutoDisposeNotifierProvider<InputSelection, List<int>>.internal(
+  InputSelection.new,
   name: r'inputSelectionProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
@@ -20,6 +21,6 @@ final inputSelectionProvider = AutoDisposeProvider<List<dynamic>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef InputSelectionRef = AutoDisposeProviderRef<List<dynamic>>;
+typedef _$InputSelection = AutoDisposeNotifier<List<int>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

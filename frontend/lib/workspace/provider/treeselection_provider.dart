@@ -5,6 +5,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'treeselection_provider.g.dart';
 
 @riverpod
-List<dynamic> inputSelection(List<dynamic> ref) {
-  return <dynamic>[];
+class InputSelection extends _$InputSelection {
+  List<int> selection = <int>[];
+  
+  @override
+  List<int> build() {
+    return selection;
+  }
+
+  void update(List<int> list) {
+    selection = list;
+  } 
 }

@@ -35,7 +35,7 @@ class OutputRecordsTree extends ConsumerWidget {
           shrinkWrap: true,
           items: value,
           onItemInvoked: (item, details) async {},
-          onSelectionChanged: (selectedItems) async { ref.read(inputSelectionProvider) = selectedItems.map((item) => item.value ).toList();},
+          onSelectionChanged: (selectedItems) async { ref.read(inputSelectionProvider.notifier).update(List<int>.from(selectedItems.map((item) => item.value )));},
           onSecondaryTap: (item, details) async {},
         ),
       _ => const Text('loading'),
