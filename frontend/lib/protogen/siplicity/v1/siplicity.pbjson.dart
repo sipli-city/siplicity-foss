@@ -399,21 +399,24 @@ const LinkRecordsRequest$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '10': 'graph'},
-    {'1': 'records', '3': 3, '4': 1, '5': 11, '6': '.siplicity.v1.Selection', '10': 'records'},
-    {'1': 'flatten', '3': 4, '4': 1, '5': 8, '9': 1, '10': 'flatten', '17': true},
+    {'1': 'origin', '3': 3, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'origin', '17': true},
+    {'1': 'shift', '3': 4, '4': 1, '5': 8, '9': 2, '10': 'shift', '17': true},
+    {'1': 'records', '3': 5, '4': 1, '5': 11, '6': '.siplicity.v1.Selection', '10': 'records'},
   ],
   '8': [
     {'1': '_id'},
-    {'1': '_flatten'},
+    {'1': '_origin'},
+    {'1': '_shift'},
   ],
 };
 
 /// Descriptor for `LinkRecordsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List linkRecordsRequestDescriptor = $convert.base64Decode(
     'ChJMaW5rUmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESLQoFZ3JhcGgYAiABKA'
-    '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlUgVncmFwaBIxCgdyZWNvcmRzGAMgASgLMhcuc2lw'
-    'bGljaXR5LnYxLlNlbGVjdGlvblIHcmVjb3JkcxIdCgdmbGF0dGVuGAQgASgISAFSB2ZsYXR0ZW'
-    '6IAQFCBQoDX2lkQgoKCF9mbGF0dGVu');
+    '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlUgVncmFwaBI0CgZvcmlnaW4YAyABKA4yFy5zaXBs'
+    'aWNpdHkudjEuR3JhcGhUeXBlSAFSBm9yaWdpbogBARIZCgVzaGlmdBgEIAEoCEgCUgVzaGlmdI'
+    'gBARIxCgdyZWNvcmRzGAUgASgLMhcuc2lwbGljaXR5LnYxLlNlbGVjdGlvblIHcmVjb3Jkc0IF'
+    'CgNfaWRCCQoHX29yaWdpbkIICgZfc2hpZnQ=');
 
 @$core.Deprecated('Use linkRecordsResponseDescriptor instead')
 const LinkRecordsResponse$json = {
@@ -430,10 +433,6 @@ const UnlinkRecordsRequest$json = {
   '2': [
     {'1': 'graph', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '10': 'graph'},
     {'1': 'records', '3': 2, '4': 1, '5': 11, '6': '.siplicity.v1.Selection', '10': 'records'},
-    {'1': 'flatten', '3': 3, '4': 1, '5': 8, '9': 0, '10': 'flatten', '17': true},
-  ],
-  '8': [
-    {'1': '_flatten'},
   ],
 };
 
@@ -441,7 +440,7 @@ const UnlinkRecordsRequest$json = {
 final $typed_data.Uint8List unlinkRecordsRequestDescriptor = $convert.base64Decode(
     'ChRVbmxpbmtSZWNvcmRzUmVxdWVzdBItCgVncmFwaBgBIAEoDjIXLnNpcGxpY2l0eS52MS5Hcm'
     'FwaFR5cGVSBWdyYXBoEjEKB3JlY29yZHMYAiABKAsyFy5zaXBsaWNpdHkudjEuU2VsZWN0aW9u'
-    'UgdyZWNvcmRzEh0KB2ZsYXR0ZW4YAyABKAhIAFIHZmxhdHRlbogBAUIKCghfZmxhdHRlbg==');
+    'UgdyZWNvcmRz');
 
 @$core.Deprecated('Use unlinkRecordsResponseDescriptor instead')
 const UnlinkRecordsResponse$json = {

@@ -16,6 +16,8 @@ type Store interface {
 	Get(int32) *pb.GetRecordResponse
 	ListRecords(int32, pb.GraphType, string, *pb.FieldPath, []*pb.FieldPath) *pb.ListRecordsResponse
 	Ids(string) []int32
+	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
+	UnlinkRecords(graph pb.GraphType, nodes []int32)
 }
 
 func AddPath(path string, s Store) error {

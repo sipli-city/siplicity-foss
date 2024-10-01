@@ -1,52 +1,46 @@
 package siplicity
 
 import (
-	"slices"
-
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 type MemStore struct {
-	records   []*pb.GetRecordResponse
-	lParent   map[int32]int32
-	rParent   map[int32]int32
-	dParent   map[int32]int32
-	lChildren map[int32][]int32
-	rChildren map[int32][]int32
-	dChildren map[int32][]int32
+	records []*pb.GetRecordResponse
+	lTree   *tree
+	rTree   *tree
+	dTree   *tree //duplicates (unused)
 }
 
 func NewMemStore() *MemStore {
-	records := make([]*pb.GetRecordResponse, 2, 1000)
+	records := make([]*pb.GetRecordResponse, 3, 1000)
 	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Input - Add files or directories"}
 	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Output - Move files or directories from the input graph here"}
 	return &MemStore{
-		records:   records,
-		lParent:   make(map[int32]int32), // child -> parent
-		rParent:   make(map[int32]int32),
-		dParent:   make(map[int32]int32),
-		lChildren: make(map[int32][]int32), // parent -> children
-		rChildren: make(map[int32][]int32),
-		dChildren: make(map[int32][]int32),
+		records: records,
+		lTree:   newTree(0),
+		rTree:   newTree(1),
+		dTree:   newTree(2),
 	}
+}
+
+func (m *MemStore) getTree(graph pb.GraphType) *tree {
+	switch graph {
+	case pb.GraphType_GRAPH_TYPE_OUTPUT:
+		return m.rTree
+	case pb.GraphType_GRAPH_TYPE_DUPLICATE:
+		return m.dTree
+	}
+	return m.lTree // default to input tree
 }
 
 func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, graph pb.GraphType) int32 {
 	m.records = append(m.records, r)
 	idx := int32(len(m.records) - 1)
-	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
-		if n == -1 {
-			n = 1
-		}
-		m.rParent[idx] = n
-		m.rChildren[n] = append(m.rChildren[n], idx)
-		return idx
-	}
+	t := m.getTree(graph)
 	if n == -1 {
-		n = 0
+		n = t.root
 	}
-	m.lParent[idx] = n
-	m.lChildren[n] = append(m.lChildren[n], idx)
+	t.link(n, idx)
 	return idx
 }
 
@@ -70,48 +64,7 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, f *pb.Field) {
 }
 
 func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {
-	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
-		m.rParent[child] = parent
-		m.rChildren[parent] = append(m.rChildren[parent], child)
-		return
-	}
-	m.lParent[child] = parent
-	m.lChildren[parent] = append(m.lChildren[parent], child)
-}
-
-// For a set of children, give them a new parent, and remove them from the list of children of their old parent(s)
-func (m *MemStore) AttachParent(parent int32, children []int32, graph pb.GraphType) {
-	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
-		var grandparent int32
-		for i, child := range children {
-			if i == 0 {
-				grandparent = m.rParent[child]
-				m.AttachChild(grandparent, parent, graph) // give the new parent a parent
-				m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
-			} else {
-				if grandparent != m.rParent[child] {
-					grandparent = m.rParent[child]
-					m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
-				}
-			}
-			m.AttachChild(parent, child, graph)
-		}
-		return
-	}
-	var grandparent int32
-	for i, child := range children {
-		if i == 0 {
-			grandparent = m.lParent[child]
-			m.AttachChild(grandparent, parent, graph) // give the new parent a parent
-			m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
-		} else {
-			if grandparent != m.lParent[child] {
-				grandparent = m.lParent[child]
-				m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
-			}
-		}
-		m.AttachChild(parent, child, graph)
-	}
+	m.getTree(graph).link(parent, child)
 }
 
 func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
@@ -140,46 +93,51 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string,
 	return ret
 }
 
-func (m *MemStore) ListRecords(id int32, graphtyp pb.GraphType, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
-	if len(m.records) == 2 && id > 1 {
+func (m *MemStore) ListRecords(id int32, graph pb.GraphType, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+	if len(m.records) == 3 && id > 2 {
 		return nil
 	}
-	if graphtyp == pb.GraphType_GRAPH_TYPE_OUTPUT {
-		if id < 0 {
-			id = 1
-		}
-		return m.addNode(id, m.rChildren, filter, display, fields)
-	}
+	t := m.getTree(graph)
 	if id < 0 {
-		id = 0
+		id = t.root
 	}
-	return m.addNode(id, m.lChildren, filter, display, fields)
+	return m.addNode(id, t.children, filter, display, fields)
 }
 
-func (m *MemStore) Drop(n int32, output bool) {
-	if output {
-		if n == 1 {
-			return
-		}
-		delete(m.rChildren, n)
-		parent := m.rParent[n]
-		m.rChildren[parent] = slices.DeleteFunc(m.rChildren[parent], func(v int32) bool { return n == v })
-		return
-	}
-	if n == 0 {
-		return
-	}
-	delete(m.lChildren, n)
-	parent := m.lParent[n]
-	m.lChildren[parent] = slices.DeleteFunc(m.lChildren[parent], func(v int32) bool { return n == v })
+func (m *MemStore) Drop(n int32, graph pb.GraphType) {
+	m.getTree(graph).unlink(n)
 }
 
 func (m *MemStore) Ids(filter string) []int32 {
-	ret := make([]int32, 0, len(m.records)-2)
+	ret := make([]int32, 0, len(m.records)-3)
 	for i, rec := range m.records {
+		if i < 3 {
+			continue
+		}
 		if Filter(filter, rec) {
 			ret = append(ret, int32(i))
 		}
 	}
 	return ret
+}
+
+func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool) {
+	t := m.getTree(to)
+	if parent < 0 {
+		parent = t.root
+	}
+	if from == pb.GraphType_GRAPH_TYPE_UNSPECIFIED {
+		t.linkList(parent, nodes)
+		return
+	}
+	f := m.getTree(from)
+	if shift {
+		t.shift(f, parent, nodes)
+		return
+	}
+	t.copy(f, parent, nodes)
+}
+
+func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {
+	m.getTree(g).unlinkList(nodes)
 }
