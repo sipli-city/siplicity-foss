@@ -80,7 +80,7 @@ func (s *siplicityServiceServer) UpdateRecord(ctx context.Context, in *pb.Update
 }
 
 func (s *siplicityServiceServer) UpdateField(ctx context.Context, in *pb.UpdateFieldRequest) (*pb.UpdateFieldResponse, error) {
-	s.store.UpdateField(in.GetId(), in.GetPath(), in.GetField())
+	s.store.UpdateField(in.GetId(), in.GetPath(), in.GetOverwrite(), in.GetField())
 	return nil, nil
 }
 

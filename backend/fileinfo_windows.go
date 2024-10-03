@@ -12,13 +12,14 @@ import (
 	"golang.org/x/sys/windows"
 )
 
+var buf [40]byte
+
 func fileinfo(path string, _ fs.FileInfo) *pb.Metadata {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil
 	}
 	defer f.Close()
-	buf := make([]byte, 40)
 	if err := windows.GetFileInformationByHandleEx(
 		windows.Handle(f.Fd()),
 		windows.FileBasicInfo,

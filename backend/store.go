@@ -11,7 +11,7 @@ import (
 type Store interface {
 	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
 	UpdateRecord(int32, *pb.GetRecordResponse)
-	UpdateField(int32, *pb.FieldPath, *pb.Field)
+	UpdateField(int32, *pb.FieldPath, bool, *pb.Field)
 	AttachChild(int32, int32, pb.GraphType)
 	AdoptChildren(int32, int32, pb.GraphType)
 	Get(int32) *pb.GetRecordResponse
@@ -19,11 +19,12 @@ type Store interface {
 	Ids(string) []int32
 	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
 	UnlinkRecords(graph pb.GraphType, nodes []int32)
+	Purge(graph pb.GraphType)
 	Walk(pb.GraphType, func(string, *pb.GetRecordResponse) (string, error)) error
 }
 
 func AddPath(path string, s Store) error {
-	s.UpdateField(0, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
+	s.UpdateField(0, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, true, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
 	stackSize := 20
 	strStack := make([]string, stackSize)
 	nidStack := make([]int32, stackSize)

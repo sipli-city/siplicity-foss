@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
+import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 
 part 'workspace_provider.g.dart';
 
@@ -23,7 +24,9 @@ class InputRecords extends _$InputRecords {
         ListRecordsRequest(
             id: -1,
             graph: GraphType.GRAPH_TYPE_INPUT,
-            display: FieldPath(entries: <FieldPath_Entry>[FieldPath_Entry(namespace: "siplicity", name: "display_name")])));
+            display: FieldPath(entries: <FieldPath_Entry>[
+              FieldPath_Entry(namespace: "siplicity", name: "display_name")
+            ])));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,
@@ -80,6 +83,28 @@ class InputRecords extends _$InputRecords {
       await Future.delayed(const Duration(milliseconds: 20));
     }
   }
+
+  Future<void> linkRecords() async {
+    await siplicityServiceClient.linkRecords(LinkRecordsRequest(
+      id: -1,
+      graph: GraphType.GRAPH_TYPE_OUTPUT,
+      origin: GraphType.GRAPH_TYPE_INPUT,
+      shift: true,
+      records: Selection(id: ref.read(inputSelectionProvider)),
+    ));
+    ref.invalidate(inputSelectionProvider);
+    ref.invalidate(outputRecordsProvider);
+    ref.invalidateSelf();
+  }
+
+  Future<void> unlinkRecords() async {
+    await siplicityServiceClient.unlinkRecords(UnlinkRecordsRequest(
+      graph: GraphType.GRAPH_TYPE_INPUT,
+      records: Selection(id: ref.read(inputSelectionProvider)),
+    ));
+    ref.invalidate(inputSelectionProvider);
+    ref.invalidateSelf();
+  }
 }
 
 @riverpod
@@ -90,7 +115,9 @@ class OutputRecords extends _$OutputRecords {
         ListRecordsRequest(
             id: -1,
             graph: GraphType.GRAPH_TYPE_OUTPUT,
-            display: FieldPath(entries: <FieldPath_Entry>[FieldPath_Entry(namespace: "siplicity", name: "display_name")])));
+            display: FieldPath(entries: <FieldPath_Entry>[
+              FieldPath_Entry(namespace: "siplicity", name: "display_name")
+            ])));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,
@@ -111,6 +138,31 @@ class OutputRecords extends _$OutputRecords {
         break;
       }
       await Future.delayed(const Duration(milliseconds: 20));
+    }
+  }
+
+  Future<void> linkRecords() async {
+    await siplicityServiceClient.linkRecords(LinkRecordsRequest(
+      id: -1,
+      graph: GraphType.GRAPH_TYPE_INPUT,
+      origin: GraphType.GRAPH_TYPE_OUTPUT,
+      shift: true,
+      records: Selection(id: ref.read(outputSelectionProvider)),
+    ));
+    ref.invalidate(outputSelectionProvider);
+    ref.invalidate(inputRecordsProvider);
+    ref.invalidateSelf();
+  }
+
+  Future<void> putOutputDir(Future<String?> result) async {
+    final path = await result;
+    if (path != null) {
+      await siplicityServiceClient.updateField(UpdateFieldRequest(
+          id: 1,
+          overwrite: true,
+          field_4: Field(
+              namespace: "siplicity", name: "output_location", value: path)));
+      ref.invalidateSelf();
     }
   }
 }

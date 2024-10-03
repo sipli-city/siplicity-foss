@@ -3,9 +3,11 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
 
-final menuController = FlyoutController();
+final addContentController = FlyoutController();
+final inputActionController = FlyoutController();
+final outputActionController = FlyoutController();
 
-class InputCommandBar extends ConsumerWidget {
+final class InputCommandBar extends ConsumerWidget {
   const InputCommandBar({super.key});
 
   @override
@@ -18,34 +20,52 @@ class InputCommandBar extends ConsumerWidget {
           overflowBehavior: CommandBarOverflowBehavior.dynamicOverflow,
           primaryItems: <CommandBarItem>[
             CommandBarBuilderItem(
-              builder: (context, mode, w) => Tooltip(
-                message: "Add a directory",
+              builder: (context, mode, w) => FlyoutTarget(
+                controller: addContentController,
                 child: w,
               ),
               wrappedItem: CommandBarButton(
-                icon: const Icon(FluentIcons.add),
-                label: const Text('Add directory'),
-                onPressed: () {
-                  final path = FilePicker.platform
-                      .getDirectoryPath(dialogTitle: "Add directory");
-                  ref.read(inputRecordsProvider.notifier).putFilePath(path);
-                },
-              ),
-            ),
-            CommandBarBuilderItem(
-              builder: (context, mode, w) => Tooltip(
-                message: "Add file(s)",
-                child: w,
-              ),
-              wrappedItem: CommandBarButton(
-                icon: const Icon(FluentIcons.add),
-                label: const Text('Add file(s)'),
-                onPressed: () {
-                  final result = FilePicker.platform.pickFiles(
-                      allowMultiple: true, dialogTitle: "Add file(s)");
-                  ref.read(inputRecordsProvider.notifier).putFilePaths(result);
-                },
-              ),
+                  icon: const Icon(FluentIcons.add),
+                  label: const Text('Add content'),
+                  onPressed: () {
+                    addContentController.showFlyout(
+                        autoModeConfiguration: FlyoutAutoConfiguration(
+                          preferredMode: FlyoutPlacementMode.bottomCenter,
+                        ),
+                        barrierDismissible: true,
+                        dismissOnPointerMoveAway: false,
+                        dismissWithEsc: true,
+                        builder: (context) {
+                          return MenuFlyout(items: [
+                            MenuFlyoutItem(
+                              leading: const Icon(FluentIcons.search_and_apps),
+                              text: const Text('Add local directory'),
+                              onPressed: () {
+                                final path = FilePicker.platform
+                                    .getDirectoryPath(
+                                        dialogTitle: "Add directory");
+                                ref
+                                    .read(inputRecordsProvider.notifier)
+                                    .putFilePath(path);
+                                Flyout.of(context).close();
+                              },
+                            ),
+                            MenuFlyoutItem(
+                              leading: const Icon(FluentIcons.search_and_apps),
+                              text: const Text('Add local file(s)'),
+                              onPressed: () {
+                                final result = FilePicker.platform.pickFiles(
+                                    allowMultiple: true,
+                                    dialogTitle: "Add file(s)");
+                                ref
+                                    .read(inputRecordsProvider.notifier)
+                                    .putFilePaths(result);
+                                Flyout.of(context).close();
+                              },
+                            ),
+                          ]);
+                        });
+                  }),
             ),
             CommandBarBuilderItem(
               builder: (context, mode, w) => Tooltip(
@@ -55,21 +75,23 @@ class InputCommandBar extends ConsumerWidget {
               wrappedItem: CommandBarButton(
                 icon: const Icon(FluentIcons.recycle_bin),
                 label: const Text('Remove'),
-                onPressed: () {},
+                onPressed: () {
+                  ref.read(inputRecordsProvider.notifier).unlinkRecords();
+                },
               ),
             ),
             CommandBarBuilderItem(
                 builder: (context, mode, w) => FlyoutTarget(
-                      controller: menuController,
+                      controller: inputActionController,
                       child: w,
                     ),
                 wrappedItem: CommandBarButton(
                   icon: const Icon(FluentIcons.set_action),
                   label: const Text('Input actions'),
                   onPressed: () {
-                    menuController.showFlyout(
+                    inputActionController.showFlyout(
                       autoModeConfiguration: FlyoutAutoConfiguration(
-                        preferredMode: FlyoutPlacementMode.topCenter,
+                        preferredMode: FlyoutPlacementMode.bottomCenter,
                       ),
                       barrierDismissible: true,
                       dismissOnPointerMoveAway: false,
@@ -80,7 +102,12 @@ class InputCommandBar extends ConsumerWidget {
                           MenuFlyoutItem(
                             leading: const Icon(FluentIcons.search_and_apps),
                             text: const Text('Identify with siegfried'),
-                            onPressed: Flyout.of(context).close,
+                            onPressed: () async {
+                              ref
+                                  .read(inputRecordsProvider.notifier)
+                                  .putAction(action: "siegfried");
+                              Flyout.of(context).close();
+                            },
                           ),
                           const MenuFlyoutSeparator(),
                           MenuFlyoutSubItem(
@@ -89,35 +116,75 @@ class InputCommandBar extends ConsumerWidget {
                             items: (_) => [
                               MenuFlyoutItem(
                                 text: const Text('SHA512'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "sha512");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('SHA256'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "sha256");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('SHA1'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "sha1");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('MD5'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "md5");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('CRC'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "crc");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('blake2b-512'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "blake512");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('blake2b-256'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "blake256");
+                                  Flyout.of(context).close();
+                                },
                               ),
                               MenuFlyoutItem(
                                 text: const Text('XXH64'),
-                                onPressed: Flyout.of(context).close,
+                                onPressed: () async {
+                                  ref
+                                      .read(inputRecordsProvider.notifier)
+                                      .putAction(action: "xx64");
+                                  Flyout.of(context).close();
+                                },
                               ),
                             ],
                           ),
@@ -152,20 +219,54 @@ class OutputCommandBar extends ConsumerWidget {
                 icon: const Icon(FluentIcons.add),
                 label: const Text('Set output directory'),
                 onPressed: () {
-                  final _ = FilePicker.platform
+                  final outputdir = FilePicker.platform
                       .getDirectoryPath(dialogTitle: "Set output directory");
+                  ref
+                      .read(outputRecordsProvider.notifier)
+                      .putOutputDir(outputdir);
                 },
               ),
             ),
-            CommandBarButton(
-              icon: const Icon(FluentIcons.set_action),
-              label: const Text('Output actions'),
-              onPressed: () {},
+            CommandBarBuilderItem(
+              builder: (context, mode, w) => FlyoutTarget(
+                controller: outputActionController,
+                child: w,
+              ),
+              wrappedItem: CommandBarButton(
+                  icon: const Icon(FluentIcons.set_action),
+                  label: const Text('Output actions'),
+                  onPressed: () {
+                    outputActionController.showFlyout(
+                        autoModeConfiguration: FlyoutAutoConfiguration(
+                          preferredMode: FlyoutPlacementMode.bottomCenter,
+                        ),
+                        barrierDismissible: true,
+                        dismissOnPointerMoveAway: false,
+                        dismissWithEsc: true,
+                        builder: (context) {
+                          return MenuFlyout(items: [
+                            MenuFlyoutItem(
+                              leading: const Icon(FluentIcons.airplane),
+                              text: const Text('Bagit'),
+                              onPressed: () async {
+                                ref
+                                    .read(outputRecordsProvider.notifier)
+                                    .putAction(action: "bagit");
+                                Flyout.of(context).close();
+                              },
+                            ),
+                          ]);
+                        });
+                  }),
             ),
             CommandBarButton(
               icon: const Icon(FluentIcons.fabric_folder_confirm),
               label: const Text('Commit'),
-              onPressed: () {},
+              onPressed: () async {
+                ref
+                    .read(outputRecordsProvider.notifier)
+                    .putAction(action: "commit");
+              },
             ),
           ],
         ));

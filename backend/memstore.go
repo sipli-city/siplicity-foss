@@ -13,8 +13,8 @@ type MemStore struct {
 
 func NewMemStore() *MemStore {
 	records := make([]*pb.GetRecordResponse, 3, 1000)
-	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - Add files or directories to get started"}}}}
-	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - Move content here and set output path before committing"}}}}
+	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - add content to get started"}}}}
+	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output"}}}}
 	records[2] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Duplicates"}}}}
 	return &MemStore{
 		records: records,
@@ -46,24 +46,47 @@ func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, graph pb.GraphType
 }
 
 func (m *MemStore) UpdateRecord(id int32, r *pb.GetRecordResponse) {
-	if id == m.rTree.root && r.Path != "" {
-		m.UpdateField(id, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + r.Path})
-	}
 	if id > 0 && int(id) < len(m.records) {
 		m.records[int(id)] = r
 	}
 }
 
-func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, f *pb.Field) {
-	if id > 0 && int(id) < len(m.records) {
+func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.Field) {
+	if id >= 0 && int(id) < len(m.records) {
 		meta := &pb.Metadata{}
 		if p != nil {
-			parent := getParent(m.records[int(id)].GetMetadata(), p)
-			parent.Children = append(parent.Children, meta)
+			parent := getMeta(m.records[int(id)].GetMetadata(), p)
+			if parent == nil {
+				return
+			}
+			if overwrite {
+				meta = parent
+			} else {
+				parent.Children = append(parent.Children, meta)
+			}
 		} else {
+			if overwrite {
+				existing := getMeta(m.records[int(id)].GetMetadata(), makePath([][2]string{{f.GetNamespace(), f.GetName()}}, nil))
+				if existing != nil {
+					existing.Field = f
+					if f.GetName() == "output_location" {
+						m.UpdateField(1, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+							true,
+							&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+						)
+					}
+					return
+				}
+			}
 			m.records[int(id)].Metadata = append(m.records[int(id)].Metadata, meta)
 		}
 		meta.Field = f
+		if f.GetName() == "output_location" {
+			m.UpdateField(1, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+				true,
+				&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+			)
+		}
 	}
 }
 
@@ -83,7 +106,7 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
 	if display != nil {
-		nm := getField(m.records[int(id)].GetMetadata(), display)
+		nm := getFieldValue(m.records[int(id)].GetMetadata(), display)
 		if nm != "" {
 			name = nm
 		}
@@ -148,6 +171,10 @@ func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32,
 
 func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {
 	m.getTree(g).unlinkList(nodes)
+}
+
+func (m *MemStore) Purge(g pb.GraphType) {
+	m.getTree(g).purge()
 }
 
 func (m *MemStore) walkChildren(t *tree, nodes []int32, str string, fn func(string, *pb.GetRecordResponse) (string, error)) error {
