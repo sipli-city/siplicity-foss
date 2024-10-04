@@ -1,0 +1,5 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="Siplicity" Version="1.0.0.0" Manufacturer="Richard Lehane" UpgradeCode="D4BCAE07-A768-4174-A5A1-0D44B164F18B">
+        <Files Include="c:\Users\richa\siplicity\**" />
+    </Package>
+</Wix>
