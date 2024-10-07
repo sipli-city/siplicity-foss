@@ -30,8 +30,12 @@ type siplicityServiceServer struct {
 }
 
 func (s *siplicityServiceServer) GetStatus(ctx context.Context, in *pb.GetStatusRequest) (*pb.GetStatusResponse, error) {
+	var done bool
+	if len(s.statuses) > 0 && in.GetStatus() >= 0 && int(in.GetStatus()) < len(s.statuses) {
+		done = s.statuses[int(in.GetStatus())]
+	}
 	return &pb.GetStatusResponse{
-		Done: s.statuses[int(in.GetStatus())],
+		Done: done,
 	}, nil
 }
 
@@ -60,6 +64,14 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 
 func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountRecordsRequest) (*pb.CountRecordsResponse, error) {
 	return nil, nil
+}
+
+func (s *siplicityServiceServer) CountFeatures(ctx context.Context, in *pb.CountFeaturesRequest) (*pb.CountFeaturesResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *pb.PreparedFeatureCountRequest) (*pb.PreparedFeatureCountResponse, error) {
+	return s.store.Report(in.GetReport(), in.GetMax()), nil
 }
 
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {

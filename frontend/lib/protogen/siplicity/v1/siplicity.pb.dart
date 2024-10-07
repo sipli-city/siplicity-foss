@@ -520,6 +520,366 @@ class CountRecordsResponse extends $pb.GeneratedMessage {
   void clearCount() => clearField(1);
 }
 
+class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
+  factory PreparedFeatureCountRequest({
+    ReportType? report,
+    $core.int? max,
+  }) {
+    final $result = create();
+    if (report != null) {
+      $result.report = report;
+    }
+    if (max != null) {
+      $result.max = max;
+    }
+    return $result;
+  }
+  PreparedFeatureCountRequest._() : super();
+  factory PreparedFeatureCountRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PreparedFeatureCountRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureCountRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..e<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.OE, defaultOrMaker: ReportType.REPORT_TYPE_UNSPECIFIED, valueOf: ReportType.valueOf, enumValues: ReportType.values)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'max', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountRequest clone() => PreparedFeatureCountRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountRequest copyWith(void Function(PreparedFeatureCountRequest) updates) => super.copyWith((message) => updates(message as PreparedFeatureCountRequest)) as PreparedFeatureCountRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountRequest create() => PreparedFeatureCountRequest._();
+  PreparedFeatureCountRequest createEmptyInstance() => create();
+  static $pb.PbList<PreparedFeatureCountRequest> createRepeated() => $pb.PbList<PreparedFeatureCountRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PreparedFeatureCountRequest>(create);
+  static PreparedFeatureCountRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  ReportType get report => $_getN(0);
+  @$pb.TagNumber(1)
+  set report(ReportType v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasReport() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearReport() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get max => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set max($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMax() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMax() => clearField(2);
+}
+
+class PreparedFeatureCountResponse_Feature extends $pb.GeneratedMessage {
+  factory PreparedFeatureCountResponse_Feature({
+    $core.String? value,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (value != null) {
+      $result.value = value;
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  PreparedFeatureCountResponse_Feature._() : super();
+  factory PreparedFeatureCountResponse_Feature.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PreparedFeatureCountResponse_Feature.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureCountResponse.Feature', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'value')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'count', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountResponse_Feature clone() => PreparedFeatureCountResponse_Feature()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountResponse_Feature copyWith(void Function(PreparedFeatureCountResponse_Feature) updates) => super.copyWith((message) => updates(message as PreparedFeatureCountResponse_Feature)) as PreparedFeatureCountResponse_Feature;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountResponse_Feature create() => PreparedFeatureCountResponse_Feature._();
+  PreparedFeatureCountResponse_Feature createEmptyInstance() => create();
+  static $pb.PbList<PreparedFeatureCountResponse_Feature> createRepeated() => $pb.PbList<PreparedFeatureCountResponse_Feature>();
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountResponse_Feature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PreparedFeatureCountResponse_Feature>(create);
+  static PreparedFeatureCountResponse_Feature? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get value => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set value($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasValue() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearValue() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => clearField(2);
+}
+
+class PreparedFeatureCountResponse extends $pb.GeneratedMessage {
+  factory PreparedFeatureCountResponse({
+    $core.Iterable<PreparedFeatureCountResponse_Feature>? features,
+  }) {
+    final $result = create();
+    if (features != null) {
+      $result.features.addAll(features);
+    }
+    return $result;
+  }
+  PreparedFeatureCountResponse._() : super();
+  factory PreparedFeatureCountResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PreparedFeatureCountResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureCountResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..pc<PreparedFeatureCountResponse_Feature>(1, _omitFieldNames ? '' : 'features', $pb.PbFieldType.PM, subBuilder: PreparedFeatureCountResponse_Feature.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountResponse clone() => PreparedFeatureCountResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureCountResponse copyWith(void Function(PreparedFeatureCountResponse) updates) => super.copyWith((message) => updates(message as PreparedFeatureCountResponse)) as PreparedFeatureCountResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountResponse create() => PreparedFeatureCountResponse._();
+  PreparedFeatureCountResponse createEmptyInstance() => create();
+  static $pb.PbList<PreparedFeatureCountResponse> createRepeated() => $pb.PbList<PreparedFeatureCountResponse>();
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureCountResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PreparedFeatureCountResponse>(create);
+  static PreparedFeatureCountResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<PreparedFeatureCountResponse_Feature> get features => $_getList(0);
+}
+
+class CountFeaturesRequest extends $pb.GeneratedMessage {
+  factory CountFeaturesRequest({
+    $core.int? id,
+    GraphType? graph,
+    FieldPath? feature,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (graph != null) {
+      $result.graph = graph;
+    }
+    if (feature != null) {
+      $result.feature = feature;
+    }
+    return $result;
+  }
+  CountFeaturesRequest._() : super();
+  factory CountFeaturesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CountFeaturesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CountFeaturesRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
+    ..aOM<FieldPath>(3, _omitFieldNames ? '' : 'feature', subBuilder: FieldPath.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CountFeaturesRequest clone() => CountFeaturesRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CountFeaturesRequest copyWith(void Function(CountFeaturesRequest) updates) => super.copyWith((message) => updates(message as CountFeaturesRequest)) as CountFeaturesRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesRequest create() => CountFeaturesRequest._();
+  CountFeaturesRequest createEmptyInstance() => create();
+  static $pb.PbList<CountFeaturesRequest> createRepeated() => $pb.PbList<CountFeaturesRequest>();
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CountFeaturesRequest>(create);
+  static CountFeaturesRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  GraphType get graph => $_getN(1);
+  @$pb.TagNumber(2)
+  set graph(GraphType v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasGraph() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGraph() => clearField(2);
+
+  @$pb.TagNumber(3)
+  FieldPath get feature => $_getN(2);
+  @$pb.TagNumber(3)
+  set feature(FieldPath v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasFeature() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearFeature() => clearField(3);
+  @$pb.TagNumber(3)
+  FieldPath ensureFeature() => $_ensure(2);
+}
+
+class CountFeaturesResponse_Feature extends $pb.GeneratedMessage {
+  factory CountFeaturesResponse_Feature({
+    $core.String? value,
+    $core.int? count,
+  }) {
+    final $result = create();
+    if (value != null) {
+      $result.value = value;
+    }
+    if (count != null) {
+      $result.count = count;
+    }
+    return $result;
+  }
+  CountFeaturesResponse_Feature._() : super();
+  factory CountFeaturesResponse_Feature.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CountFeaturesResponse_Feature.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CountFeaturesResponse.Feature', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'value')
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'count', $pb.PbFieldType.O3)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CountFeaturesResponse_Feature clone() => CountFeaturesResponse_Feature()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CountFeaturesResponse_Feature copyWith(void Function(CountFeaturesResponse_Feature) updates) => super.copyWith((message) => updates(message as CountFeaturesResponse_Feature)) as CountFeaturesResponse_Feature;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesResponse_Feature create() => CountFeaturesResponse_Feature._();
+  CountFeaturesResponse_Feature createEmptyInstance() => create();
+  static $pb.PbList<CountFeaturesResponse_Feature> createRepeated() => $pb.PbList<CountFeaturesResponse_Feature>();
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesResponse_Feature getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CountFeaturesResponse_Feature>(create);
+  static CountFeaturesResponse_Feature? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get value => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set value($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasValue() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearValue() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get count => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set count($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasCount() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCount() => clearField(2);
+}
+
+class CountFeaturesResponse extends $pb.GeneratedMessage {
+  factory CountFeaturesResponse({
+    $core.Iterable<CountFeaturesResponse_Feature>? features,
+  }) {
+    final $result = create();
+    if (features != null) {
+      $result.features.addAll(features);
+    }
+    return $result;
+  }
+  CountFeaturesResponse._() : super();
+  factory CountFeaturesResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CountFeaturesResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CountFeaturesResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..pc<CountFeaturesResponse_Feature>(1, _omitFieldNames ? '' : 'features', $pb.PbFieldType.PM, subBuilder: CountFeaturesResponse_Feature.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  CountFeaturesResponse clone() => CountFeaturesResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  CountFeaturesResponse copyWith(void Function(CountFeaturesResponse) updates) => super.copyWith((message) => updates(message as CountFeaturesResponse)) as CountFeaturesResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesResponse create() => CountFeaturesResponse._();
+  CountFeaturesResponse createEmptyInstance() => create();
+  static $pb.PbList<CountFeaturesResponse> createRepeated() => $pb.PbList<CountFeaturesResponse>();
+  @$core.pragma('dart2js:noInline')
+  static CountFeaturesResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CountFeaturesResponse>(create);
+  static CountFeaturesResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<CountFeaturesResponse_Feature> get features => $_getList(0);
+}
+
 class FieldPath_Entry extends $pb.GeneratedMessage {
   factory FieldPath_Entry({
     $core.String? namespace,

@@ -4,6 +4,11 @@ import (
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
+func findMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) []*pb.Metadata {
+	return nil
+}
+
+// find first *pb.Metadata which matches the entry
 func findMeta(meta []*pb.Metadata, entry *pb.FieldPath_Entry) *pb.Metadata {
 	var n int32
 	for _, m := range meta {

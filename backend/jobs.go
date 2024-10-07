@@ -48,7 +48,7 @@ func Job(action string, filter string, store Store) error {
 		return fmt.Errorf("invalid action %s", action)
 	}
 	for _, id := range store.Ids(filter) {
-		if err := act.Do(store.Get(id)); err != nil {
+		if err := act.Do(store.Get(id), store); err != nil {
 			return err
 		}
 	}

@@ -1,6 +1,10 @@
 package siplicity
 
 import (
+	"maps"
+	"slices"
+	"strings"
+
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
@@ -8,28 +12,33 @@ type MemStore struct {
 	records []*pb.GetRecordResponse
 	lTree   *tree
 	rTree   *tree
-	dTree   *tree //duplicates (unused)
+	reports map[string]map[string]int32
 }
+
+const (
+	SCHEMA int32 = iota
+	INPUT_GRAPH
+	OUTPUT_GRAPH
+)
 
 func NewMemStore() *MemStore {
 	records := make([]*pb.GetRecordResponse, 3, 1000)
-	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - add content to get started"}}}}
-	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output"}}}}
-	records[2] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Duplicates"}}}}
+	records[int(SCHEMA)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_SCHEMA, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Schema"}}}}
+	records[int(INPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - add content to get started"}}}}
+	records[int(OUTPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output"}}}}
+	// populate schema
+	records[int(SCHEMA)].Metadata = append(records[int(SCHEMA)].Metadata, fileinfoSchema())
 	return &MemStore{
 		records: records,
-		lTree:   newTree(0),
-		rTree:   newTree(1),
-		dTree:   newTree(2),
+		lTree:   newTree(INPUT_GRAPH),
+		rTree:   newTree(OUTPUT_GRAPH),
+		reports: make(map[string]map[string]int32),
 	}
 }
 
 func (m *MemStore) getTree(graph pb.GraphType) *tree {
-	switch graph {
-	case pb.GraphType_GRAPH_TYPE_OUTPUT:
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
 		return m.rTree
-	case pb.GraphType_GRAPH_TYPE_DUPLICATE:
-		return m.dTree
 	}
 	return m.lTree // default to input tree
 }
@@ -52,42 +61,129 @@ func (m *MemStore) UpdateRecord(id int32, r *pb.GetRecordResponse) {
 }
 
 func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.Field) {
-	if id >= 0 && int(id) < len(m.records) {
-		meta := &pb.Metadata{}
-		if p != nil {
-			parent := getMeta(m.records[int(id)].GetMetadata(), p)
-			if parent == nil {
+	if id < 0 && int(id) >= len(m.records) {
+		return
+	}
+	meta := &pb.Metadata{}
+	if p != nil {
+		parent := getMeta(m.records[int(id)].GetMetadata(), p)
+		if parent == nil {
+			return
+		}
+		if overwrite {
+			meta = parent
+		} else {
+			parent.Children = append(parent.Children, meta)
+		}
+	} else {
+		if overwrite {
+			existing := getMeta(m.records[int(id)].GetMetadata(), makePath([][2]string{{f.GetNamespace(), f.GetName()}}, nil))
+			if existing != nil {
+				existing.Field = f
+				if f.GetName() == "output_location" {
+					m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+						true,
+						&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+					)
+				}
 				return
 			}
-			if overwrite {
-				meta = parent
-			} else {
-				parent.Children = append(parent.Children, meta)
+		}
+		m.records[int(id)].Metadata = append(m.records[int(id)].Metadata, meta)
+	}
+	meta.Field = f
+	if f.GetName() == "output_location" {
+		m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+			true,
+			&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+		)
+	}
+}
+
+func (m *MemStore) AddReport(k1, k2 string) {
+	m2, ok := m.reports[k1]
+	if !ok {
+		m2 = make(map[string]int32)
+		m.reports[k1] = m2
+	}
+	m2[k2]++
+}
+
+func (m *MemStore) Report(typ pb.ReportType, max int32) *pb.PreparedFeatureCountResponse {
+	var t string
+	switch typ {
+	case pb.ReportType_REPORT_TYPE_MODIFIED:
+		t = "modtime"
+	case pb.ReportType_REPORT_TYPE_EXTENSIONS:
+		t = "extension"
+	case pb.ReportType_REPORT_TYPE_FORMAT_CLASS:
+		t = "class"
+	case pb.ReportType_REPORT_TYPE_FILE_FORMAT:
+		t = "id"
+	case pb.ReportType_REPORT_TYPE_MIME_TYPE:
+		t = "mime"
+	}
+	rep, ok := m.reports[t]
+	if !ok {
+		return nil
+	}
+	if empty, ok := rep[""]; ok {
+		rep["empty"] += empty
+		delete(rep, "")
+	}
+	var feats []*pb.PreparedFeatureCountResponse_Feature
+	if max > 0 && int(max) < len(rep) {
+		var others int32
+		feats = make([]*pb.PreparedFeatureCountResponse_Feature, int(max))
+		for i, val := range slices.SortedFunc(
+			maps.Values(rep),
+			func(a, b int32) int {
+				return int(b - a)
+			},
+		) {
+			if i >= int(max)-1 {
+				others += val
+				continue
 			}
-		} else {
-			if overwrite {
-				existing := getMeta(m.records[int(id)].GetMetadata(), makePath([][2]string{{f.GetNamespace(), f.GetName()}}, nil))
-				if existing != nil {
-					existing.Field = f
-					if f.GetName() == "output_location" {
-						m.UpdateField(1, makePath([][2]string{{"siplicity", "display_name"}}, nil),
-							true,
-							&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
-						)
+			feats[i] = &pb.PreparedFeatureCountResponse_Feature{Count: val}
+		}
+		feats[len(feats)-1] = &pb.PreparedFeatureCountResponse_Feature{Value: "other", Count: others}
+		if len(feats) > 1 {
+			for k, v := range rep {
+				if v >= feats[len(feats)-2].Count {
+					for ii, vv := range feats {
+						if vv.Count == v && vv.Value == "" {
+							feats[ii].Value = k
+							break
+						}
 					}
-					return
 				}
 			}
-			m.records[int(id)].Metadata = append(m.records[int(id)].Metadata, meta)
 		}
-		meta.Field = f
-		if f.GetName() == "output_location" {
-			m.UpdateField(1, makePath([][2]string{{"siplicity", "display_name"}}, nil),
-				true,
-				&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
-			)
+	} else {
+		feats = make([]*pb.PreparedFeatureCountResponse_Feature, len(rep))
+		var i int
+		for k, v := range rep {
+			feats[i] = &pb.PreparedFeatureCountResponse_Feature{Value: k, Count: v}
+			i++
+		}
+		if typ == pb.ReportType_REPORT_TYPE_MODIFIED {
+			slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
+				return strings.Compare(a.Value, b.Value)
+			})
+		} else {
+			slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
+				if a.Value == "empty" {
+					return 1
+				}
+				if b.Value == "empty" {
+					return -1
+				}
+				return int(b.Count - a.Count)
+			})
 		}
 	}
+	return &pb.PreparedFeatureCountResponse{Features: feats}
 }
 
 func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {
@@ -99,6 +195,9 @@ func (m *MemStore) AdoptChildren(old, new int32, graph pb.GraphType) {
 }
 
 func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
+	if n < 0 || int(n) >= len(m.records) {
+		return nil
+	}
 	return m.records[int(n)]
 }
 
