@@ -189,8 +189,24 @@ var TEST_METADATA = []*pb.Metadata{
 
 func TestFindMetas(t *testing.T) {
 	ns := "siplicity"
+	// Simple search namespace/name
 	metas := findMetas(TEST_METADATA, &pb.FieldPath_Entry{Namespace: &ns, Name: "hash"})
 	if len(metas) != 2 {
 		t.Fatalf("Expecting two metas, got %d\n", len(metas))
+	}
+	// Search for entry at a particular index
+	var idx int32 = 1
+	metas = findMetas(TEST_METADATA, &pb.FieldPath_Entry{Namespace: &ns, Name: "checksum", Index: &idx})
+	if len(metas) != 1 || metas[0].Field.Value != "" {
+		t.Fatalf("Expecting one metas, got %d\n", len(metas))
+	}
+	// Search for entry where parent contains an entry. E.g. find hash value for the checksum that has algorithm set to MD5
+	algo := "MD5"
+	metas = getMetas(TEST_METADATA, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{
+		{Namespace: &ns, Name: "checksum", Contains: &pb.FieldPath_Entry{Name: "algorithm", Value: &algo}},
+		{Namespace: &ns, Name: "hash"},
+	}})
+	if len(metas) != 1 || metas[0].Field.Value != "686a54d206f7a37325242b21702f21c5" {
+		t.Fatalf("Expecting one metas, got %d\n", len(metas))
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"hash"
 	"io"
 	"os"
+	"slices"
 	"time"
 
 	"github.com/richardlehane/siegfried"
@@ -98,7 +99,7 @@ func (h *hashAction) Do(rec *pb.GetRecordResponse, s Store) error {
 		return nil
 	}
 	ns := "siplicity"
-	if getFieldValue(rec.Metadata, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &ns, Name: "algorithm"}}}) == h.label {
+	if slices.Contains(getFieldValues(rec.Metadata, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &ns, Name: "algorithm"}}}), h.label) {
 		return nil
 	}
 	f, err := os.Open(rec.GetPath())

@@ -4,70 +4,88 @@ import (
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
+func matches(field *pb.Field, entry *pb.FieldPath_Entry, index int32) (bool, int32) {
+	if (entry.GetName() != field.GetName()) ||
+		(entry.GetNamespace() != "" && entry.GetNamespace() != field.GetNamespace()) ||
+		(entry.GetValue() != "" && entry.GetValue() != field.GetValue()) {
+		return false, index
+	}
+	if entry.Index == nil || entry.GetIndex() == index {
+		return true, index
+	}
+	index += 1
+	return false, index
+}
+
+func contains(meta *pb.Metadata, entry *pb.FieldPath_Entry) bool {
+	var n int32
+	var match bool
+	for _, m := range meta.GetChildren() {
+		match, n = matches(m.GetField(), entry, n)
+		if match {
+			return true
+		}
+		if n == 0 {
+			for _, mm := range m.GetChildren() {
+				if delve := contains(mm, entry); delve {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
 func findMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) []*pb.Metadata {
+	var n int32
+	var match bool
 	var ret []*pb.Metadata
 	for _, m := range metas {
-		f := m.GetField()
-		if entry.GetName() == f.GetName() {
-			if entry.GetNamespace() == "" || entry.GetNamespace() == f.GetNamespace() {
+		match, n = matches(m.GetField(), entry, n)
+		if match {
+			if entry.Contains == nil || contains(m, entry.GetContains()) {
 				ret = append(ret, m)
 			}
 		}
-		if children := m.GetChildren(); children != nil {
-			if nret := findMetas(children, entry); len(nret) != 0 {
-				ret = append(ret, nret...)
+		if n == 0 {
+			if children := m.GetChildren(); children != nil {
+				if nret := findMetas(children, entry); len(nret) != 0 {
+					ret = append(ret, nret...)
+				}
 			}
 		}
 	}
 	return ret
 }
 
-// find first *pb.Metadata which matches the entry
-func findMeta(meta []*pb.Metadata, entry *pb.FieldPath_Entry) *pb.Metadata {
-	var n int32
-	for _, m := range meta {
-		f := m.GetField()
-		if entry.GetName() == f.GetName() {
-			if entry.GetNamespace() == "" || entry.GetNamespace() == f.GetNamespace() {
-				if entry.Index == nil || entry.GetIndex() == n {
-					return m
-				} else if entry.Index != nil {
-					n++
-				}
-			}
-		}
-		if n == 0 {
-			if children := m.GetChildren(); children != nil {
-				if ret := findMeta(children, entry); ret != nil {
-					return ret
-				}
-			}
-		}
-	}
-	return nil
-}
-
-func getMeta(meta []*pb.Metadata, path *pb.FieldPath) *pb.Metadata {
+func getMetas(meta []*pb.Metadata, path *pb.FieldPath) []*pb.Metadata {
 	entries := path.GetEntries()
 	for idx, entry := range entries {
-		m := findMeta(meta, entry)
-		if m == nil {
+		m := findMetas(meta, entry)
+		if len(m) == 0 {
 			return nil
 		}
 		if idx == len(entries)-1 {
 			return m
 		}
-		meta = m.GetChildren()
+		meta = meta[:0]
+		for _, mm := range m {
+			meta = append(meta, mm.GetChildren()...)
+		}
 	}
 	return nil
 }
 
-func getFieldValue(meta []*pb.Metadata, path *pb.FieldPath) string {
-	p := getMeta(meta, path)
-	if p == nil {
-		return ""
+func getFieldValues(meta []*pb.Metadata, path *pb.FieldPath) []string {
+	p := getMetas(meta, path)
+	if len(p) == 0 {
+		return nil
 	}
-	return p.GetField().GetValue()
+	ret := make([]string, len(p))
+	for i, v := range p {
+		ret[i] = v.GetField().GetValue()
+	}
+	return ret
 }
 
 func makePath(entries [][2]string, indexes []int32) *pb.FieldPath {
