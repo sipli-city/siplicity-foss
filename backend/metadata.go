@@ -36,6 +36,24 @@ func contains(meta *pb.Metadata, entry *pb.FieldPath_Entry) bool {
 	return false
 }
 
+func queryMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) bool {
+	var n int32
+	var match bool
+	for _, m := range metas {
+		if match, n = matches(m.GetField(), entry, n); match {
+			return true
+		}
+		if n == 0 {
+			if children := m.GetChildren(); children != nil {
+				if cmatch := queryMetas(children, entry); cmatch {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
 func findMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) []*pb.Metadata {
 	var n int32
 	var match bool

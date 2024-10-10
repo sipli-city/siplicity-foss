@@ -143,20 +143,20 @@ const PutJobRequest$json = {
   '1': 'PutJobRequest',
   '2': [
     {'1': 'selection', '3': 1, '4': 1, '5': 11, '6': '.siplicity.v1.Selection', '9': 0, '10': 'selection', '17': true},
-    {'1': 'filter', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'filter', '17': true},
+    {'1': 'query', '3': 2, '4': 1, '5': 9, '9': 1, '10': 'query', '17': true},
     {'1': 'action', '3': 3, '4': 1, '5': 9, '10': 'action'},
   ],
   '8': [
     {'1': '_selection'},
-    {'1': '_filter'},
+    {'1': '_query'},
   ],
 };
 
 /// Descriptor for `PutJobRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List putJobRequestDescriptor = $convert.base64Decode(
     'Cg1QdXRKb2JSZXF1ZXN0EjoKCXNlbGVjdGlvbhgBIAEoCzIXLnNpcGxpY2l0eS52MS5TZWxlY3'
-    'Rpb25IAFIJc2VsZWN0aW9uiAEBEhsKBmZpbHRlchgCIAEoCUgBUgZmaWx0ZXKIAQESFgoGYWN0'
-    'aW9uGAMgASgJUgZhY3Rpb25CDAoKX3NlbGVjdGlvbkIJCgdfZmlsdGVy');
+    'Rpb25IAFIJc2VsZWN0aW9uiAEBEhkKBXF1ZXJ5GAIgASgJSAFSBXF1ZXJ5iAEBEhYKBmFjdGlv'
+    'bhgDIAEoCVIGYWN0aW9uQgwKCl9zZWxlY3Rpb25CCAoGX3F1ZXJ5');
 
 @$core.Deprecated('Use putJobResponseDescriptor instead')
 const PutJobResponse$json = {
@@ -176,20 +176,20 @@ const CountRecordsRequest$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
-    {'1': 'filter', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'filter', '17': true},
+    {'1': 'query', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'query', '17': true},
   ],
   '8': [
     {'1': '_id'},
     {'1': '_graph'},
-    {'1': '_filter'},
+    {'1': '_query'},
   ],
 };
 
 /// Descriptor for `CountRecordsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List countRecordsRequestDescriptor = $convert.base64Decode(
     'ChNDb3VudFJlY29yZHNSZXF1ZXN0EhMKAmlkGAEgASgFSABSAmlkiAEBEjIKBWdyYXBoGAIgAS'
-    'gOMhcuc2lwbGljaXR5LnYxLkdyYXBoVHlwZUgBUgVncmFwaIgBARIbCgZmaWx0ZXIYAyABKAlI'
-    'AlIGZmlsdGVyiAEBQgUKA19pZEIICgZfZ3JhcGhCCQoHX2ZpbHRlcg==');
+    'gOMhcuc2lwbGljaXR5LnYxLkdyYXBoVHlwZUgBUgVncmFwaIgBARIZCgVxdWVyeRgDIAEoCUgC'
+    'UgVxdWVyeYgBAUIFCgNfaWRCCAoGX2dyYXBoQggKBl9xdWVyeQ==');
 
 @$core.Deprecated('Use countRecordsResponseDescriptor instead')
 const CountRecordsResponse$json = {
@@ -332,14 +332,14 @@ const ListRecordsRequest$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
-    {'1': 'filter', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'filter', '17': true},
+    {'1': 'query', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'query', '17': true},
     {'1': 'display', '3': 4, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath', '9': 3, '10': 'display', '17': true},
     {'1': 'fields', '3': 5, '4': 3, '5': 11, '6': '.siplicity.v1.FieldPath', '10': 'fields'},
   ],
   '8': [
     {'1': '_id'},
     {'1': '_graph'},
-    {'1': '_filter'},
+    {'1': '_query'},
     {'1': '_display'},
   ],
 };
@@ -347,10 +347,10 @@ const ListRecordsRequest$json = {
 /// Descriptor for `ListRecordsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listRecordsRequestDescriptor = $convert.base64Decode(
     'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESMgoFZ3JhcGgYAiABKA'
-    '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlSAFSBWdyYXBoiAEBEhsKBmZpbHRlchgDIAEoCUgC'
-    'UgZmaWx0ZXKIAQESNgoHZGlzcGxheRgEIAEoCzIXLnNpcGxpY2l0eS52MS5GaWVsZFBhdGhIA1'
-    'IHZGlzcGxheYgBARIvCgZmaWVsZHMYBSADKAsyFy5zaXBsaWNpdHkudjEuRmllbGRQYXRoUgZm'
-    'aWVsZHNCBQoDX2lkQggKBl9ncmFwaEIJCgdfZmlsdGVyQgoKCF9kaXNwbGF5');
+    '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlSAFSBWdyYXBoiAEBEhkKBXF1ZXJ5GAMgASgJSAJS'
+    'BXF1ZXJ5iAEBEjYKB2Rpc3BsYXkYBCABKAsyFy5zaXBsaWNpdHkudjEuRmllbGRQYXRoSANSB2'
+    'Rpc3BsYXmIAQESLwoGZmllbGRzGAUgAygLMhcuc2lwbGljaXR5LnYxLkZpZWxkUGF0aFIGZmll'
+    'bGRzQgUKA19pZEIICgZfZ3JhcGhCCAoGX3F1ZXJ5QgoKCF9kaXNwbGF5');
 
 @$core.Deprecated('Use fieldDescriptor instead')
 const Field$json = {

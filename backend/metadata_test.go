@@ -187,6 +187,368 @@ var TEST_METADATA = []*pb.Metadata{
 	},
 }
 
+var TEST_METADATA_A = []*pb.Metadata{
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "file2.png"},
+	},
+	{
+		Field: &pb.Field{
+			Namespace: "siplicity",
+			Name:      "FileModifiedTime",
+			Value:     "2023-10-17T22:45:47+11:00",
+		},
+	},
+	{
+		Field: &pb.Field{
+			Namespace: "siplicity_windows",
+			Name:      "file_information_basic",
+		},
+		Children: []*pb.Metadata{
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "CreationTime",
+					Value:     "2023-11-17T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "LastAccessTime",
+					Value:     "2023-11-18T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "LastWriteTime",
+					Value:     "2023-11-19T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "ChangeTime",
+					Value:     "2023-11-20T22:45:47+11:00",
+				},
+			},
+		},
+	},
+	{Field: &pb.Field{
+		Namespace: "siplicity",
+		Name:      "format_identification",
+	},
+		Children: []*pb.Metadata{
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "signature_details",
+					Value:     "DROID_SignatureFile_V118.xml; container-signature-20240501.xml",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "version",
+					Value:     "1.11.1",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "identifications",
+				},
+				Children: []*pb.Metadata{
+					{
+						Field: &pb.Field{
+							Namespace: "siegfried",
+							Name:      "identification",
+						},
+						Children: []*pb.Metadata{
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "id",
+									Value:     "fmt/63",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "format",
+									Value:     "Richard's special format",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "version",
+									Value:     "v2",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "mime",
+									Value:     "application/vnd.richard",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "class",
+									Value:     "Complex",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "basis",
+									Value:     "extension match .rich; container name [Content_Types].xml with byte match at 515, 94 (signature 1/3)",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "warning",
+									Value:     "",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	},
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "algorithm",
+				Value:     "XXH64",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "hash",
+				Value:     "b7b99e84357eb1c7",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "calculated_at",
+				Value:     "2024-11-07T18:04:27+11:00",
+			},
+			},
+		},
+	},
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "algorithm",
+				Value:     "MD5",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "hash",
+				Value:     "696a54d206f7a37325242b21702f21c5",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "calculated_at",
+				Value:     "2024-10-07T18:18:17+11:00",
+			},
+			},
+		},
+	},
+}
+
+var TEST_METADATA_B = []*pb.Metadata{
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "file3.png"},
+	},
+	{
+		Field: &pb.Field{
+			Namespace: "siplicity",
+			Name:      "FileModifiedTime",
+			Value:     "2024-10-16T22:45:47+11:00",
+		},
+	},
+	{
+		Field: &pb.Field{
+			Namespace: "siplicity_windows",
+			Name:      "file_information_basic",
+		},
+		Children: []*pb.Metadata{
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "CreationTime",
+					Value:     "2024-10-17T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "LastAccessTime",
+					Value:     "2024-10-18T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "LastWriteTime",
+					Value:     "2024-10-19T22:45:47+11:00",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siplicity_windows",
+					Name:      "ChangeTime",
+					Value:     "2024-10-20T22:45:47+11:00",
+				},
+			},
+		},
+	},
+	{Field: &pb.Field{
+		Namespace: "siplicity",
+		Name:      "format_identification",
+	},
+		Children: []*pb.Metadata{
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "signature_details",
+					Value:     "DROID_SignatureFile_V118.xml; container-signature-20240501.xml",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "version",
+					Value:     "1.11.1",
+				},
+			},
+			{
+				Field: &pb.Field{
+					Namespace: "siegfried",
+					Name:      "identifications",
+				},
+				Children: []*pb.Metadata{
+					{
+						Field: &pb.Field{
+							Namespace: "siegfried",
+							Name:      "identification",
+						},
+						Children: []*pb.Metadata{
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "id",
+									Value:     "fmt/412",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "format",
+									Value:     "Omega",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "version",
+									Value:     "Alpha",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "mime",
+									Value:     "application/vnd.omega",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "class",
+									Value:     "Particle",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "basis",
+									Value:     "extension match png; byte match at 99, 94",
+								},
+							},
+							{
+								Field: &pb.Field{
+									Namespace: "pronom",
+									Name:      "warning",
+									Value:     "",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	},
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "algorithm",
+				Value:     "XXH64",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "hash",
+				Value:     "b7b88e84357eb1c1",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "calculated_at",
+				Value:     "2024-10-07T18:04:27+11:00",
+			},
+			},
+		},
+	},
+	{
+		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "algorithm",
+				Value:     "MD5",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "hash",
+				Value:     "686a54d206f7a37325242b21702f21c1",
+			},
+			},
+			{Field: &pb.Field{
+				Namespace: "siplicity",
+				Name:      "calculated_at",
+				Value:     "2024-10-07T18:18:17+11:00",
+			},
+			},
+		},
+	},
+}
+
 func TestFindMetas(t *testing.T) {
 	ns := "siplicity"
 	// Simple search namespace/name

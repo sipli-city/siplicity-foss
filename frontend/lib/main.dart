@@ -25,7 +25,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     _listener = AppLifecycleListener(onExitRequested: () async {
-      if (foundation.kReleaseMode) siplicityServiceClient.shutdown(ShutdownRequest());
+      if (foundation.kReleaseMode) {
+        siplicityServiceClient.shutdown(ShutdownRequest());
+      }
       return AppExitResponse.exit;
     });
   }
@@ -44,7 +46,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       home: const HomePage(),
       theme: FluentThemeData(
         brightness: Brightness.light,
-        accentColor: Colors.teal,
+        accentColor: Colors.orange,
       ),
     );
   }

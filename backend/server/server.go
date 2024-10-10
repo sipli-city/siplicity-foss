@@ -56,7 +56,7 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 	s.statuses = append(s.statuses, false)
 	sidx := int32(len(s.statuses) - 1)
 	go func() {
-		_ = siplicity.Job(in.GetAction(), in.GetFilter(), s.store)
+		_ = siplicity.Job(in.GetAction(), in.GetQuery(), s.store)
 		s.statuses[sidx] = true
 	}()
 	return &pb.PutJobResponse{Status: sidx}, nil
@@ -75,7 +75,7 @@ func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *p
 }
 
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetFilter(), in.GetDisplay(), in.GetFields()), nil
+	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetQuery(), in.GetDisplay(), in.GetFields()), nil
 }
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {

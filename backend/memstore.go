@@ -202,7 +202,7 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 }
 
 // recursive function to build a tree of records based on a given hierarchy
-func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
 	if display != nil {
 		nm := getFieldValues(m.records[int(id)].GetMetadata(), display)
@@ -218,12 +218,22 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string,
 	children := hierarchy[id]
 	ret.Children = make([]*pb.ListRecordsResponse, len(children))
 	for i, v := range children {
-		ret.Children[i] = m.addNode(v, hierarchy, filter, display, fields)
+		ret.Children[i] = m.addNode(v, hierarchy, display, fields)
 	}
 	return ret
 }
 
-func (m *MemStore) ListRecords(id int32, graph pb.GraphType, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+func (m *MemStore) queryNodes(ret *[]int32, id int32, hierarchy map[int32][]int32, qf queryFunc) {
+	if qf(m.records[int(id)]) {
+		*ret = append(*ret, id)
+	}
+	children := hierarchy[id]
+	for _, v := range children {
+		m.queryNodes(ret, v, hierarchy, qf)
+	}
+}
+
+func (m *MemStore) ListRecords(id int32, graph pb.GraphType, query string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	if len(m.records) == 3 && id > 2 {
 		return nil
 	}
@@ -231,7 +241,23 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, filter string, disp
 	if id < 0 {
 		id = t.root
 	}
-	return m.addNode(id, t.children, filter, display, fields)
+	if query != "" {
+		qf := parseQuery(query)
+		if qf == nil {
+			return nil
+		}
+		ids := make([]int32, 0, 100)
+		m.queryNodes(&ids, id, t.children, qf)
+		resp := m.addNode(id, t.hierarchy(ids), display, fields)
+		switch resp.GetName() {
+		case "Input":
+			resp.Name = "Input - Query: " + query
+		case "Output":
+			resp.Name = "Input - Query: " + query
+		}
+		return resp
+	}
+	return m.addNode(id, t.children, display, fields)
 }
 
 func (m *MemStore) Drop(n int32, graph pb.GraphType) {

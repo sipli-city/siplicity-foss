@@ -10,7 +10,7 @@ class ProgressChart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final segments = ref.watch(featureSegmentsProvider(typ));
+    final segments = ref.watch(featureSegmentsProvider(report: typ, max: 20));
 
     return switch (segments) {
       AsyncData(:final value) => Container(

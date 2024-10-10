@@ -70,9 +70,9 @@ class InputRecords extends _$InputRecords {
     }
   }
 
-  Future<void> putAction({String? filter, String? action}) async {
+  Future<void> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
-        .putJob(PutJobRequest(filter: filter, action: action));
+        .putJob(PutJobRequest(query: query, action: action));
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
@@ -127,9 +127,9 @@ class OutputRecords extends _$OutputRecords {
     ];
   }
 
-  Future<void> putAction({String? filter, String? action}) async {
+  Future<void> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
-        .putJob(PutJobRequest(filter: filter, action: action));
+        .putJob(PutJobRequest(query: query, action: action));
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));

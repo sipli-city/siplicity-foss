@@ -6,7 +6,7 @@ part of 'features_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$featureSegmentsHash() => r'72bf07ba787afb23b1839b0d9b5e9f109f11d79f';
+String _$featureSegmentsHash() => r'e579def8077bd3e7a1b106f92a4d2f42b5cbbee9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,10 +32,12 @@ class _SystemHash {
 abstract class _$FeatureSegments
     extends BuildlessAutoDisposeAsyncNotifier<List<Segment>> {
   late final ReportType report;
+  late final int? max;
 
-  FutureOr<List<Segment>> build(
-    ReportType report,
-  );
+  FutureOr<List<Segment>> build({
+    required ReportType report,
+    int? max,
+  });
 }
 
 /// See also [FeatureSegments].
@@ -48,11 +50,13 @@ class FeatureSegmentsFamily extends Family<AsyncValue<List<Segment>>> {
   const FeatureSegmentsFamily();
 
   /// See also [FeatureSegments].
-  FeatureSegmentsProvider call(
-    ReportType report,
-  ) {
+  FeatureSegmentsProvider call({
+    required ReportType report,
+    int? max,
+  }) {
     return FeatureSegmentsProvider(
-      report,
+      report: report,
+      max: max,
     );
   }
 
@@ -61,7 +65,8 @@ class FeatureSegmentsFamily extends Family<AsyncValue<List<Segment>>> {
     covariant FeatureSegmentsProvider provider,
   ) {
     return call(
-      provider.report,
+      report: provider.report,
+      max: provider.max,
     );
   }
 
@@ -84,10 +89,13 @@ class FeatureSegmentsFamily extends Family<AsyncValue<List<Segment>>> {
 class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     FeatureSegments, List<Segment>> {
   /// See also [FeatureSegments].
-  FeatureSegmentsProvider(
-    ReportType report,
-  ) : this._internal(
-          () => FeatureSegments()..report = report,
+  FeatureSegmentsProvider({
+    required ReportType report,
+    int? max,
+  }) : this._internal(
+          () => FeatureSegments()
+            ..report = report
+            ..max = max,
           from: featureSegmentsProvider,
           name: r'featureSegmentsProvider',
           debugGetCreateSourceHash:
@@ -98,6 +106,7 @@ class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
           allTransitiveDependencies:
               FeatureSegmentsFamily._allTransitiveDependencies,
           report: report,
+          max: max,
         );
 
   FeatureSegmentsProvider._internal(
@@ -108,16 +117,19 @@ class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.report,
+    required this.max,
   }) : super.internal();
 
   final ReportType report;
+  final int? max;
 
   @override
   FutureOr<List<Segment>> runNotifierBuild(
     covariant FeatureSegments notifier,
   ) {
     return notifier.build(
-      report,
+      report: report,
+      max: max,
     );
   }
 
@@ -126,13 +138,16 @@ class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: FeatureSegmentsProvider._internal(
-        () => create()..report = report,
+        () => create()
+          ..report = report
+          ..max = max,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         report: report,
+        max: max,
       ),
     );
   }
@@ -145,13 +160,16 @@ class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is FeatureSegmentsProvider && other.report == report;
+    return other is FeatureSegmentsProvider &&
+        other.report == report &&
+        other.max == max;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, report.hashCode);
+    hash = _SystemHash.combine(hash, max.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -160,6 +178,9 @@ class FeatureSegmentsProvider extends AutoDisposeAsyncNotifierProviderImpl<
 mixin FeatureSegmentsRef on AutoDisposeAsyncNotifierProviderRef<List<Segment>> {
   /// The parameter `report` of this provider.
   ReportType get report;
+
+  /// The parameter `max` of this provider.
+  int? get max;
 }
 
 class _FeatureSegmentsProviderElement
@@ -169,43 +190,51 @@ class _FeatureSegmentsProviderElement
 
   @override
   ReportType get report => (origin as FeatureSegmentsProvider).report;
+  @override
+  int? get max => (origin as FeatureSegmentsProvider).max;
 }
 
-String _$featuresHash() => r'a4f397da7b9e89fac3a3334130185a0d14f5d859';
+String _$featureTuplesHash() => r'e21c1d44caac173eaddd710a713e4361accc1e9c';
 
-abstract class _$Features
+abstract class _$FeatureTuples
     extends BuildlessAutoDisposeAsyncNotifier<List<Map<dynamic, dynamic>>> {
   late final ReportType report;
+  late final int? max;
 
-  FutureOr<List<Map<dynamic, dynamic>>> build(
-    ReportType report,
-  );
+  FutureOr<List<Map<dynamic, dynamic>>> build({
+    required ReportType report,
+    int? max,
+  });
 }
 
-/// See also [Features].
-@ProviderFor(Features)
-const featuresProvider = FeaturesFamily();
+/// See also [FeatureTuples].
+@ProviderFor(FeatureTuples)
+const featureTuplesProvider = FeatureTuplesFamily();
 
-/// See also [Features].
-class FeaturesFamily extends Family<AsyncValue<List<Map<dynamic, dynamic>>>> {
-  /// See also [Features].
-  const FeaturesFamily();
+/// See also [FeatureTuples].
+class FeatureTuplesFamily
+    extends Family<AsyncValue<List<Map<dynamic, dynamic>>>> {
+  /// See also [FeatureTuples].
+  const FeatureTuplesFamily();
 
-  /// See also [Features].
-  FeaturesProvider call(
-    ReportType report,
-  ) {
-    return FeaturesProvider(
-      report,
+  /// See also [FeatureTuples].
+  FeatureTuplesProvider call({
+    required ReportType report,
+    int? max,
+  }) {
+    return FeatureTuplesProvider(
+      report: report,
+      max: max,
     );
   }
 
   @override
-  FeaturesProvider getProviderOverride(
-    covariant FeaturesProvider provider,
+  FeatureTuplesProvider getProviderOverride(
+    covariant FeatureTuplesProvider provider,
   ) {
     return call(
-      provider.report,
+      report: provider.report,
+      max: provider.max,
     );
   }
 
@@ -221,29 +250,34 @@ class FeaturesFamily extends Family<AsyncValue<List<Map<dynamic, dynamic>>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'featuresProvider';
+  String? get name => r'featureTuplesProvider';
 }
 
-/// See also [Features].
-class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
-    List<Map<dynamic, dynamic>>> {
-  /// See also [Features].
-  FeaturesProvider(
-    ReportType report,
-  ) : this._internal(
-          () => Features()..report = report,
-          from: featuresProvider,
-          name: r'featuresProvider',
+/// See also [FeatureTuples].
+class FeatureTuplesProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    FeatureTuples, List<Map<dynamic, dynamic>>> {
+  /// See also [FeatureTuples].
+  FeatureTuplesProvider({
+    required ReportType report,
+    int? max,
+  }) : this._internal(
+          () => FeatureTuples()
+            ..report = report
+            ..max = max,
+          from: featureTuplesProvider,
+          name: r'featureTuplesProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$featuresHash,
-          dependencies: FeaturesFamily._dependencies,
-          allTransitiveDependencies: FeaturesFamily._allTransitiveDependencies,
+                  : _$featureTuplesHash,
+          dependencies: FeatureTuplesFamily._dependencies,
+          allTransitiveDependencies:
+              FeatureTuplesFamily._allTransitiveDependencies,
           report: report,
+          max: max,
         );
 
-  FeaturesProvider._internal(
+  FeatureTuplesProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -251,67 +285,82 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.report,
+    required this.max,
   }) : super.internal();
 
   final ReportType report;
+  final int? max;
 
   @override
   FutureOr<List<Map<dynamic, dynamic>>> runNotifierBuild(
-    covariant Features notifier,
+    covariant FeatureTuples notifier,
   ) {
     return notifier.build(
-      report,
+      report: report,
+      max: max,
     );
   }
 
   @override
-  Override overrideWith(Features Function() create) {
+  Override overrideWith(FeatureTuples Function() create) {
     return ProviderOverride(
       origin: this,
-      override: FeaturesProvider._internal(
-        () => create()..report = report,
+      override: FeatureTuplesProvider._internal(
+        () => create()
+          ..report = report
+          ..max = max,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         report: report,
+        max: max,
       ),
     );
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<Features, List<Map<dynamic, dynamic>>>
-      createElement() {
-    return _FeaturesProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<FeatureTuples,
+      List<Map<dynamic, dynamic>>> createElement() {
+    return _FeatureTuplesProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is FeaturesProvider && other.report == report;
+    return other is FeatureTuplesProvider &&
+        other.report == report &&
+        other.max == max;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, report.hashCode);
+    hash = _SystemHash.combine(hash, max.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin FeaturesRef
+mixin FeatureTuplesRef
     on AutoDisposeAsyncNotifierProviderRef<List<Map<dynamic, dynamic>>> {
   /// The parameter `report` of this provider.
   ReportType get report;
+
+  /// The parameter `max` of this provider.
+  int? get max;
 }
 
-class _FeaturesProviderElement extends AutoDisposeAsyncNotifierProviderElement<
-    Features, List<Map<dynamic, dynamic>>> with FeaturesRef {
-  _FeaturesProviderElement(super.provider);
+class _FeatureTuplesProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<FeatureTuples,
+        List<Map<dynamic, dynamic>>> with FeatureTuplesRef {
+  _FeatureTuplesProviderElement(super.provider);
 
   @override
-  ReportType get report => (origin as FeaturesProvider).report;
+  ReportType get report => (origin as FeatureTuplesProvider).report;
+  @override
+  int? get max => (origin as FeatureTuplesProvider).max;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
