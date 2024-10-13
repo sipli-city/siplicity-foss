@@ -6,83 +6,71 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 part 'features_provider.g.dart';
 
+// 14 colours + default = 15 max
+const List<Color> pallette = [
+  Color(0xFFFF7F3E),
+  Color(0xFF604CC3),
+  Color(0xFF80C4E9),
+  Color(0xFFF5004F),
+  Color(0xFFFF76CE),
+  Color(0xFFEAD196),
+  Color(0xFF14C38E),
+  Color(0xFFBF3131),
+  Color(0xFFDBFF3D),
+  Color(0xFFC70A80),
+  Color(0xFF39B5E0),
+  Color(0xFFC9F658),
+  Color(0xFF55968F),
+  Color(0xFF8ACBBB),
+];
+
 Color getColor(int index) {
-  switch (index) {
-    case 0:
-      return Color(0xFFFF7F3E);
-    case 1:
-      return Color(0xFF604CC3);
-    case 2:
-      return Color(0xFF80C4E9);
-    case 3:
-      return Color(0xFFF5004F);
-    case 4:
-      return Color(0xFFFF76CE);
-    case 5:
-      return Color(0xFFEAD196);
-    case 6:
-      return Color(0xFF14C38E);
-    case 7:
-      return Color(0xFFBF3131);
-    case 8:
-      return Color(0xFFDBFF3D);
-    case 9:
-      return Color(0xFFC70A80);
-    case 10:
-      return Color(0xFF39B5E0);
-    case 11:
-      return Color(0xFFC9F658);
-    case 12:
-      return Color(0xFF55968F);
-    case 13:
-      return Color(0xFF8ACBBB);
-    case 14:
-      return Colors.black;
-    case 15:
-      return Colors.magenta;
-    case 16:
-      return Colors.blue;
-    case 17:
-      return Colors.green;
-    case 18:
-      return Colors.red;
+  if (index >= 0 && index < pallette.length) {
+    return pallette[index];
   }
   return Color(0xFFDADADA);
 }
 
-List<Segment> segment(String label, PreparedFeatureCountResponse response) {
+PreparedFeatureCountResponse limit(
+    PreparedFeatureCountResponse response, int max) {
+  if (response.features.length < max || max < 2) {
+    return response;
+  }
+  var ret = response.features.sublist(0, max - 1);
+  int other = response.features
+      .sublist(max - 1)
+      .fold<int>(0, (prev, feat) => prev + feat.count);
+  ret.add(PreparedFeatureCountResponse_Feature(value: "other", count: other));
+  return PreparedFeatureCountResponse(features: ret);
+}
+
+List<Segment> asSegments(PreparedFeatureCountResponse response) {
   int idx = -1;
-  var li = response.features.map((item) {
+  return response.features.map((item) {
     idx++;
     return Segment(
         value: item.count, color: getColor(idx), label: Text(item.value));
   }).toList();
-  return li;
 }
 
-@riverpod
-class FeatureSegments extends _$FeatureSegments {
-  @override
-  Future<List<Segment>> build({required ReportType report, int? max}) async {
-    PreparedFeatureCountResponse response =
-        await siplicityServiceClient.preparedFeatureCount(
-            PreparedFeatureCountRequest(report: report, max: max));
-    switch (report) {
-      case ReportType.REPORT_TYPE_EXTENSIONS:
-        return segment("extension", response);
-      case ReportType.REPORT_TYPE_FILE_FORMAT:
-        return segment("file format", response);
-      case ReportType.REPORT_TYPE_FORMAT_CLASS:
-        return segment("format class", response);
-      case ReportType.REPORT_TYPE_MIME_TYPE:
-        return segment("mime", response);
-      default:
-        return List.empty();
-    }
+String label(ReportType report) {
+  switch (report) {
+    case ReportType.REPORT_TYPE_EXTENSIONS:
+      return "extension";
+    case ReportType.REPORT_TYPE_MODIFIED:
+      return "last modified";
+    case ReportType.REPORT_TYPE_FILE_FORMAT:
+      return "file format";
+    case ReportType.REPORT_TYPE_FORMAT_CLASS:
+      return "format class";
+    case ReportType.REPORT_TYPE_MIME_TYPE:
+      return "mime";
+    default:
+      return "";
   }
 }
 
-List<Map<dynamic, dynamic>> tuple(
+List<Map<dynamic, dynamic>> asTuples(
     String label, PreparedFeatureCountResponse response) {
   return response.features
       .map((item) => {label: item.value, "count": item.count})
@@ -90,26 +78,13 @@ List<Map<dynamic, dynamic>> tuple(
 }
 
 @riverpod
-class FeatureTuples extends _$FeatureTuples {
+class Features extends _$Features {
   @override
-  Future<List<Map<dynamic, dynamic>>> build(
+  Future<PreparedFeatureCountResponse> build(
       {required ReportType report, int? max}) async {
     PreparedFeatureCountResponse response =
         await siplicityServiceClient.preparedFeatureCount(
             PreparedFeatureCountRequest(report: report, max: max));
-    switch (report) {
-      case ReportType.REPORT_TYPE_EXTENSIONS:
-        return tuple("extension", response);
-      case ReportType.REPORT_TYPE_MODIFIED:
-        return tuple("last modified", response);
-      case ReportType.REPORT_TYPE_FILE_FORMAT:
-        return tuple("file format", response);
-      case ReportType.REPORT_TYPE_FORMAT_CLASS:
-        return tuple("format class", response);
-      case ReportType.REPORT_TYPE_MIME_TYPE:
-        return tuple("mime", response);
-      default:
-        return List.empty();
-    }
+    return response;
   }
 }

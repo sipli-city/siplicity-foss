@@ -213,4 +213,6 @@ message UnlinkRecordsResponse {}
 
 message ShutdownRequest {}
 
-message ShutdownResponse {}
+message ShutdownResponse {
+  bool success = 1;
+}

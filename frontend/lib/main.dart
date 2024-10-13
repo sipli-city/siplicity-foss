@@ -26,7 +26,11 @@ class _MyAppState extends ConsumerState<MyApp> {
     super.initState();
     _listener = AppLifecycleListener(onExitRequested: () async {
       if (foundation.kReleaseMode) {
-        siplicityServiceClient.shutdown(ShutdownRequest());
+        ShutdownResponse response =
+            await siplicityServiceClient.shutdown(ShutdownRequest());
+        if (!response.success) {
+          return AppExitResponse.cancel;
+        }
       }
       return AppExitResponse.exit;
     });
