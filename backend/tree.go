@@ -81,19 +81,27 @@ func (t *tree) softunlink(node int32) {
 }
 
 // restores a node that has been soft unlinked
-func (t *tree) restore(node int32) {
+func (t *tree) restore(node int32) bool {
 	parent, ok := t.parents[node]
 	if ok {
 		if !slices.Contains(t.children[parent], node) {
 			t.children[parent] = append(t.children[parent], node)
+			return true
 		}
+		return false
 	}
+	return false
 }
 
 func (t *tree) restoreList(nodes []int32) {
-
 	for _, n := range nodes {
-		t.restore(n)
+		if t.restore(n) {
+			for _, nn := range t.children[n] {
+				if !slices.Contains(nodes, nn) {
+					t.softunlink(n)
+				}
+			}
+		}
 	}
 }
 
