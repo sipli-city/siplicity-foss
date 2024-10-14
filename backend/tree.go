@@ -1,6 +1,7 @@
 package siplicity
 
 import (
+	"maps"
 	"slices"
 )
 
@@ -71,9 +72,34 @@ func (t *tree) unlink(node int32) {
 	}
 }
 
-func (t *tree) unlinkList(nodes []int32) {
+// a softunlink just removes a node from its parent
+func (t *tree) softunlink(node int32) {
+	parent, ok := t.parents[node]
+	if ok {
+		t.children[parent] = slices.DeleteFunc(t.children[parent], func(v int32) bool { return node == v })
+	}
+}
+
+// restores a node that has been soft unlinked
+func (t *tree) restore(node int32) {
+	parent, ok := t.parents[node]
+	if ok {
+		if !slices.Contains(t.children[parent], node) {
+			t.children[parent] = append(t.children[parent], node)
+		}
+	}
+}
+
+func (t *tree) restoreList(nodes []int32) {
+
+	for _, n := range nodes {
+		t.restore(n)
+	}
+}
+
+func (t *tree) unlinkList(nodes []int32, soft bool) {
 	// shortcut if we can drop the entire list
-	if t.count() >= len(nodes)-1 {
+	if t.count() <= len(nodes)-1 {
 		t.purge()
 		return
 	}
@@ -115,11 +141,19 @@ func (t *tree) unlinkList(nodes []int32) {
 	// now we should have leaves that can be deleted whose parents can't, and branches to drop entirely (zero children). Keep any branches that have children
 	for key, len := range branchlen {
 		if len == 0 {
-			t.unlink(key)
+			if soft {
+				t.softunlink(key)
+			} else {
+				t.unlink(key)
+			}
 		}
 	}
 	for key := range leaves {
-		t.unlink(key)
+		if soft {
+			t.softunlink(key)
+		} else {
+			t.unlink(key)
+		}
 	}
 }
 
@@ -151,9 +185,18 @@ func (t *tree) copy(from *tree, parent int32, nodes []int32) {
 	}
 }
 
-func (t *tree) shift(from *tree, parent int32, nodes []int32) {
+func (t *tree) shift(from *tree, parent int32, nodes []int32, inputToOutput bool) {
 	// switch if full transfer onto a blank slate - but update roots
 	if t.count() == 1 && from.count() == len(nodes) {
+		if inputToOutput {
+			t.parents = maps.Clone(from.parents)
+			for k, v := range from.children {
+				t.children[k] = slices.Clone(v)
+			}
+			t.flipRoot(from.root)
+			from.children[from.root] = []int32{}
+			return
+		}
 		copyParents, copyChildren := t.parents, t.children
 		t.parents, t.children = from.parents, from.children
 		t.flipRoot(from.root)
@@ -161,8 +204,12 @@ func (t *tree) shift(from *tree, parent int32, nodes []int32) {
 		from.flipRoot(t.root)
 		return
 	}
-	t.copy(from, parent, nodes)
-	from.unlinkList(nodes)
+	if inputToOutput {
+		t.copy(from, parent, nodes)
+	} else {
+		t.restoreList(nodes)
+	}
+	from.unlinkList(nodes, inputToOutput)
 }
 
 // given a set of IDs, return a subset of the tree's "children" hierarchy

@@ -43,6 +43,7 @@ class OutputRecordsTree extends ConsumerWidget {
     final records = ref.watch(outputRecordsProvider);
     return switch (records) {
       AsyncData(:final value) => TreeView(
+          includePartiallySelectedItems: true,
           selectionMode: TreeViewSelectionMode.multiple,
           shrinkWrap: true,
           items: value,

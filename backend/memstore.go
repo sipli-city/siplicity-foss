@@ -288,14 +288,14 @@ func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32,
 	}
 	f := m.getTree(from)
 	if shift {
-		t.shift(f, parent, nodes)
+		t.shift(f, parent, nodes, from == pb.GraphType_GRAPH_TYPE_INPUT)
 		return
 	}
 	t.copy(f, parent, nodes)
 }
 
 func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {
-	m.getTree(g).unlinkList(nodes)
+	m.getTree(g).unlinkList(nodes, false)
 }
 
 func (m *MemStore) Purge(g pb.GraphType) {
