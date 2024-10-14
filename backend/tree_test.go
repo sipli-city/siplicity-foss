@@ -22,6 +22,13 @@ var TEST_TREE = &tree{
 	},
 }
 
+func TestCount(t *testing.T) {
+	count := TEST_TREE.count()
+	if count != 9 {
+		t.Fatalf("expecting 9, got %d", count)
+	}
+}
+
 func TestHierarchy(t *testing.T) {
 	hierarchy := TEST_TREE.hierarchy([]int32{6, 3, 9, 4})
 	if len(hierarchy[1]) != 3 {
