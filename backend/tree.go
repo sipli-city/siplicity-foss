@@ -73,7 +73,7 @@ func (t *tree) unlink(node int32) {
 
 func (t *tree) unlinkList(nodes []int32) {
 	// shortcut if we can drop the entire list
-	if t.count() == len(nodes) {
+	if t.count() >= len(nodes)-1 {
 		t.purge()
 		return
 	}
@@ -134,11 +134,15 @@ func (t *tree) flipRoot(fromRoot int32) {
 func (t *tree) copy(from *tree, parent int32, nodes []int32) {
 	set := make(map[int32]bool)
 	for _, n := range nodes {
-		if n != from.root {
-			set[n] = true
+		if n == from.root {
+			continue
 		}
+		set[n] = true
 	}
 	for _, n := range nodes {
+		if n == from.root {
+			continue
+		}
 		if set[from.parents[n]] {
 			t.link(from.parents[n], n)
 		} else {
