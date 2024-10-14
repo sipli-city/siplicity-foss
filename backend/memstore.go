@@ -109,6 +109,27 @@ func (m *MemStore) AddReport(k1, k2 string) {
 	m2[k2]++
 }
 
+func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
+	ret := &pb.PreparedFeatureAvailableResponse{}
+	ret.Report = make([]pb.ReportType, 0, len(m.reports))
+	if _, ok := m.reports["modtime"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MODIFIED)
+	}
+	if _, ok := m.reports["extension"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_EXTENSIONS)
+	}
+	if _, ok := m.reports["id"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_FILE_FORMAT)
+	}
+	if _, ok := m.reports["mime"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MIME_TYPE)
+	}
+	if _, ok := m.reports["class"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_FORMAT_CLASS)
+	}
+	return ret
+}
+
 func (m *MemStore) Report(typ pb.ReportType, max int32) *pb.PreparedFeatureCountResponse {
 	var t string
 	switch typ {

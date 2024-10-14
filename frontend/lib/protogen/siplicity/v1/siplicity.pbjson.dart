@@ -33,26 +33,24 @@ const ReportType$json = {
   '1': 'ReportType',
   '2': [
     {'1': 'REPORT_TYPE_UNSPECIFIED', '2': 0},
-    {'1': 'REPORT_TYPE_EXTENSIONS', '2': 1},
-    {'1': 'REPORT_TYPE_MODIFIED', '2': 2},
-    {'1': 'REPORT_TYPE_ZERO_BYTE', '2': 3},
+    {'1': 'REPORT_TYPE_SIZES', '2': 1},
+    {'1': 'REPORT_TYPE_EXTENSIONS', '2': 2},
+    {'1': 'REPORT_TYPE_MODIFIED', '2': 3},
     {'1': 'REPORT_TYPE_DUPLICATES', '2': 4},
     {'1': 'REPORT_TYPE_FORMAT_CLASS', '2': 5},
     {'1': 'REPORT_TYPE_MIME_TYPE', '2': 6},
     {'1': 'REPORT_TYPE_FILE_FORMAT', '2': 7},
-    {'1': 'REPORT_TYPE_UNKNOWN', '2': 8},
-    {'1': 'REPORT_TYPE_MULTIPLE_IDENTIFICATION', '2': 9},
+    {'1': 'REPORT_TYPE_MULTIPLE_IDENTIFICATION', '2': 8},
   ],
 };
 
 /// Descriptor for `ReportType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List reportTypeDescriptor = $convert.base64Decode(
-    'CgpSZXBvcnRUeXBlEhsKF1JFUE9SVF9UWVBFX1VOU1BFQ0lGSUVEEAASGgoWUkVQT1JUX1RZUE'
-    'VfRVhURU5TSU9OUxABEhgKFFJFUE9SVF9UWVBFX01PRElGSUVEEAISGQoVUkVQT1JUX1RZUEVf'
-    'WkVST19CWVRFEAMSGgoWUkVQT1JUX1RZUEVfRFVQTElDQVRFUxAEEhwKGFJFUE9SVF9UWVBFX0'
-    'ZPUk1BVF9DTEFTUxAFEhkKFVJFUE9SVF9UWVBFX01JTUVfVFlQRRAGEhsKF1JFUE9SVF9UWVBF'
-    'X0ZJTEVfRk9STUFUEAcSFwoTUkVQT1JUX1RZUEVfVU5LTk9XThAIEicKI1JFUE9SVF9UWVBFX0'
-    '1VTFRJUExFX0lERU5USUZJQ0FUSU9OEAk=');
+    'CgpSZXBvcnRUeXBlEhsKF1JFUE9SVF9UWVBFX1VOU1BFQ0lGSUVEEAASFQoRUkVQT1JUX1RZUE'
+    'VfU0laRVMQARIaChZSRVBPUlRfVFlQRV9FWFRFTlNJT05TEAISGAoUUkVQT1JUX1RZUEVfTU9E'
+    'SUZJRUQQAxIaChZSRVBPUlRfVFlQRV9EVVBMSUNBVEVTEAQSHAoYUkVQT1JUX1RZUEVfRk9STU'
+    'FUX0NMQVNTEAUSGQoVUkVQT1JUX1RZUEVfTUlNRV9UWVBFEAYSGwoXUkVQT1JUX1RZUEVfRklM'
+    'RV9GT1JNQVQQBxInCiNSRVBPUlRfVFlQRV9NVUxUSVBMRV9JREVOVElGSUNBVElPThAI');
 
 @$core.Deprecated('Use recordTypeDescriptor instead')
 const RecordType$json = {
@@ -170,6 +168,39 @@ const PutJobResponse$json = {
 final $typed_data.Uint8List putJobResponseDescriptor = $convert.base64Decode(
     'Cg5QdXRKb2JSZXNwb25zZRIWCgZzdGF0dXMYASABKAVSBnN0YXR1cw==');
 
+@$core.Deprecated('Use totalVolumeRequestDescriptor instead')
+const TotalVolumeRequest$json = {
+  '1': 'TotalVolumeRequest',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
+    {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
+    {'1': 'query', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'query', '17': true},
+  ],
+  '8': [
+    {'1': '_id'},
+    {'1': '_graph'},
+    {'1': '_query'},
+  ],
+};
+
+/// Descriptor for `TotalVolumeRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List totalVolumeRequestDescriptor = $convert.base64Decode(
+    'ChJUb3RhbFZvbHVtZVJlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESMgoFZ3JhcGgYAiABKA'
+    '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlSAFSBWdyYXBoiAEBEhkKBXF1ZXJ5GAMgASgJSAJS'
+    'BXF1ZXJ5iAEBQgUKA19pZEIICgZfZ3JhcGhCCAoGX3F1ZXJ5');
+
+@$core.Deprecated('Use totalVolumeResponseDescriptor instead')
+const TotalVolumeResponse$json = {
+  '1': 'TotalVolumeResponse',
+  '2': [
+    {'1': 'volume', '3': 1, '4': 1, '5': 3, '10': 'volume'},
+  ],
+};
+
+/// Descriptor for `TotalVolumeResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List totalVolumeResponseDescriptor = $convert.base64Decode(
+    'ChNUb3RhbFZvbHVtZVJlc3BvbnNlEhYKBnZvbHVtZRgBIAEoA1IGdm9sdW1l');
+
 @$core.Deprecated('Use countRecordsRequestDescriptor instead')
 const CountRecordsRequest$json = {
   '1': 'CountRecordsRequest',
@@ -243,6 +274,28 @@ final $typed_data.Uint8List preparedFeatureCountResponseDescriptor = $convert.ba
     'ChxQcmVwYXJlZEZlYXR1cmVDb3VudFJlc3BvbnNlEk4KCGZlYXR1cmVzGAEgAygLMjIuc2lwbG'
     'ljaXR5LnYxLlByZXBhcmVkRmVhdHVyZUNvdW50UmVzcG9uc2UuRmVhdHVyZVIIZmVhdHVyZXMa'
     'NQoHRmVhdHVyZRIUCgV2YWx1ZRgBIAEoCVIFdmFsdWUSFAoFY291bnQYAiABKAVSBWNvdW50');
+
+@$core.Deprecated('Use preparedFeatureAvailableRequestDescriptor instead')
+const PreparedFeatureAvailableRequest$json = {
+  '1': 'PreparedFeatureAvailableRequest',
+};
+
+/// Descriptor for `PreparedFeatureAvailableRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List preparedFeatureAvailableRequestDescriptor = $convert.base64Decode(
+    'Ch9QcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXF1ZXN0');
+
+@$core.Deprecated('Use preparedFeatureAvailableResponseDescriptor instead')
+const PreparedFeatureAvailableResponse$json = {
+  '1': 'PreparedFeatureAvailableResponse',
+  '2': [
+    {'1': 'report', '3': 1, '4': 3, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
+  ],
+};
+
+/// Descriptor for `PreparedFeatureAvailableResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List preparedFeatureAvailableResponseDescriptor = $convert.base64Decode(
+    'CiBQcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXNwb25zZRIwCgZyZXBvcnQYASADKA4yGC5zaX'
+    'BsaWNpdHkudjEuUmVwb3J0VHlwZVIGcmVwb3J0');
 
 @$core.Deprecated('Use countFeaturesRequestDescriptor instead')
 const CountFeaturesRequest$json = {

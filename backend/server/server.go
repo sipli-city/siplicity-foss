@@ -74,6 +74,10 @@ func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *p
 	return s.store.Report(in.GetReport(), in.GetMax()), nil
 }
 
+func (s *siplicityServiceServer) PreparedFeatureAvailable(ctx context.Context, in *pb.PreparedFeatureAvailableRequest) (*pb.PreparedFeatureAvailableResponse, error) {
+	return s.store.Reports(), nil
+}
+
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
 	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetQuery(), in.GetDisplay(), in.GetFields()), nil
 }

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/client.dart';
-import 'package:siplicity/home.dart';
+import 'package:siplicity/home/view/home.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 void main() {

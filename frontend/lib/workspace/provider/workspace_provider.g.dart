@@ -6,7 +6,22 @@ part of 'workspace_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$inputRecordsHash() => r'74bb10738d65fbf0336818932ad92d98441ee4ec';
+String _$queryRecordsHash() => r'9bc63aa96663f9f82e5ecd60778e923a0e68de62';
+
+/// See also [QueryRecords].
+@ProviderFor(QueryRecords)
+final queryRecordsProvider =
+    AutoDisposeNotifierProvider<QueryRecords, String?>.internal(
+  QueryRecords.new,
+  name: r'queryRecordsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$queryRecordsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$QueryRecords = AutoDisposeNotifier<String?>;
+String _$inputRecordsHash() => r'783ff9017cd6acd49e2184a0ee1a89c7d5b15aad';
 
 /// See also [InputRecords].
 @ProviderFor(InputRecords)

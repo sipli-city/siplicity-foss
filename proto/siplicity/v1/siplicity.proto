@@ -9,8 +9,10 @@ service SiplicityService {
   rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
   rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
   rpc CountRecords(CountRecordsRequest) returns (CountRecordsResponse) {}
+  rpc TotalVolume(TotalVolumeRequest) returns (TotalVolumeResponse) {}
   rpc CountFeatures(CountFeaturesRequest) returns (CountFeaturesResponse) {}
   rpc PreparedFeatureCount(PreparedFeatureCountRequest) returns (PreparedFeatureCountResponse) {}
+  rpc PreparedFeatureAvailable(PreparedFeatureAvailableRequest) returns (PreparedFeatureAvailableResponse) {}
   rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse) {}
   rpc GetRecord(GetRecordRequest) returns (GetRecordResponse) {}
   rpc PutRecord(PutRecordRequest) returns (PutRecordResponse) {}
@@ -57,6 +59,16 @@ enum GraphType {
   GRAPH_TYPE_OUTPUT = 2;
 }
 
+message TotalVolumeRequest {
+  optional int32 id = 1;
+  optional GraphType graph = 2; // If graph isn't specified, check all records
+  optional string query = 3;  
+}
+
+message TotalVolumeResponse {
+  int64 volume = 1;
+}
+
 message CountRecordsRequest {
   optional int32 id = 1;
   optional GraphType graph = 2; // If graph isn't specified, check all records
@@ -69,15 +81,14 @@ message CountRecordsResponse {
 
 enum ReportType {
   REPORT_TYPE_UNSPECIFIED = 0;
-  REPORT_TYPE_EXTENSIONS = 1;
-  REPORT_TYPE_MODIFIED = 2;
-  REPORT_TYPE_ZERO_BYTE = 3;
+  REPORT_TYPE_SIZES = 1;
+  REPORT_TYPE_EXTENSIONS = 2;
+  REPORT_TYPE_MODIFIED = 3;
   REPORT_TYPE_DUPLICATES = 4;
   REPORT_TYPE_FORMAT_CLASS = 5;
   REPORT_TYPE_MIME_TYPE = 6;
   REPORT_TYPE_FILE_FORMAT = 7;
-  REPORT_TYPE_UNKNOWN = 8;
-  REPORT_TYPE_MULTIPLE_IDENTIFICATION = 9;
+  REPORT_TYPE_MULTIPLE_IDENTIFICATION = 8;
 }
 
 message PreparedFeatureCountRequest {
@@ -91,6 +102,12 @@ message PreparedFeatureCountResponse {
     int32 count = 2;
   }
   repeated Feature features = 1;
+}
+
+message PreparedFeatureAvailableRequest {}
+
+message PreparedFeatureAvailableResponse {
+  repeated ReportType report = 1;
 }
 
 message CountFeaturesRequest {

@@ -32,26 +32,24 @@ class GraphType extends $pb.ProtobufEnum {
 
 class ReportType extends $pb.ProtobufEnum {
   static const ReportType REPORT_TYPE_UNSPECIFIED = ReportType._(0, _omitEnumNames ? '' : 'REPORT_TYPE_UNSPECIFIED');
-  static const ReportType REPORT_TYPE_EXTENSIONS = ReportType._(1, _omitEnumNames ? '' : 'REPORT_TYPE_EXTENSIONS');
-  static const ReportType REPORT_TYPE_MODIFIED = ReportType._(2, _omitEnumNames ? '' : 'REPORT_TYPE_MODIFIED');
-  static const ReportType REPORT_TYPE_ZERO_BYTE = ReportType._(3, _omitEnumNames ? '' : 'REPORT_TYPE_ZERO_BYTE');
+  static const ReportType REPORT_TYPE_SIZES = ReportType._(1, _omitEnumNames ? '' : 'REPORT_TYPE_SIZES');
+  static const ReportType REPORT_TYPE_EXTENSIONS = ReportType._(2, _omitEnumNames ? '' : 'REPORT_TYPE_EXTENSIONS');
+  static const ReportType REPORT_TYPE_MODIFIED = ReportType._(3, _omitEnumNames ? '' : 'REPORT_TYPE_MODIFIED');
   static const ReportType REPORT_TYPE_DUPLICATES = ReportType._(4, _omitEnumNames ? '' : 'REPORT_TYPE_DUPLICATES');
   static const ReportType REPORT_TYPE_FORMAT_CLASS = ReportType._(5, _omitEnumNames ? '' : 'REPORT_TYPE_FORMAT_CLASS');
   static const ReportType REPORT_TYPE_MIME_TYPE = ReportType._(6, _omitEnumNames ? '' : 'REPORT_TYPE_MIME_TYPE');
   static const ReportType REPORT_TYPE_FILE_FORMAT = ReportType._(7, _omitEnumNames ? '' : 'REPORT_TYPE_FILE_FORMAT');
-  static const ReportType REPORT_TYPE_UNKNOWN = ReportType._(8, _omitEnumNames ? '' : 'REPORT_TYPE_UNKNOWN');
-  static const ReportType REPORT_TYPE_MULTIPLE_IDENTIFICATION = ReportType._(9, _omitEnumNames ? '' : 'REPORT_TYPE_MULTIPLE_IDENTIFICATION');
+  static const ReportType REPORT_TYPE_MULTIPLE_IDENTIFICATION = ReportType._(8, _omitEnumNames ? '' : 'REPORT_TYPE_MULTIPLE_IDENTIFICATION');
 
   static const $core.List<ReportType> values = <ReportType> [
     REPORT_TYPE_UNSPECIFIED,
+    REPORT_TYPE_SIZES,
     REPORT_TYPE_EXTENSIONS,
     REPORT_TYPE_MODIFIED,
-    REPORT_TYPE_ZERO_BYTE,
     REPORT_TYPE_DUPLICATES,
     REPORT_TYPE_FORMAT_CLASS,
     REPORT_TYPE_MIME_TYPE,
     REPORT_TYPE_FILE_FORMAT,
-    REPORT_TYPE_UNKNOWN,
     REPORT_TYPE_MULTIPLE_IDENTIFICATION,
   ];
 
