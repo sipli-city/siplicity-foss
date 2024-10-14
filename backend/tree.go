@@ -92,6 +92,7 @@ func (t *tree) softunlink(node int32) {
 }
 
 // restores a node that has been soft unlinked
+// TODO: replace "remove" on input graph with a soft remove - at present you can't restore from output graph if ancestor nodes have been removed
 func (t *tree) restore(node int32) {
 	parent, ok := t.parents[node]
 	if ok {
