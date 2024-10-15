@@ -27,8 +27,16 @@ message GetStatusRequest {
   int32 status = 1;
 }
 
+enum StatusType {
+  STATUS_TYPE_UNSPECIFIED = 0;
+  STATUS_TYPE_WORKING = 1;
+  STATUS_TYPE_DONE = 2;
+  STATUS_TYPE_FAILED = 3;
+}
+
 message GetStatusResponse {
-  bool done = 1;
+  StatusType status = 1;
+  optional string message = 2;
 }
 
 message PutFilePathRequest {

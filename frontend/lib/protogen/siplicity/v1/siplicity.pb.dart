@@ -70,11 +70,15 @@ class GetStatusRequest extends $pb.GeneratedMessage {
 
 class GetStatusResponse extends $pb.GeneratedMessage {
   factory GetStatusResponse({
-    $core.bool? done,
+    StatusType? status,
+    $core.String? message,
   }) {
     final $result = create();
-    if (done != null) {
-      $result.done = done;
+    if (status != null) {
+      $result.status = status;
+    }
+    if (message != null) {
+      $result.message = message;
     }
     return $result;
   }
@@ -83,7 +87,8 @@ class GetStatusResponse extends $pb.GeneratedMessage {
   factory GetStatusResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetStatusResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'done')
+    ..e<StatusType>(1, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: StatusType.STATUS_TYPE_UNSPECIFIED, valueOf: StatusType.valueOf, enumValues: StatusType.values)
+    ..aOS(2, _omitFieldNames ? '' : 'message')
     ..hasRequiredFields = false
   ;
 
@@ -109,13 +114,22 @@ class GetStatusResponse extends $pb.GeneratedMessage {
   static GetStatusResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get done => $_getBF(0);
+  StatusType get status => $_getN(0);
   @$pb.TagNumber(1)
-  set done($core.bool v) { $_setBool(0, v); }
+  set status(StatusType v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasDone() => $_has(0);
+  $core.bool hasStatus() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDone() => clearField(1);
+  void clearStatus() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get message => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set message($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
 }
 
 class PutFilePathRequest extends $pb.GeneratedMessage {

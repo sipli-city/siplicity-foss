@@ -13,6 +13,23 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use statusTypeDescriptor instead')
+const StatusType$json = {
+  '1': 'StatusType',
+  '2': [
+    {'1': 'STATUS_TYPE_UNSPECIFIED', '2': 0},
+    {'1': 'STATUS_TYPE_WORKING', '2': 1},
+    {'1': 'STATUS_TYPE_DONE', '2': 2},
+    {'1': 'STATUS_TYPE_FAILED', '2': 3},
+  ],
+};
+
+/// Descriptor for `StatusType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List statusTypeDescriptor = $convert.base64Decode(
+    'CgpTdGF0dXNUeXBlEhsKF1NUQVRVU19UWVBFX1VOU1BFQ0lGSUVEEAASFwoTU1RBVFVTX1RZUE'
+    'VfV09SS0lORxABEhQKEFNUQVRVU19UWVBFX0RPTkUQAhIWChJTVEFUVVNfVFlQRV9GQUlMRUQQ'
+    'Aw==');
+
 @$core.Deprecated('Use graphTypeDescriptor instead')
 const GraphType$json = {
   '1': 'GraphType',
@@ -92,13 +109,19 @@ final $typed_data.Uint8List getStatusRequestDescriptor = $convert.base64Decode(
 const GetStatusResponse$json = {
   '1': 'GetStatusResponse',
   '2': [
-    {'1': 'done', '3': 1, '4': 1, '5': 8, '10': 'done'},
+    {'1': 'status', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.StatusType', '10': 'status'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'message', '17': true},
+  ],
+  '8': [
+    {'1': '_message'},
   ],
 };
 
 /// Descriptor for `GetStatusResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getStatusResponseDescriptor = $convert.base64Decode(
-    'ChFHZXRTdGF0dXNSZXNwb25zZRISCgRkb25lGAEgASgIUgRkb25l');
+    'ChFHZXRTdGF0dXNSZXNwb25zZRIwCgZzdGF0dXMYASABKA4yGC5zaXBsaWNpdHkudjEuU3RhdH'
+    'VzVHlwZVIGc3RhdHVzEh0KB21lc3NhZ2UYAiABKAlIAFIHbWVzc2FnZYgBAUIKCghfbWVzc2Fn'
+    'ZQ==');
 
 @$core.Deprecated('Use putFilePathRequestDescriptor instead')
 const PutFilePathRequest$json = {
