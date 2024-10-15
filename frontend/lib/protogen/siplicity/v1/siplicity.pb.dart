@@ -539,6 +539,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     $core.int? id,
     GraphType? graph,
     $core.String? query,
+    $core.Iterable<RecordType>? typs,
   }) {
     final $result = create();
     if (id != null) {
@@ -550,6 +551,9 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     if (query != null) {
       $result.query = query;
     }
+    if (typs != null) {
+      $result.typs.addAll(typs);
+    }
     return $result;
   }
   CountRecordsRequest._() : super();
@@ -560,6 +564,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
     ..aOS(3, _omitFieldNames ? '' : 'query')
+    ..pc<RecordType>(4, _omitFieldNames ? '' : 'typs', $pb.PbFieldType.KE, valueOf: RecordType.valueOf, enumValues: RecordType.values, defaultEnumValue: RecordType.RECORD_TYPE_UNSPECIFIED)
     ..hasRequiredFields = false
   ;
 
@@ -610,6 +615,9 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
   $core.bool hasQuery() => $_has(2);
   @$pb.TagNumber(3)
   void clearQuery() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<RecordType> get typs => $_getList(3);
 }
 
 class CountRecordsResponse extends $pb.GeneratedMessage {
@@ -665,14 +673,10 @@ class CountRecordsResponse extends $pb.GeneratedMessage {
 class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
   factory PreparedFeatureCountRequest({
     ReportType? report,
-    $core.int? max,
   }) {
     final $result = create();
     if (report != null) {
       $result.report = report;
-    }
-    if (max != null) {
-      $result.max = max;
     }
     return $result;
   }
@@ -682,7 +686,6 @@ class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureCountRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..e<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.OE, defaultOrMaker: ReportType.REPORT_TYPE_UNSPECIFIED, valueOf: ReportType.valueOf, enumValues: ReportType.values)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'max', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -715,15 +718,6 @@ class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
   $core.bool hasReport() => $_has(0);
   @$pb.TagNumber(1)
   void clearReport() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get max => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set max($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMax() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMax() => clearField(2);
 }
 
 class PreparedFeatureCountResponse_Feature extends $pb.GeneratedMessage {

@@ -11,9 +11,11 @@ import (
 
 const MonthOnly = "2006-01"
 
+type walkFunc func(*pb.GetRecordResponse, int) error
+
 type Store interface {
 	AddReport(string, string)
-	Report(pb.ReportType, int32) *pb.PreparedFeatureCountResponse
+	Report(pb.ReportType) *pb.PreparedFeatureCountResponse
 	Reports() *pb.PreparedFeatureAvailableResponse
 	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
 	UpdateRecord(int32, *pb.GetRecordResponse)
@@ -26,7 +28,37 @@ type Store interface {
 	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
 	UnlinkRecords(graph pb.GraphType, nodes []int32)
 	Purge(graph pb.GraphType)
-	Walk(pb.GraphType, func(string, *pb.GetRecordResponse) (string, error)) error
+	Walk(int32, pb.GraphType, walkFunc) error
+}
+
+const (
+	B int64 = 1 << (10 * iota)
+	KB
+	MB
+	GB
+)
+
+var sizeLabels = [...]string{"0", "<1KB", "<100KB", "<1MB", "<10MB", "<100MB", "<1GB", ">1GB"}
+
+func sizeBucket(sz int64) string {
+	switch {
+	case sz == 0:
+		return sizeLabels[0]
+	case sz < KB:
+		return sizeLabels[1]
+	case sz < 100*KB:
+		return sizeLabels[2]
+	case sz < MB:
+		return sizeLabels[3]
+	case sz < 10*MB:
+		return sizeLabels[4]
+	case sz < 100*MB:
+		return sizeLabels[5]
+	case sz < GB:
+		return sizeLabels[6]
+	default:
+		return sizeLabels[7]
+	}
 }
 
 func AddPath(path string, s Store) error {
@@ -57,10 +89,8 @@ func AddPath(path string, s Store) error {
 			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
 		})
 		if typ == pb.RecordType_RECORD_TYPE_FILE {
-			ext := strings.TrimPrefix(filepath.Ext(p), ".")
-			if ext != "" {
-				s.AddReport("extension", ext)
-			}
+			s.AddReport("sizes", sizeBucket(rec.Size))
+			s.AddReport("extension", strings.TrimPrefix(filepath.Ext(p), "."))
 		}
 		fi, mod := fileinfo(p, info)
 		if fi != nil {

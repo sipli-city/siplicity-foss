@@ -81,6 +81,7 @@ message CountRecordsRequest {
   optional int32 id = 1;
   optional GraphType graph = 2; // If graph isn't specified, check all records
   optional string query = 3; 
+  repeated RecordType typs = 4;
 }
 
 message CountRecordsResponse {
@@ -101,7 +102,6 @@ enum ReportType {
 
 message PreparedFeatureCountRequest {
   ReportType report = 1;
-  optional int32 max = 2;
 }
 
 message PreparedFeatureCountResponse {

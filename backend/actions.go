@@ -64,8 +64,8 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse, s Store) error {
 	for i, v := range ids {
 		idfields := make([]*pb.Metadata, len(v.Values())-1)
 		for ii, vv := range v.Values()[1:] {
-			idfields[ii] = &pb.Metadata{Field: &pb.Field{Namespace: v.Values()[0], Name: sa.sf.Fields()[0][ii+1], Value: vv}}
-			switch sa.sf.Fields()[0][ii+1] {
+			idfields[ii] = &pb.Metadata{Field: &pb.Field{Namespace: v.Values()[0], Name: sa.sf.Fields()[0][ii+1], Value: vv}} // Todo: PRONOM locked - only access first value sf.Fields
+			switch sa.sf.Fields()[0][ii+1] {                                                                                  // Todo: PRONOM locked - only access first value sf.Fields
 			case "id":
 				s.AddReport("id", vv)
 			case "mime":
@@ -77,6 +77,30 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse, s Store) error {
 		identifications[i] = &pb.Metadata{
 			Field:    &pb.Field{Namespace: "siegfried", Name: "identification"},
 			Children: idfields,
+		}
+	}
+	// check for multiple identifications (with the same namespace)
+	if len(ids) > 1 {
+		nss := make(map[string]int)
+		for _, v := range ids {
+			nss[v.Values()[0]] += 1
+		}
+		for _, v := range nss {
+			if v > 1 {
+				var multi string
+				for _, vv := range ids {
+					for i, vvv := range vv.Values()[1:] {
+						if sa.sf.Fields()[0][i+1] == "id" { // Todo: PRONOM locked - only access first value sf.Fields
+							if multi == "" {
+								multi = vvv
+							} else {
+								multi = multi + "+" + vvv
+							}
+						}
+					}
+				}
+				s.AddReport("multiple", multi)
+			}
 		}
 	}
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
@@ -131,14 +155,16 @@ func (h *hashAction) Do(rec *pb.GetRecordResponse, s Store) error {
 	if _, err := io.Copy(h, f); err != nil {
 		return err
 	}
+	hashString := fmt.Sprintf("%x", h.Sum(nil))
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
 		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
 		Children: []*pb.Metadata{
 			{Field: &pb.Field{Namespace: "siplicity", Name: "algorithm", Value: h.label}},
-			{Field: &pb.Field{Namespace: "siplicity", Name: "hash", Value: fmt.Sprintf("%x", h.Sum(nil))}},
+			{Field: &pb.Field{Namespace: "siplicity", Name: "hash", Value: hashString}},
 			{Field: &pb.Field{Namespace: "siplicity", Name: "calculated_at", Value: time.Now().Format(time.RFC3339)}},
 		},
 	})
+	s.AddReport("duplicates", hashString)
 	h.Reset()
 	return nil
 }

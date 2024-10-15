@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port = flag.Int("port", 50051, "Port for siplicity GRPC server")
 )
 
 type siplicityServiceServer struct {
@@ -87,12 +87,16 @@ func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountR
 	return nil, nil
 }
 
+func (s *siplicityServiceServer) TotalVolume(ctx context.Context, in *pb.TotalVolumeRequest) (*pb.TotalVolumeResponse, error) {
+	return nil, nil
+}
+
 func (s *siplicityServiceServer) CountFeatures(ctx context.Context, in *pb.CountFeaturesRequest) (*pb.CountFeaturesResponse, error) {
 	return nil, nil
 }
 
 func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *pb.PreparedFeatureCountRequest) (*pb.PreparedFeatureCountResponse, error) {
-	return s.store.Report(in.GetReport(), in.GetMax()), nil
+	return s.store.Report(in.GetReport()), nil
 }
 
 func (s *siplicityServiceServer) PreparedFeatureAvailable(ctx context.Context, in *pb.PreparedFeatureAvailableRequest) (*pb.PreparedFeatureAvailableResponse, error) {

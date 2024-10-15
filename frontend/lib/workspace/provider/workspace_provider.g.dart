@@ -21,7 +21,7 @@ final queryRecordsProvider =
 );
 
 typedef _$QueryRecords = AutoDisposeNotifier<String?>;
-String _$inputRecordsHash() => r'783ff9017cd6acd49e2184a0ee1a89c7d5b15aad';
+String _$inputRecordsHash() => r'6f38d7c8d3ed3397505f3712e5bee9354e0e2ec3';
 
 /// See also [InputRecords].
 @ProviderFor(InputRecords)
@@ -36,7 +36,7 @@ final inputRecordsProvider =
 );
 
 typedef _$InputRecords = AutoDisposeAsyncNotifier<List<TreeViewItem>>;
-String _$outputRecordsHash() => r'f535a5ee861c496e1df19fc1570d601094a85132';
+String _$outputRecordsHash() => r'4af1ceaf8eedb8c0bd9462ec14c692b0a66e2f00';
 
 /// See also [OutputRecords].
 @ProviderFor(OutputRecords)
