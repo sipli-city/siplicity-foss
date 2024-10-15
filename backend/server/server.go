@@ -84,15 +84,15 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 }
 
 func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountRecordsRequest) (*pb.CountRecordsResponse, error) {
-	return nil, nil
+	return &pb.CountRecordsResponse{Count: int32(siplicity.RecordCount(s.store, in.GetId(), in.GetGraph(), in.GetQuery(), in.GetTyps()))}, nil
 }
 
 func (s *siplicityServiceServer) TotalVolume(ctx context.Context, in *pb.TotalVolumeRequest) (*pb.TotalVolumeResponse, error) {
-	return nil, nil
+	return &pb.TotalVolumeResponse{Volume: siplicity.TotalVolume(s.store, in.GetId(), in.GetGraph(), in.GetQuery())}, nil
 }
 
 func (s *siplicityServiceServer) CountFeatures(ctx context.Context, in *pb.CountFeaturesRequest) (*pb.CountFeaturesResponse, error) {
-	return nil, nil
+	return s.store.FeatureReport(in.GetId(), in.GetGraph(), in.GetFeature()), nil
 }
 
 func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *pb.PreparedFeatureCountRequest) (*pb.PreparedFeatureCountResponse, error) {

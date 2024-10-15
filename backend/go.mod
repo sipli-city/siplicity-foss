@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/richardlehane/characterize v1.0.0 // indirect
 	github.com/richardlehane/match v1.0.5 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect

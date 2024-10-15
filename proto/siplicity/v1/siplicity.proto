@@ -115,7 +115,8 @@ message PreparedFeatureCountResponse {
 message PreparedFeatureAvailableRequest {}
 
 message PreparedFeatureAvailableResponse {
-  repeated ReportType report = 1;
+  string digest = 1;
+  repeated ReportType report = 2;
 }
 
 message CountFeaturesRequest {

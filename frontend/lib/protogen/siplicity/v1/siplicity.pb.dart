@@ -862,9 +862,13 @@ class PreparedFeatureAvailableRequest extends $pb.GeneratedMessage {
 
 class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   factory PreparedFeatureAvailableResponse({
+    $core.String? digest,
     $core.Iterable<ReportType>? report,
   }) {
     final $result = create();
+    if (digest != null) {
+      $result.digest = digest;
+    }
     if (report != null) {
       $result.report.addAll(report);
     }
@@ -875,7 +879,8 @@ class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   factory PreparedFeatureAvailableResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureAvailableResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..pc<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.KE, valueOf: ReportType.valueOf, enumValues: ReportType.values, defaultEnumValue: ReportType.REPORT_TYPE_UNSPECIFIED)
+    ..aOS(1, _omitFieldNames ? '' : 'digest')
+    ..pc<ReportType>(2, _omitFieldNames ? '' : 'report', $pb.PbFieldType.KE, valueOf: ReportType.valueOf, enumValues: ReportType.values, defaultEnumValue: ReportType.REPORT_TYPE_UNSPECIFIED)
     ..hasRequiredFields = false
   ;
 
@@ -901,7 +906,16 @@ class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   static PreparedFeatureAvailableResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<ReportType> get report => $_getList(0);
+  $core.String get digest => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set digest($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasDigest() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDigest() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<ReportType> get report => $_getList(1);
 }
 
 class CountFeaturesRequest extends $pb.GeneratedMessage {

@@ -23,7 +23,7 @@ class AnalysisItem extends StatelessWidget {
         chart = LineChart(typ: typ);
       case ReportType.REPORT_TYPE_DUPLICATES:
         title = "Duplicate files";
-        chart = PieChart(typ: typ);
+        chart = FunnelChart(typ: typ);
       case ReportType.REPORT_TYPE_EXTENSIONS:
         title = "File format extensions";
         chart = ProgressChart(typ: typ);

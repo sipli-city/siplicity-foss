@@ -17,6 +17,7 @@ type Store interface {
 	AddReport(string, string)
 	Report(pb.ReportType) *pb.PreparedFeatureCountResponse
 	Reports() *pb.PreparedFeatureAvailableResponse
+	FeatureReport(int32, pb.GraphType, *pb.FieldPath) *pb.CountFeaturesResponse
 	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
 	UpdateRecord(int32, *pb.GetRecordResponse)
 	UpdateField(int32, *pb.FieldPath, bool, *pb.Field)
@@ -129,4 +130,18 @@ func AddPath(path string, s Store) error {
 		return nil
 	}
 	return filepath.WalkDir(path, wf)
+}
+
+func TotalVolume(s Store, root int32, graph pb.GraphType, query string) int64 {
+	var sz int64
+	wf := totalVolume(query, &sz)
+	s.Walk(root, graph, wf)
+	return sz
+}
+
+func RecordCount(s Store, root int32, graph pb.GraphType, query string, typs []pb.RecordType) int {
+	var count int
+	wf := countRecords(query, typs, &count)
+	s.Walk(root, graph, wf)
+	return count
 }

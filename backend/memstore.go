@@ -1,9 +1,11 @@
 package siplicity
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 
+	"github.com/dustin/go-humanize"
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
@@ -132,14 +134,32 @@ func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
 	if _, ok := m.reports["multiple"]; ok {
 		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MULTIPLE_IDENTIFICATION)
 	}
+	var dupes int32
 	if _, ok := m.reports["duplicates"]; ok {
 		for _, v := range m.reports["duplicates"] {
 			if v > 1 {
 				ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_DUPLICATES)
-				break
+				dupes += v
 			}
 		}
 	}
+	var message string
+	if len(ret.Report) > 0 {
+		inputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
+		if inputCount > 0 {
+			inputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "")
+			message = fmt.Sprintf("There are %d files in the input pane, with a total size of %s. ", inputCount, humanize.Bytes(uint64(inputSize)))
+		}
+		outputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
+		if outputCount > 0 {
+			outputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "")
+			message += fmt.Sprintf("There are %d files in the output pane, with a total size of %s. ", outputCount, humanize.Bytes(uint64(outputSize)))
+		}
+		if dupes > 0 {
+			message += fmt.Sprintf("There are %d duplicates.", dupes)
+		}
+	}
+	ret.Digest = message
 	return ret
 }
 
@@ -206,6 +226,32 @@ func (m *MemStore) Report(typ pb.ReportType) *pb.PreparedFeatureCountResponse {
 		})
 	}
 	return &pb.PreparedFeatureCountResponse{Features: feats}
+}
+
+func (m *MemStore) FeatureReport(root int32, graph pb.GraphType, feature *pb.FieldPath) *pb.CountFeaturesResponse {
+	count := make(map[string]int32)
+	wf := countFeatures(feature, &count)
+	m.Walk(root, graph, wf)
+	if empty, ok := count[""]; ok {
+		count["empty"] += empty
+		delete(count, "")
+	}
+	feats := make([]*pb.CountFeaturesResponse_Feature, len(count))
+	var i int
+	for k, v := range count {
+		feats[i] = &pb.CountFeaturesResponse_Feature{Value: k, Count: v}
+		i++
+	}
+	slices.SortFunc(feats, func(a, b *pb.CountFeaturesResponse_Feature) int {
+		if a.Value == "empty" {
+			return 1
+		}
+		if b.Value == "empty" {
+			return -1
+		}
+		return int(b.Count - a.Count)
+	})
+	return &pb.CountFeaturesResponse{Features: feats}
 }
 
 func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {

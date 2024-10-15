@@ -309,14 +309,15 @@ final $typed_data.Uint8List preparedFeatureAvailableRequestDescriptor = $convert
 const PreparedFeatureAvailableResponse$json = {
   '1': 'PreparedFeatureAvailableResponse',
   '2': [
-    {'1': 'report', '3': 1, '4': 3, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
+    {'1': 'digest', '3': 1, '4': 1, '5': 9, '10': 'digest'},
+    {'1': 'report', '3': 2, '4': 3, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
   ],
 };
 
 /// Descriptor for `PreparedFeatureAvailableResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List preparedFeatureAvailableResponseDescriptor = $convert.base64Decode(
-    'CiBQcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXNwb25zZRIwCgZyZXBvcnQYASADKA4yGC5zaX'
-    'BsaWNpdHkudjEuUmVwb3J0VHlwZVIGcmVwb3J0');
+    'CiBQcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXNwb25zZRIWCgZkaWdlc3QYASABKAlSBmRpZ2'
+    'VzdBIwCgZyZXBvcnQYAiADKA4yGC5zaXBsaWNpdHkudjEuUmVwb3J0VHlwZVIGcmVwb3J0');
 
 @$core.Deprecated('Use countFeaturesRequestDescriptor instead')
 const CountFeaturesRequest$json = {

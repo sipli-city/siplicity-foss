@@ -37,12 +37,12 @@ func countRecords(query string, typs []pb.RecordType, count *int) walkFunc {
 	}
 }
 
-
-func countFeatures(feature *pb.FieldPath, count *int) walkFunc {
-	
+func countFeatures(feature *pb.FieldPath, count *map[string]int32) walkFunc {
 	return func(rec *pb.GetRecordResponse, _ int) error {
-		
-		*count += 1
+		vals := getFieldValues(rec.GetMetadata(), feature)
+		for _, v := range vals {
+			(*count)[v] += 1
+		}
 		return nil
 	}
 }

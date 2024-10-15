@@ -6,6 +6,23 @@ part of 'features_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$featuresAvailableHash() => r'107727e58beb9b25dd8954f74ae4f840f8f14ae2';
+
+/// See also [featuresAvailable].
+@ProviderFor(featuresAvailable)
+final featuresAvailableProvider =
+    AutoDisposeFutureProvider<PreparedFeatureAvailableResponse>.internal(
+  featuresAvailable,
+  name: r'featuresAvailableProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$featuresAvailableHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FeaturesAvailableRef
+    = AutoDisposeFutureProviderRef<PreparedFeatureAvailableResponse>;
 String _$featuresHash() => r'25fa30695d525bbd1f615d48ab8c44a82541c9a1';
 
 /// Copied from Dart SDK
