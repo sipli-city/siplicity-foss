@@ -19,7 +19,10 @@ func Job(action string, filter string, store Store) error {
 	var act Action
 	switch action {
 	case "commit":
-		store.Walk(-1, pb.GraphType_GRAPH_TYPE_OUTPUT, commit())
+		err := store.Walk(-1, pb.GraphType_GRAPH_TYPE_OUTPUT, commit())
+		if err != nil {
+			return err
+		}
 		store.Purge(pb.GraphType_GRAPH_TYPE_OUTPUT)
 		return nil
 	case "bagit":

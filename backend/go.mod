@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	github.com/cespare/xxhash v1.1.0
+	github.com/dustin/go-humanize v1.0.1
 	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/richardlehane/msoleps v1.0.4
 	github.com/richardlehane/siegfried v1.11.1
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/richardlehane/characterize v1.0.0 // indirect
 	github.com/richardlehane/match v1.0.5 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect

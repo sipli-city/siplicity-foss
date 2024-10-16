@@ -138,7 +138,9 @@ func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
 	if _, ok := m.reports["duplicates"]; ok {
 		for _, v := range m.reports["duplicates"] {
 			if v > 1 {
-				ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_DUPLICATES)
+				if dupes == 0 {
+					ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_DUPLICATES)
+				}
 				dupes += v
 			}
 		}
@@ -148,15 +150,18 @@ func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
 		inputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
 		if inputCount > 0 {
 			inputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "")
-			message = fmt.Sprintf("There are %d files in the input pane, with a total size of %s. ", inputCount, humanize.Bytes(uint64(inputSize)))
+			message = fmt.Sprintf("%d files in the input pane, with a total size of %s.", inputCount, humanize.Bytes(uint64(inputSize)))
 		}
 		outputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
 		if outputCount > 0 {
+			if inputCount > 0 {
+				message += "\n"
+			}
 			outputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "")
-			message += fmt.Sprintf("There are %d files in the output pane, with a total size of %s. ", outputCount, humanize.Bytes(uint64(outputSize)))
+			message += fmt.Sprintf("%d files in the output pane, with a total size of %s.", outputCount, humanize.Bytes(uint64(outputSize)))
 		}
 		if dupes > 0 {
-			message += fmt.Sprintf("There are %d duplicates.", dupes)
+			message += fmt.Sprintf("\nThere are %d duplicates.", dupes)
 		}
 	}
 	ret.Digest = message

@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/analysis/widgets/feature_list.dart';
-import 'package:siplicity/analysis/widgets/funnel_chart.dart';
+import 'package:siplicity/analysis/widgets/bar_chart.dart';
 import 'package:siplicity/analysis/widgets/pie_chart.dart';
 import 'package:siplicity/analysis/widgets/line_chart.dart';
 import 'package:siplicity/analysis/widgets/progress_chart.dart';
@@ -17,13 +17,13 @@ class AnalysisItem extends StatelessWidget {
     switch (typ) {
       case ReportType.REPORT_TYPE_SIZES:
         title = "File sizes";
-        chart = FunnelChart(typ: typ);
+        chart = BarChart(typ: typ);
       case ReportType.REPORT_TYPE_MODIFIED:
         title = "Last modified date";
         chart = LineChart(typ: typ);
       case ReportType.REPORT_TYPE_DUPLICATES:
         title = "Duplicate files";
-        chart = FunnelChart(typ: typ);
+        chart = BarChart(typ: typ);
       case ReportType.REPORT_TYPE_EXTENSIONS:
         title = "File format extensions";
         chart = ProgressChart(typ: typ);
@@ -58,9 +58,13 @@ class AnalysisItem extends StatelessWidget {
                     style: FluentTheme.of(context).typography.subtitle,
                   ))
             ]),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [chart, SizedBox(width: 50), FeatureList(typ: typ)]),
+            Padding(
+                padding: EdgeInsets.only(left: 40),
+                child: Row(children: [
+                  chart,
+                  SizedBox(width: 50),
+                  FeatureList(typ: typ)
+                ])),
           ],
         ));
   }
