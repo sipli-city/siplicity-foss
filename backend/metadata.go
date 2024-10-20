@@ -106,6 +106,15 @@ func getFieldValues(meta []*pb.Metadata, path *pb.FieldPath) []string {
 	return ret
 }
 
+// get the first matching field (for many field responses need to use indexes)
+func getField(meta []*pb.Metadata, path *pb.FieldPath) *pb.Field {
+	p := getMetas(meta, path)
+	if len(p) == 0 {
+		return nil
+	}
+	return p[0].GetField()
+}
+
 func makePath(entries [][2]string, indexes []int32) *pb.FieldPath {
 	e := make([]*pb.FieldPath_Entry, len(entries))
 	for i, v := range entries {

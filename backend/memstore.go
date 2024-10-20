@@ -278,8 +278,7 @@ func sortFn(a, b *pb.ListRecordsResponse) int {
 	return strings.Compare(a.GetName(), b.GetName())
 }
 
-// recursive function to build a tree of records based on a given hierarchy
-func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+func (m *MemStore) makeResponse(id int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
 	if display != nil {
 		nm := getFieldValues(m.records[int(id)].GetMetadata(), display)
@@ -292,10 +291,22 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.Fi
 		Typ:  m.records[int(id)].GetTyp(),
 		Name: name,
 	}
+	if fields != nil {
+		ret.Fields = make([]*pb.Field, len(fields))
+		for i, f := range fields {
+			ret.Fields[i] = getField(m.records[int(id)].GetMetadata(), f)
+		}
+	}
+	return ret
+}
+
+// recursive function to build a tree of records based on a given hierarchy
+func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+	ret := m.makeResponse(id, display, fields)
 	children := hierarchy[id]
 	ret.Children = make([]*pb.ListRecordsResponse, len(children))
-	for i, v := range children {
-		ret.Children[i] = m.addNode(v, hierarchy, display, fields)
+	for idx, v := range children {
+		ret.Children[idx] = m.addNode(v, hierarchy, display, fields)
 	}
 	slices.SortFunc(ret.Children, sortFn)
 	return ret
@@ -311,7 +322,7 @@ func (m *MemStore) queryNodes(ret *[]int32, id int32, hierarchy map[int32][]int3
 	}
 }
 
-func (m *MemStore) ListRecords(id int32, graph pb.GraphType, query string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, query string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	if len(m.records) == 3 && id > 2 {
 		return nil
 	}
@@ -334,6 +345,18 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, query string, displ
 			resp.Name = "Input - Query: " + query
 		}
 		return resp
+	}
+	if page > 0 {
+		ids := t.page(page)
+		if ids == nil {
+			return nil
+		}
+		root := m.makeResponse(t.root, display, fields)
+		root.Children = make([]*pb.ListRecordsResponse, len(ids))
+		for i, id := range ids {
+			root.Children[i] = m.makeResponse(id, display, fields)
+		}
+		return root
 	}
 	return m.addNode(id, t.children, display, fields)
 }

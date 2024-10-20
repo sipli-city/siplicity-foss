@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:siplicity/workspace/provider/recorddetails_provider.dart';
+import 'package:siplicity/details/provider/recorddetails_provider.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 class RecordDetails extends ConsumerWidget {
@@ -89,7 +89,11 @@ List<TreeViewItem> addChildren(List<Metadata> metadata) {
               namespace: item.field_1.namespace,
               name: item.field_1.name,
               value: item.field_1.value),
-            value: (item.field_1.namespace, item.field_1.name, index), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
+          value: (
+            item.field_1.namespace,
+            item.field_1.name,
+            index
+          ), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
           children: addChildren(item.children)))
       .toList();
 }

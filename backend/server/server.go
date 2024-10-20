@@ -104,7 +104,7 @@ func (s *siplicityServiceServer) PreparedFeatureAvailable(ctx context.Context, i
 }
 
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetQuery(), in.GetDisplay(), in.GetFields()), nil
+	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetPage(), in.GetQuery(), in.GetDisplay(), in.GetFields()), nil
 }
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {

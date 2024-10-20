@@ -2,7 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
-import 'package:siplicity/workspace/widgets/record_details.dart';
+import 'package:siplicity/details/view/record_details.dart';
 
 class InputRecordsTree extends ConsumerWidget {
   const InputRecordsTree({super.key});
@@ -30,7 +30,7 @@ class InputRecordsTree extends ConsumerWidget {
           },
           onSecondaryTap: (item, details) async {},
         ),
-      _ => const Text('loading'),
+      _ => const Text(''),
     };
   }
 }
@@ -61,7 +61,7 @@ class OutputRecordsTree extends ConsumerWidget {
           },
           onSecondaryTap: (item, details) async {},
         ),
-      _ => const Text('loading'),
+      _ => const Text(''),
     };
   }
 }
