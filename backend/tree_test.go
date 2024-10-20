@@ -41,26 +41,26 @@ func TestNth(t *testing.T) {
 }
 
 func TestPage(t *testing.T) {
-	PAGESZ = 4
+	PAGESZ = 3
 	pg := TEST_TREE.page(2)
 	if len(pg) != PAGESZ {
 		t.Fatalf("pg is wrong size, got %d", len(pg))
 	}
-	if pg[0] != 8 || pg[1] != 6 || pg[2] != 3 || pg[3] != 9 {
+	if pg[0] != 8 || pg[1] != 6 || pg[2] != 3 {
 		t.Fatalf("pg has wrong contents got %v", pg)
 	}
 	first := TEST_TREE.page(1)
 	if len(first) != PAGESZ {
 		t.Fatalf("first is wrong size, got %d", len(first))
 	}
-	if first[0] != 1 || first[1] != 2 || first[2] != 5 || first[3] != 7 {
+	if first[0] != 2 || first[1] != 5 || first[2] != 7 {
 		t.Fatalf("first has wrong contents got %v", first)
 	}
 	last := TEST_TREE.page(3)
-	if len(last) != 1 {
+	if len(last) != 2 {
 		t.Fatalf("first is wrong size, got %d", len(last))
 	}
-	if last[0] != 4 {
+	if last[0] != 9 || last[1] != 4 {
 		t.Fatalf("last has wrong contents got %v", last)
 	}
 	finished := TEST_TREE.page(4)
