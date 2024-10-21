@@ -4,7 +4,7 @@ import 'package:siplicity/details/provider/recorddetails_provider.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 class SchemaDetails extends ConsumerWidget {
-  final int item = 0;
+  static const int item = 0; // SCHEMA record
   const SchemaDetails({super.key});
 
   @override
@@ -27,14 +27,7 @@ class SchemaDetails extends ConsumerWidget {
           ),
           actions: [
             Align(
-              alignment: Alignment.bottomLeft,
-              child: Button(
-                child: const Text('Add new field'),
-                onPressed: () {},
-              ),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomLeft,
                 child: FilledButton(
                   child: const Text('Confirm selection'),
                   onPressed: () =>
