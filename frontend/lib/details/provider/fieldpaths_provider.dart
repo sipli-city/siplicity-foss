@@ -10,7 +10,11 @@ class Fieldpaths extends _$Fieldpaths {
     return [];
   }
 
-    void selectionChanged(Iterable<int> selection) {
+    void confirmSelection(List<(String, String, int)> selection) {
     state = [];
+  }
+
+  List<(String,String, int)> asSelection() {
+    return [];
   }
 }

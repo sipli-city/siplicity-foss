@@ -4,12 +4,12 @@ import 'package:siplicity/details/provider/recorddetails_provider.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 class SchemaDetails extends ConsumerWidget {
-  static const int item = 0; // SCHEMA record
+  static const int schemaID = 0; 
   const SchemaDetails({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final details = ref.watch(recordDetailsProvider(item));
+    final details = ref.watch(recordDetailsProvider(schemaID));
 
     return switch (details) {
       AsyncData(:final value) => ContentDialog(
@@ -19,7 +19,7 @@ class SchemaDetails extends ConsumerWidget {
             child: TreeView(
               selectionMode: TreeViewSelectionMode.multiple,
               shrinkWrap: true,
-              items: addChildren(value.metadata, {}),
+              items: addChildren(value.metadata, {}, []),
               onItemInvoked: (item, details) async {},
               onSelectionChanged: (selectedItems) async {},
               onSecondaryTap: (item, details) async {},
@@ -62,23 +62,24 @@ InfoLabel metadataInput(
 }
 
 List<TreeViewItem> addChildren(
-    List<Metadata> metadata, Map<(String, String), int> indexes) {
+    List<Metadata> metadata, Map<(String, String), int> indexes, List<(String,String, int)> parents) {
   return metadata.map((item) {
     indexes.update(
       (item.field_1.namespace, item.field_1.name),
       (value) => ++value,
       ifAbsent: () => 0,
     );
+    parents.add((
+          item.field_1.namespace,
+          item.field_1.name,
+          indexes[(item.field_1.namespace, item.field_1.name)]!,
+        ));
     return TreeViewItem(
         content: metadataInput(
             namespace: item.field_1.namespace,
             name: item.field_1.name,
             value: item.field_1.value),
-        value: (
-          item.field_1.namespace,
-          item.field_1.name,
-          indexes[(item.field_1.namespace, item.field_1.name)],
-        ), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
-        children: addChildren(item.children, indexes));
+        value: parents, 
+        children: addChildren(item.children, indexes, [...parents]));
   }).toList();
 }
