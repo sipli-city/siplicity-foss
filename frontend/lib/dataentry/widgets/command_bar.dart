@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:siplicity/details/view/schema_details.dart';
 
 final class DataEntryCommandBar extends StatelessWidget {
   const DataEntryCommandBar({super.key});
@@ -31,7 +32,10 @@ final class DataEntryCommandBar extends StatelessWidget {
               wrappedItem: CommandBarButton(
                 icon: const Icon(FluentIcons.edit_table),
                 label: const Text('Select fields'),
-                onPressed: () {},
+                onPressed: () async {
+                  await showDialog<String>(
+                      context: context, builder: (context) => SchemaDetails());
+                },
               ),
             ),
           ],

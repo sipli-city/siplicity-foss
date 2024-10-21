@@ -6,6 +6,6 @@ class DataEntryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataEntryTable();
+    return SingleChildScrollView(child: DataEntryTable());
   }
 }
