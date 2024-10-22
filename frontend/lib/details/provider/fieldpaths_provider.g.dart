@@ -6,12 +6,12 @@ part of 'fieldpaths_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fieldpathsHash() => r'e39e1afca0cf5515c7293ad10c01d392599ced94';
+String _$fieldpathsHash() => r'e737f7717edfd21132881bef97ebde91c75f1764';
 
 /// See also [Fieldpaths].
 @ProviderFor(Fieldpaths)
 final fieldpathsProvider =
-    AutoDisposeNotifierProvider<Fieldpaths, List<FieldPath>>.internal(
+    AutoDisposeNotifierProvider<Fieldpaths, Iterable<FieldPath>?>.internal(
   Fieldpaths.new,
   name: r'fieldpathsProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final fieldpathsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$Fieldpaths = AutoDisposeNotifier<List<FieldPath>>;
+typedef _$Fieldpaths = AutoDisposeNotifier<Iterable<FieldPath>?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
