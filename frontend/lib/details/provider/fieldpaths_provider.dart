@@ -10,11 +10,13 @@ class Fieldpaths extends _$Fieldpaths {
     return [];
   }
 
-    void confirmSelection(List<(String, String, int)> selection) {
-    state = [];
+    void confirmSelection(List<List<(String, String, int)>> selection) {
+    state = selection.map((li) {
+      return FieldPath(entries: li.map((e) => FieldPath_Entry(namespace: e.$1, name: e.$2, index: e.$3)));
+    }).toList();
   }
 
-  List<(String,String, int)> asSelection() {
-    return [];
+  List<List<(String,String, int)>> asSelection() {
+    return state.map((fp) {return fp.entries.map((e) => (e.namespace, e.name, e.index)).toList();}).toList();
   }
 }
