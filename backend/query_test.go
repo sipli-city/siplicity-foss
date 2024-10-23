@@ -14,56 +14,56 @@ var TEST_RECORD = &pb.GetRecordResponse{
 }
 
 func TestQuery(t *testing.T) {
-	qf := parseQuery("Extension=png")
+	qf := parseQuery("Extension=png", nil)
 	if qf == nil {
 		t.Fatal("parsing extension query failed, got nil")
 	}
 	if !qf(TEST_RECORD) {
 		t.Fatal("png extension match fail")
 	}
-	qf = parseQuery("Extension=jpg")
+	qf = parseQuery("Extension=jpg", nil)
 	if qf == nil {
 		t.Fatal("parsing size query failed, got nil")
 	}
 	if qf(TEST_RECORD) {
 		t.Fatal("bad extension should fail")
 	}
-	qf = parseQuery("Size=20")
+	qf = parseQuery("Size=20", nil)
 	if qf == nil {
 		t.Fatal("parsing size query failed, got nil")
 	}
 	if !qf(TEST_RECORD) {
 		t.Fatal("size match fail")
 	}
-	qf = parseQuery("Size=30")
+	qf = parseQuery("Size=30", nil)
 	if qf == nil {
 		t.Fatal("parsing size query failed, got nil")
 	}
 	if qf(TEST_RECORD) {
 		t.Fatal("bad size should fail")
 	}
-	qf = parseQuery("pronom:id=fmt/412")
+	qf = parseQuery("pronom:id=fmt/412", nil)
 	if qf == nil {
 		t.Fatal("fmt metadata query failed, got nil")
 	}
 	if !qf(TEST_RECORD) {
 		t.Fatal("fmt metadata query match fail")
 	}
-	qf = parseQuery("pronom:id=fmt/413")
+	qf = parseQuery("pronom:id=fmt/413", nil)
 	if qf == nil {
 		t.Fatal("fmt metadata query failed, got nil")
 	}
 	if qf(TEST_RECORD) {
 		t.Fatal("bad fmt should fail")
 	}
-	qf = parseQuery(":hash=b7b88e84357eb1c7")
+	qf = parseQuery(":hash=b7b88e84357eb1c7", nil)
 	if qf == nil {
 		t.Fatal("hash metadata query failed, got nil")
 	}
 	if !qf(TEST_RECORD) {
 		t.Fatal("hash metadata query match fail")
 	}
-	qf = parseQuery(":hash=b7b88e84367eb1c7")
+	qf = parseQuery(":hash=b7b88e84367eb1c7", nil)
 	if qf == nil {
 		t.Fatal("hash metadata query failed, got nil")
 	}

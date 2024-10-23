@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/details/view/schema_details.dart';
+import 'package:siplicity/dataentry/widgets/filter.dart';
 
 final class DataEntryCommandBar extends StatelessWidget {
   const DataEntryCommandBar({super.key});
@@ -15,23 +16,27 @@ final class DataEntryCommandBar extends StatelessWidget {
           primaryItems: [
             CommandBarBuilderItem(
               builder: (context, mode, w) => Tooltip(
-                message: "Select graph",
+                message: "Choose a subset of records",
                 child: w,
               ),
               wrappedItem: CommandBarButton(
-                icon: const Icon(FluentIcons.graph_symbol),
-                label: const Text('Select graph'),
-                onPressed: () {},
+                icon: const Icon(FluentIcons.page_list_filter),
+                label: const Text('Filter'),
+                onPressed: () async {
+                  await showDialog<String>(
+                      context: context,
+                      builder: (context) => FilterSelection());
+                },
               ),
             ),
             CommandBarBuilderItem(
               builder: (context, mode, w) => Tooltip(
-                message: "Select metadata columns",
+                message: "Define metadata columns",
                 child: w,
               ),
               wrappedItem: CommandBarButton(
                 icon: const Icon(FluentIcons.edit_table),
-                label: const Text('Select fields'),
+                label: const Text('Choose fields'),
                 onPressed: () async {
                   await showDialog<String>(
                       context: context, builder: (context) => SchemaDetails());

@@ -76,7 +76,7 @@ var TEST_MEMSTORE = &MemStore{
 }
 
 func TestQueryList(t *testing.T) {
-	qf := parseQuery(":id=fmt/412")
+	qf := parseQuery(":id=fmt/412", nil)
 	ret := make([]int32, 0, 5)
 	TEST_MEMSTORE.queryNodes(&ret, TEST_MEMSTORE.lTree.root, TEST_MEMSTORE.lTree.children, qf)
 	if len(ret) != 2 {

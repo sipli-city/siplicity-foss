@@ -24,9 +24,11 @@ const (
 
 func NewMemStore() *MemStore {
 	records := make([]*pb.GetRecordResponse, 3, 1000)
-	records[int(SCHEMA)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_SCHEMA, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Schema"}}}}
-	records[int(INPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input - add content to get started"}}}}
-	records[int(OUTPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output"}}}}
+	records[int(SCHEMA)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_SCHEMA, Metadata: []*pb.Metadata{
+		{Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "Schema"}},
+		{Field: &pb.Field{Namespace: "siplicity", Name: "output_name"}}}}
+	records[int(INPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "Input - add content to get started"}}}}
+	records[int(OUTPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "output_name", Value: "Output"}}}}
 	// populate schema
 	records[int(SCHEMA)].Metadata = append(records[int(SCHEMA)].Metadata, fileinfoSchema())
 	return &MemStore{
@@ -61,7 +63,7 @@ func (m *MemStore) UpdateRecord(id int32, r *pb.GetRecordResponse) {
 	}
 }
 
-func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.Field) {
+func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.Field) { // field is the last element of the fieldpath if overwrite == true; if overwrite is false, fieldpath should go to the parent
 	if id < 0 && int(id) >= len(m.records) {
 		return
 	}
@@ -69,12 +71,27 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.
 	if p != nil {
 		parent := getMetas(m.records[int(id)].GetMetadata(), p)
 		if len(parent) != 1 {
-			return
-		}
-		if overwrite {
-			meta = parent[0]
+			place := &(m.records[int(id)].Metadata)
+			for idx, entry := range p.GetEntries() {
+				parent = getMetas(*place, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{entry}})
+				if len(parent) == 1 {
+					place = &(parent[0].Children)
+				} else {
+					if idx == len(p.GetEntries())-1 {
+						*place = append(*place, meta)
+					} else {
+						child := &pb.Metadata{Field: &pb.Field{Namespace: *entry.Namespace, Name: entry.Name, Value: *entry.Value}}
+						_ = append(*place, child)
+						place = &(child.Children)
+					}
+				}
+			}
 		} else {
-			parent[0].Children = append(parent[0].Children, meta)
+			if overwrite {
+				meta = parent[0]
+			} else {
+				parent[0].Children = append(parent[0].Children, meta)
+			}
 		}
 	} else {
 		if overwrite {
@@ -82,9 +99,9 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.
 			if len(existing) == 1 {
 				existing[0].Field = f
 				if f.GetName() == "output_location" {
-					m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+					m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "output_name"}}, nil),
 						true,
-						&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+						&pb.Field{Namespace: "siplicity", Name: "output_name", Value: "Output - " + f.Value},
 					)
 				}
 				return
@@ -94,9 +111,9 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.
 	}
 	meta.Field = f
 	if f.GetName() == "output_location" {
-		m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "display_name"}}, nil),
+		m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "output_name"}}, nil),
 			true,
-			&pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Output - " + f.Value},
+			&pb.Field{Namespace: "siplicity", Name: "output_name", Value: "Output - " + f.Value},
 		)
 	}
 }
@@ -278,12 +295,26 @@ func sortFn(a, b *pb.ListRecordsResponse) int {
 	return strings.Compare(a.GetName(), b.GetName())
 }
 
-func (m *MemStore) makeResponse(id int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+var siplNamespace = "siplicity"
+
+func (m *MemStore) makeResponse(id int32, display displayTyp, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
-	if display != nil {
-		nm := getFieldValues(m.records[int(id)].GetMetadata(), display)
-		if len(nm) == 1 {
-			name = nm[0]
+	if display > 0 {
+		if display == OUTPUT_DISPLAY {
+			nm := getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "output_name"}}})
+			if len(nm) > 0 {
+				name = nm[0]
+			} else {
+				nm = getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
+				if len(nm) > 0 {
+					name = nm[0]
+				}
+			}
+		} else {
+			nm := getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
+			if len(nm) > 0 {
+				name = nm[0]
+			}
 		}
 	}
 	ret := &pb.ListRecordsResponse{
@@ -301,7 +332,7 @@ func (m *MemStore) makeResponse(id int32, display *pb.FieldPath, fields []*pb.Fi
 }
 
 // recursive function to build a tree of records based on a given hierarchy
-func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display displayTyp, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	ret := m.makeResponse(id, display, fields)
 	children := hierarchy[id]
 	ret.Children = make([]*pb.ListRecordsResponse, len(children))
@@ -322,7 +353,15 @@ func (m *MemStore) queryNodes(ret *[]int32, id int32, hierarchy map[int32][]int3
 	}
 }
 
-func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, query string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
+type displayTyp uint8
+
+const (
+	PATH_DISPLAY displayTyp = iota
+	INPUT_DISPLAY
+	OUTPUT_DISPLAY
+)
+
+func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, display bool, query string, typs []pb.RecordType, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	if len(m.records) == 3 && id > 2 {
 		return nil
 	}
@@ -330,14 +369,19 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, query s
 	if id < 0 {
 		id = t.root
 	}
-	if query != "" {
-		qf := parseQuery(query)
-		if qf == nil {
-			return nil
+	var dtyp displayTyp
+	if display {
+		if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+			dtyp = OUTPUT_DISPLAY
+		} else {
+			dtyp = INPUT_DISPLAY
 		}
+	}
+	if query != "" || len(typs) > 0 {
+		qf := parseQuery(query, typs)
 		ids := make([]int32, 0, 100)
 		m.queryNodes(&ids, id, t.children, qf)
-		resp := m.addNode(id, t.hierarchy(ids), display, fields)
+		resp := m.addNode(id, t.hierarchy(ids), dtyp, fields)
 		switch resp.GetName() {
 		case "Input":
 			resp.Name = "Input - Query: " + query
@@ -351,14 +395,14 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, query s
 		if ids == nil {
 			return nil
 		}
-		root := m.makeResponse(t.root, display, fields)
+		root := m.makeResponse(t.root, dtyp, fields)
 		root.Children = make([]*pb.ListRecordsResponse, len(ids))
 		for i, id := range ids {
-			root.Children[i] = m.makeResponse(id, display, fields)
+			root.Children[i] = m.makeResponse(id, dtyp, fields)
 		}
 		return root
 	}
-	return m.addNode(id, t.children, display, fields)
+	return m.addNode(id, t.children, dtyp, fields)
 }
 
 func (m *MemStore) Drop(n int32, graph pb.GraphType) {

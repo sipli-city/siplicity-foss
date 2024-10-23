@@ -8,7 +8,7 @@ import (
 
 var TEST_METADATA = []*pb.Metadata{
 	{
-		Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "file.pdf"},
+		Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "file.pdf"},
 	},
 	{
 		Field: &pb.Field{
@@ -189,7 +189,7 @@ var TEST_METADATA = []*pb.Metadata{
 
 var TEST_METADATA_A = []*pb.Metadata{
 	{
-		Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "file2.png"},
+		Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "file2.png"},
 	},
 	{
 		Field: &pb.Field{
@@ -370,7 +370,7 @@ var TEST_METADATA_A = []*pb.Metadata{
 
 var TEST_METADATA_B = []*pb.Metadata{
 	{
-		Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "file3.png"},
+		Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "file3.png"},
 	},
 	{
 		Field: &pb.Field{

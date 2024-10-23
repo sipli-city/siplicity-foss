@@ -24,7 +24,7 @@ type Store interface {
 	AttachChild(int32, int32, pb.GraphType)
 	AdoptChildren(int32, int32, pb.GraphType)
 	Get(int32) *pb.GetRecordResponse
-	ListRecords(int32, pb.GraphType, int32, string, *pb.FieldPath, []*pb.FieldPath) *pb.ListRecordsResponse
+	ListRecords(int32, pb.GraphType, int32, bool, string, []pb.RecordType, []*pb.FieldPath) *pb.ListRecordsResponse
 	Ids(string) []int32
 	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
 	UnlinkRecords(graph pb.GraphType, nodes []int32)
@@ -63,7 +63,8 @@ func sizeBucket(sz int64) string {
 }
 
 func AddPath(path string, s Store) error {
-	s.UpdateField(INPUT_GRAPH, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, true, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
+	s.UpdateField(INPUT_GRAPH, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace,
+		Name: "input_name"}}}, true, &pb.Field{Namespace: "siplicity", Name: "input_name", Value: "Input"})
 	stackSize := 20
 	strStack := make([]string, stackSize)
 	nidStack := make([]int32, stackSize)
@@ -87,7 +88,7 @@ func AddPath(path string, s Store) error {
 			Size: info.Size(),
 		}
 		rec.Metadata = append(rec.Metadata, &pb.Metadata{
-			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
+			Field: &pb.Field{Namespace: "siplicity", Name: "input_name", Value: filepath.Base(p)},
 		})
 		if typ == pb.RecordType_RECORD_TYPE_FILE {
 			s.AddReport("sizes", sizeBucket(rec.Size))

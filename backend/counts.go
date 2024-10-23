@@ -1,38 +1,25 @@
 package siplicity
 
 import (
-	"slices"
-
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 func totalVolume(query string, sz *int64) walkFunc {
-	var qf queryFunc
-	if query != "" {
-		qf = parseQuery(query)
-	}
+	qf := parseQuery(query, nil)
 	return func(rec *pb.GetRecordResponse, _ int) error {
-		if qf != nil && !qf(rec) {
-			return nil
+		if qf(rec) {
+			*sz += rec.GetSize()
 		}
-		*sz += rec.GetSize()
 		return nil
 	}
 }
 
 func countRecords(query string, typs []pb.RecordType, count *int) walkFunc {
-	var qf queryFunc
-	if query != "" {
-		qf = parseQuery(query)
-	}
+	qf := parseQuery(query, typs)
 	return func(rec *pb.GetRecordResponse, _ int) error {
-		if qf != nil && !qf(rec) {
-			return nil
+		if qf(rec) {
+			*count += 1
 		}
-		if len(typs) > 0 && !slices.Contains(typs, rec.GetTyp()) {
-			return nil
-		}
-		*count += 1
 		return nil
 	}
 }

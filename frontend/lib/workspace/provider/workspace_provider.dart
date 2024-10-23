@@ -49,15 +49,11 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
 class InputRecords extends _$InputRecords {
   @override
   Future<List<TreeViewItem>> build() async {
-    final response =
-        await siplicityServiceClient.listRecords(ListRecordsRequest(
+    final response = await siplicityServiceClient.listRecords(
+        ListRecordsRequest(
             id: -1,
             graph: GraphType.GRAPH_TYPE_INPUT,
-            display: FieldPath(
-              entries: <FieldPath_Entry>[
-                FieldPath_Entry(namespace: "siplicity", name: "display_name"),
-              ],
-            ),
+            display: true,
             query: ref.watch(queryRecordsProvider)));
     final query = ref.watch(queryRecordsProvider);
     final root = (query == null)
@@ -157,11 +153,7 @@ class OutputRecords extends _$OutputRecords {
   Future<List<TreeViewItem>> build() async {
     final response = await siplicityServiceClient.listRecords(
         ListRecordsRequest(
-            id: -1,
-            graph: GraphType.GRAPH_TYPE_OUTPUT,
-            display: FieldPath(entries: <FieldPath_Entry>[
-              FieldPath_Entry(namespace: "siplicity", name: "display_name")
-            ])));
+            id: -1, graph: GraphType.GRAPH_TYPE_OUTPUT, display: true));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,
