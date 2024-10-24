@@ -5,7 +5,7 @@ import (
 )
 
 func totalVolume(query string, sz *int64) walkFunc {
-	qf := parseQuery(query, nil)
+	qf := parseQuery(query)
 	return func(rec *pb.GetRecordResponse, _ int) error {
 		if qf(rec) {
 			*sz += rec.GetSize()
@@ -15,7 +15,7 @@ func totalVolume(query string, sz *int64) walkFunc {
 }
 
 func countRecords(query string, typs []pb.RecordType, count *int) walkFunc {
-	qf := parseQuery(query, typs)
+	qf := jointQuery(parseQuery(query), recordTypQuery(typs))
 	return func(rec *pb.GetRecordResponse, _ int) error {
 		if qf(rec) {
 			*count += 1

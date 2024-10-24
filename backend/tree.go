@@ -33,15 +33,19 @@ func (t *tree) nth(n, this int, idx int32) (int, int32) {
 	return this, 0
 }
 
-func (t *tree) addToPage(start int, end int, this int, idx int32, ret []int32) int {
-	if this >= start {
+func (t *tree) addToPage(start int, end int, this int, idx int32, ret []int32, w wrappedQuery) int {
+	matches := w(idx)
+	if this >= start && matches {
 		ret[this-start] = idx
 	}
-	if this == end {
+	if matches && this == end {
 		return this
 	}
 	for _, child := range t.children[idx] {
-		this = t.addToPage(start, end, this+1, child, ret)
+		if matches {
+			this += 1
+		}
+		this = t.addToPage(start, end, this, child, ret, w)
 		if this == end {
 			return this
 		}
@@ -51,11 +55,11 @@ func (t *tree) addToPage(start int, end int, this int, idx int32, ret []int32) i
 
 // returns a slice of IDs for a page-sized section of a flattened tree
 // skips the root node
-func (t *tree) page(pg int32) []int32 {
+func (t *tree) page(pg int32, w wrappedQuery) []int32 {
 	ret := make([]int32, PAGESZ)
 	start := ((int(pg) - 1) * PAGESZ) + 1
 	end := start + PAGESZ - 1
-	len := t.addToPage(start, end, 0, t.root, ret)
+	len := t.addToPage(start, end, 0, t.root, ret, w)
 	if len < start {
 		return nil
 	}

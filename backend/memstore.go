@@ -377,8 +377,8 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, display
 			dtyp = INPUT_DISPLAY
 		}
 	}
-	if query != "" || len(typs) > 0 {
-		qf := parseQuery(query, typs)
+	if page == 0 && query != "" {
+		qf := parseQuery(query)
 		ids := make([]int32, 0, 100)
 		m.queryNodes(&ids, id, t.children, qf)
 		resp := m.addNode(id, t.hierarchy(ids), dtyp, fields)
@@ -391,7 +391,7 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, display
 		return resp
 	}
 	if page > 0 {
-		ids := t.page(page)
+		ids := t.page(page, makeWrappedQuery(m, jointQuery(parseQuery(query), recordTypQuery(typs))))
 		if ids == nil {
 			return nil
 		}
