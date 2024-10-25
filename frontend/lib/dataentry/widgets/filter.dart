@@ -51,7 +51,7 @@ class FilterSelectionState extends ConsumerState<FilterSelection> {
         Align(
             alignment: Alignment.bottomLeft,
             child: InfoLabel(
-              label: 'Graph',
+              label: 'Record Types',
               child: ComboBox<int>(
                 value: _rectyp,
                 items: [
