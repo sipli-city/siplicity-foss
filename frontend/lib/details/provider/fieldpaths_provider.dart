@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 
 part 'fieldpaths_provider.g.dart';
 
@@ -20,11 +21,14 @@ class Fieldpaths extends _$Fieldpaths {
   }
 
   void confirmSelection(List<List<(String, String, int)>> selection) {
+    debugPrint(selection.toString());
     state = selection.map((li) {
       return FieldPath(
           entries: li.map((e) =>
               FieldPath_Entry(namespace: e.$1, name: e.$2, index: e.$3)));
     });
+    debugPrint(state!.length.toString());
+    debugPrint(state.toString());
   }
 
   List<List<(String, String, int)>> asSelection() {

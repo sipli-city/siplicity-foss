@@ -551,6 +551,7 @@ var TEST_METADATA_B = []*pb.Metadata{
 
 func TestFindMetas(t *testing.T) {
 	ns := "siplicity"
+	ns2 := "siplicity_windows"
 	// Simple search namespace/name
 	metas := findMetas(TEST_METADATA, &pb.FieldPath_Entry{Namespace: &ns, Name: "hash"})
 	if len(metas) != 2 {
@@ -570,5 +571,19 @@ func TestFindMetas(t *testing.T) {
 	}})
 	if len(metas) != 1 || metas[0].Field.Value != "686a54d206f7a37325242b21702f21c5" {
 		t.Fatalf("Expecting one metas, got %d\n", len(metas))
+	}
+	field := getField(TEST_METADATA_B, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{
+		{Namespace: &ns2, Name: "file_information_basic"},
+		{Namespace: &ns2, Name: "CreationTime"},
+	}})
+	if field.Value != "2024-10-17T22:45:47+11:00" {
+		t.Fatal("Failed first time to retrieve from extended path")
+	}
+	field = getField(TEST_METADATA_B, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{
+		{Namespace: &ns2, Name: "file_information_basic"},
+		{Namespace: &ns2, Name: "CreationTime"},
+	}})
+	if field == nil || field.Value != "2024-10-17T22:45:47+11:00" {
+		t.Fatal("Failed second time to retrieve from extended path")
 	}
 }

@@ -61,6 +61,7 @@ class SchemaDetailsState extends ConsumerState<SchemaDetails> {
   void initState() {
     super.initState();
     _fieldselection = ref.read(fieldpathsProvider.notifier).asSelection();
+    debugPrint(_fieldselection.toString());
   }
 
   @override

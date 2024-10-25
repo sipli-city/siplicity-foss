@@ -87,12 +87,12 @@ func (d *dSiplicityServiceServer) PreparedFeatureAvailable(ctx context.Context, 
 }
 
 func (d *dSiplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	log.Printf("List records: %d (id), %d (graph), %d (page), %d (display), %s (query), %v (typs), %v (fields)", in.GetId(), in.GetGraph(), in.GetPage(), in.GetDisplay(), in.GetQuery(), in.GetTyps(), in.GetFields())
+	log.Printf("List records: %d (id), %d (graph), %d (page), %t (display), %s (query), %v (typs), %v (fields), %d (len fields)", in.GetId(), in.GetGraph(), in.GetPage(), in.GetDisplay(), in.GetQuery(), in.GetTyps(), in.GetFields(), len(in.GetFields()))
 	return d.ss.ListRecords(ctx, in)
 }
 
 func (d *dSiplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {
-	log.Printf("Get %d\n")
+	log.Printf("Get %d\n", in.GetId())
 	return d.ss.GetRecord(ctx, in)
 }
 
