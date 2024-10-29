@@ -15,6 +15,12 @@ require (
 )
 
 require (
+	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.1 // indirect
+	github.com/keygen-sh/go-update v1.0.0 // indirect
+	github.com/keygen-sh/jsonapi-go v1.2.1 // indirect
+	github.com/keygen-sh/keygen-go/v3 v3.2.0 // indirect
+	github.com/oasisprotocol/curve25519-voi v0.0.0-20211102120939-d5a936accd94 // indirect
 	github.com/richardlehane/characterize v1.0.0 // indirect
 	github.com/richardlehane/match v1.0.5 // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect

@@ -8,6 +8,7 @@ service SiplicityService {
   rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {}
   rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
   rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
+  rpc PutLicense(PutLicenseRequest) returns (PutLicenseResponse) {}
   rpc CountRecords(CountRecordsRequest) returns (CountRecordsResponse) {}
   rpc TotalVolume(TotalVolumeRequest) returns (TotalVolumeResponse) {}
   rpc CountFeatures(CountFeaturesRequest) returns (CountFeaturesResponse) {}
@@ -59,6 +60,15 @@ message PutJobRequest {
 
 message PutJobResponse {
   int32 status = 1;
+}
+
+message PutLicenseRequest {
+  string license = 1;
+}
+
+message PutLicenseResponse {
+  bool success = 1;
+  optional string message = 2;
 }
 
 enum GraphType {

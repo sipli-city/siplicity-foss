@@ -406,6 +406,120 @@ class PutJobResponse extends $pb.GeneratedMessage {
   void clearStatus() => clearField(1);
 }
 
+class PutLicenseRequest extends $pb.GeneratedMessage {
+  factory PutLicenseRequest({
+    $core.String? license,
+  }) {
+    final $result = create();
+    if (license != null) {
+      $result.license = license;
+    }
+    return $result;
+  }
+  PutLicenseRequest._() : super();
+  factory PutLicenseRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PutLicenseRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PutLicenseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'license')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PutLicenseRequest clone() => PutLicenseRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PutLicenseRequest copyWith(void Function(PutLicenseRequest) updates) => super.copyWith((message) => updates(message as PutLicenseRequest)) as PutLicenseRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PutLicenseRequest create() => PutLicenseRequest._();
+  PutLicenseRequest createEmptyInstance() => create();
+  static $pb.PbList<PutLicenseRequest> createRepeated() => $pb.PbList<PutLicenseRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PutLicenseRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PutLicenseRequest>(create);
+  static PutLicenseRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get license => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set license($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasLicense() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearLicense() => clearField(1);
+}
+
+class PutLicenseResponse extends $pb.GeneratedMessage {
+  factory PutLicenseResponse({
+    $core.bool? success,
+    $core.String? message,
+  }) {
+    final $result = create();
+    if (success != null) {
+      $result.success = success;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    return $result;
+  }
+  PutLicenseResponse._() : super();
+  factory PutLicenseResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PutLicenseResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PutLicenseResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOS(2, _omitFieldNames ? '' : 'message')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PutLicenseResponse clone() => PutLicenseResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PutLicenseResponse copyWith(void Function(PutLicenseResponse) updates) => super.copyWith((message) => updates(message as PutLicenseResponse)) as PutLicenseResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PutLicenseResponse create() => PutLicenseResponse._();
+  PutLicenseResponse createEmptyInstance() => create();
+  static $pb.PbList<PutLicenseResponse> createRepeated() => $pb.PbList<PutLicenseResponse>();
+  @$core.pragma('dart2js:noInline')
+  static PutLicenseResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PutLicenseResponse>(create);
+  static PutLicenseResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get message => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set message($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
+}
+
 class TotalVolumeRequest extends $pb.GeneratedMessage {
   factory TotalVolumeRequest({
     $core.int? id,

@@ -191,6 +191,35 @@ const PutJobResponse$json = {
 final $typed_data.Uint8List putJobResponseDescriptor = $convert.base64Decode(
     'Cg5QdXRKb2JSZXNwb25zZRIWCgZzdGF0dXMYASABKAVSBnN0YXR1cw==');
 
+@$core.Deprecated('Use putLicenseRequestDescriptor instead')
+const PutLicenseRequest$json = {
+  '1': 'PutLicenseRequest',
+  '2': [
+    {'1': 'license', '3': 1, '4': 1, '5': 9, '10': 'license'},
+  ],
+};
+
+/// Descriptor for `PutLicenseRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List putLicenseRequestDescriptor = $convert.base64Decode(
+    'ChFQdXRMaWNlbnNlUmVxdWVzdBIYCgdsaWNlbnNlGAEgASgJUgdsaWNlbnNl');
+
+@$core.Deprecated('Use putLicenseResponseDescriptor instead')
+const PutLicenseResponse$json = {
+  '1': 'PutLicenseResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'message', '17': true},
+  ],
+  '8': [
+    {'1': '_message'},
+  ],
+};
+
+/// Descriptor for `PutLicenseResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List putLicenseResponseDescriptor = $convert.base64Decode(
+    'ChJQdXRMaWNlbnNlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIdCgdtZXNzYW'
+    'dlGAIgASgJSABSB21lc3NhZ2WIAQFCCgoIX21lc3NhZ2U=');
+
 @$core.Deprecated('Use totalVolumeRequestDescriptor instead')
 const TotalVolumeRequest$json = {
   '1': 'TotalVolumeRequest',
