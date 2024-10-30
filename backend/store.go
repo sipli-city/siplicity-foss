@@ -2,6 +2,7 @@ package siplicity
 
 import (
 	"fmt"
+	"io"
 	"io/fs"
 	"path/filepath"
 	"strings"
@@ -11,7 +12,7 @@ import (
 
 const MonthOnly = "2006-01"
 
-type walkFunc func(*pb.GetRecordResponse, int) error
+type walkFunc func(*pb.GetRecordResponse, int32, int) error
 
 type Store interface {
 	AddReport(string, string)
@@ -30,6 +31,8 @@ type Store interface {
 	UnlinkRecords(graph pb.GraphType, nodes []int32)
 	Purge(graph pb.GraphType)
 	Walk(int32, pb.GraphType, walkFunc) error
+	Contents(int32) io.Reader
+	PutContents(int32, io.Reader)
 }
 
 const (
