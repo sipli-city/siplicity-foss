@@ -33,6 +33,11 @@ type Store interface {
 	Walk(int32, pb.GraphType, walkFunc) error
 	Contents(int32) io.Reader
 	PutContents(int32, io.Reader)
+	Empty(pb.GraphType) bool
+	Parent(pb.GraphType, int32) int32
+	Up(pb.GraphType, int32)
+	Down(pb.GraphType, int32)
+	Name(pb.GraphType, int32) string
 }
 
 const (
@@ -63,6 +68,18 @@ func sizeBucket(sz int64) string {
 	default:
 		return sizeLabels[7]
 	}
+}
+
+func Flatten(s Store, graph pb.GraphType, id int32) {
+	s.AdoptChildren(id, s.Parent(graph, id), graph)
+	s.UnlinkRecords(graph, []int32{id})
+}
+
+func NewParent(s Store, graph pb.GraphType, id int32, selection []int32) {
+	name := s.Name(graph, id)
+	name = strings.TrimSuffix(name, filepath.Ext(name))
+	parent := s.PutChild(s.Parent(graph, id), &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY, Path: name}, graph)
+	s.AttachChild(parent, id, graph)
 }
 
 func AddPath(path string, s Store) error {

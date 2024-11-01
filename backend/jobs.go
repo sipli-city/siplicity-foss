@@ -5,6 +5,7 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
+	"errors"
 	"fmt"
 	"hash/crc32"
 
@@ -19,6 +20,9 @@ func Job(action string, filter string, store Store) error {
 	var act Action
 	switch action {
 	case "commit":
+		if store.Empty(pb.GraphType_GRAPH_TYPE_OUTPUT) {
+			return errors.New("nothing to commit")
+		}
 		err := store.Walk(-1, pb.GraphType_GRAPH_TYPE_OUTPUT, commit(store))
 		if err != nil {
 			return err

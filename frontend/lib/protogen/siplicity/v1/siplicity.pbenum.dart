@@ -107,5 +107,26 @@ class RecordType extends $pb.ProtobufEnum {
   const RecordType._($core.int v, $core.String n) : super(v, n);
 }
 
+class EditType extends $pb.ProtobufEnum {
+  static const EditType EDIT_TYPE_UNSPECIFIED = EditType._(0, _omitEnumNames ? '' : 'EDIT_TYPE_UNSPECIFIED');
+  static const EditType EDIT_TYPE_FLATTEN = EditType._(1, _omitEnumNames ? '' : 'EDIT_TYPE_FLATTEN');
+  static const EditType EDIT_TYPE_MOVE_UP = EditType._(2, _omitEnumNames ? '' : 'EDIT_TYPE_MOVE_UP');
+  static const EditType EDIT_TYPE_MOVE_DOWN = EditType._(3, _omitEnumNames ? '' : 'EDIT_TYPE_MOVE_DOWN');
+  static const EditType EDIT_TYPE_NEW_PARENT = EditType._(4, _omitEnumNames ? '' : 'EDIT_TYPE_NEW_PARENT');
+
+  static const $core.List<EditType> values = <EditType> [
+    EDIT_TYPE_UNSPECIFIED,
+    EDIT_TYPE_FLATTEN,
+    EDIT_TYPE_MOVE_UP,
+    EDIT_TYPE_MOVE_DOWN,
+    EDIT_TYPE_NEW_PARENT,
+  ];
+
+  static final $core.Map<$core.int, EditType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static EditType? valueOf($core.int value) => _byValue[value];
+
+  const EditType._($core.int v, $core.String n) : super(v, n);
+}
+
 
 const _omitEnumNames = $core.bool.fromEnvironment('protobuf.omit_enum_names');

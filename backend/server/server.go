@@ -127,6 +127,30 @@ func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.Unlin
 	return nil, nil
 }
 
+func (s *siplicityServiceServer) EditGraph(ctx context.Context, in *pb.EditGraphRequest) (*pb.EditGraphResponse, error) {
+	switch in.GetTyp() {
+	case pb.EditType_EDIT_TYPE_FLATTEN:
+		siplicity.Flatten(s.store, pb.GraphType_GRAPH_TYPE_OUTPUT, in.GetId())
+	case pb.EditType_EDIT_TYPE_MOVE_UP:
+		s.store.Up(pb.GraphType_GRAPH_TYPE_OUTPUT, in.GetId())
+	case pb.EditType_EDIT_TYPE_MOVE_DOWN:
+		s.store.Down(pb.GraphType_GRAPH_TYPE_OUTPUT, in.GetId())
+	case pb.EditType_EDIT_TYPE_NEW_PARENT:
+		siplicity.NewParent(s.store, in.GetGraph(), in.GetId(), in.GetRecords().GetId())
+	}
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) PutLicense(ctx context.Context, in *pb.PutLicenseRequest) (*pb.PutLicenseResponse, error) {
+	siplicity.PutLicense(in.GetKey(), in.GetLicense())
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) GetLicensed(ctx context.Context, in *pb.GetLicensedRequest) (*pb.GetLicensedResponse, error) {
+	k, c, _ := siplicity.LoadLicense()
+	return &pb.GetLicensedResponse{Success: siplicity.LICENSED, Message: &siplicity.LICENSED_MESSAGE, Key: &k, License: &c}, nil
+}
+
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
 	go s.srv.Stop()
 	return &pb.ShutdownResponse{Success: true}, nil

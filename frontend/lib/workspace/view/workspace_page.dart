@@ -54,8 +54,7 @@ class RecordsPage extends ConsumerWidget {
               child: Container(
                   padding: const EdgeInsets.only(top: 8.0),
                   alignment: Alignment.topLeft,
-                  child:
-                      const SingleChildScrollView(child: OutputRecordsTree())))
+                  child: SingleChildScrollView(child: OutputRecordsTree())))
         ]))
       ],
     );

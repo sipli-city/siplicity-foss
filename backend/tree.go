@@ -6,18 +6,118 @@ import (
 
 var PAGESZ int = 100
 
+func deleteIdx(slc []int32, idx int32) []int32 {
+	return slices.DeleteFunc(slc, func(e int32) bool { return e == idx })
+}
+
 type tree struct {
 	root     int32
+	sortFn   func(a, b int32) int
 	parents  map[int32]int32
 	children map[int32][]int32
 }
 
-func newTree(root int32) *tree {
+func newTree(root int32, sfn func(a, b int32) int) *tree {
 	return &tree{
 		root,
+		sfn,
 		make(map[int32]int32),
 		make(map[int32][]int32),
 	}
+}
+
+// is the tree empty?
+func (t *tree) empty() bool {
+	return len(t.children[t.root]) == 0
+}
+
+// completely empty the tree
+func (t *tree) purge() {
+	for k := range t.parents {
+		delete(t.parents, k)
+	}
+	for k := range t.children {
+		delete(t.children, k)
+	}
+}
+
+// reorder at the parent level
+func (t *tree) orderChildren(id int32) {
+	slices.SortFunc(t.children[id], t.sortFn)
+}
+
+// reorder at the node level. Triggered by name changes or node additions
+func (t *tree) reorder(id int32) {
+	t.orderChildren(t.parents[id])
+}
+
+// recursively descend to the lowest run of the previous container
+func (t *tree) descend(idx int32, cfn func(int32) bool) int32 {
+	for i := len(t.children[idx]) - 1; i >= 0; i-- {
+		if cfn(t.children[idx][i]) {
+			return t.descend(t.children[idx][i], cfn)
+		}
+	}
+	return idx
+}
+
+// move a node up the tree
+func (t *tree) up(idx int32, cfn func(int32) bool) {
+	var target int32
+	parent := t.parents[idx]
+	// we can't go higher than root
+	if parent == t.root {
+		return
+	}
+	// if we don't have a container sibling, we ascend
+	if target == 0 {
+		target = t.parents[parent]
+		var prev bool
+		for i := len(t.children[target]) - 1; i >= 0; i-- {
+			if prev && cfn(t.children[target][i]) {
+				target = t.descend(t.children[target][i], cfn)
+				break
+			}
+			if t.children[target][i] == parent {
+				prev = true
+			}
+		}
+	}
+	// now do the switch
+	t.parents[idx] = target
+	t.children[target] = append(t.children[target], idx)
+	t.children[parent] = deleteIdx(t.children[parent], idx)
+	t.reorder(idx)
+}
+
+// recursively ascend to reach the next sibling container
+func (t *tree) ascend(parent, idx int32, cfn func(int32) bool) int32 {
+	var next bool
+	for _, v := range t.children[parent] {
+		if next && cfn(v) {
+			return v
+		}
+		if v == idx {
+			next = true
+		}
+	}
+	if parent == t.root {
+		return 0
+	}
+	return t.ascend(t.parents[parent], parent, cfn)
+}
+
+// move a node down the tree
+func (t *tree) down(idx int32, cfn func(int32) bool) {
+	parent := t.parents[idx]
+	target := t.ascend(parent, idx, cfn)
+	if target == 0 {
+		return
+	}
+	t.parents[idx] = target
+	t.children[target] = append(t.children[target], idx)
+	t.children[parent] = deleteIdx(t.children[parent], idx)
+	t.reorder(idx)
 }
 
 func (t *tree) nth(n, this int, idx int32) (int, int32) {
@@ -81,23 +181,43 @@ func (t *tree) count() int {
 	return t.recursiveCount(t.root) + 1 // the root node has no parent but should be included in the count
 }
 
-func (t *tree) purge() {
-	for k := range t.parents {
-		delete(t.parents, k)
+// given a set of IDs, return a subset of the tree's "children" hierarchy
+func (t *tree) hierarchy(ids []int32) map[int32][]int32 {
+	ret := make(map[int32][]int32)
+	var parent int32
+outer:
+	for _, id := range ids {
+		for {
+			parent = t.parents[id]
+			if _, ok := ret[parent]; ok {
+				if !slices.Contains(ret[parent], id) {
+					ret[parent] = append(ret[parent], id)
+				}
+				continue outer // our parent has already been added, so ancestors must also have been visited
+			}
+			ret[parent] = make([]int32, 1, 20)
+			ret[parent][0] = id
+			if parent == t.root {
+				continue outer
+			}
+			id = parent
+		}
+
 	}
-	for k := range t.children {
-		delete(t.children, k)
-	}
+	return ret
 }
 
+// attach a child to a parent
 func (t *tree) link(parent, child int32) {
 	t.parents[child] = parent
 	t.children[parent] = append(t.children[parent], child)
+	t.orderChildren(parent)
 }
 
+// for a given container, give it a new child container and assign all its former children to that child
 func (t *tree) adopt(old, new int32) {
 	t.children[new] = t.children[old]
-	t.children[new] = slices.DeleteFunc(t.children[new], func(e int32) bool { return e == new })
+	t.children[new] = deleteIdx(t.children[new], new)
 	for _, id := range t.children[new] {
 		t.parents[id] = new
 	}
@@ -110,6 +230,7 @@ func (t *tree) linkList(parent int32, children []int32) {
 		t.parents[child] = parent
 	}
 	t.children[parent] = append(t.children[parent], children...)
+	t.orderChildren(parent)
 }
 
 func (t *tree) unlinkDescendants(descendants []int32) {
@@ -125,32 +246,43 @@ func (t *tree) unlink(node int32) {
 	delete(t.children, node)
 	parent, ok := t.parents[node]
 	if ok {
-		t.children[parent] = slices.DeleteFunc(t.children[parent], func(v int32) bool { return node == v })
+		t.children[parent] = deleteIdx(t.children[parent], node)
 		delete(t.parents, node)
 	}
 }
 
-// a softunlink just removes a node from its parent
-func (t *tree) softunlink(node int32) {
-	if node == t.root {
-		t.children[t.root] = []int32{}
-		return
+func (t *tree) softunlinkDescendants(descendants []int32) {
+	for _, d := range descendants {
+		t.softunlinkDescendants(t.children[d])
+		delete(t.children, d)
 	}
+}
+
+// a softunlink leaves parent links intact
+func (t *tree) softunlink(node int32) {
+	t.softunlinkDescendants([]int32{node})
 	parent, ok := t.parents[node]
 	if ok {
-		t.children[parent] = slices.DeleteFunc(t.children[parent], func(v int32) bool { return node == v })
+		t.children[parent] = deleteIdx(t.children[parent], node)
 	}
 }
 
 // restores a node that has been soft unlinked
-// TODO: replace "remove" on input graph with a soft remove - at present you can't restore from output graph if ancestor nodes have been removed
 func (t *tree) restore(node int32) {
-	parent, ok := t.parents[node]
-	if ok {
-		if !slices.Contains(t.children[parent], node) {
-			t.children[parent] = append(t.children[parent], node)
-			t.children[node] = []int32{}
+	for {
+		parent, ok := t.parents[node]
+		if !ok {
+			return // not much we can do without a parent :(
 		}
+		if slices.Contains(t.children[parent], node) {
+			return // our work is done
+		}
+		t.children[parent] = append(t.children[parent], node)
+		t.reorder(node)
+		if parent == t.root {
+			return // we have reached the top
+		}
+		node = parent
 	}
 }
 
@@ -227,6 +359,9 @@ func (t *tree) copy(from *tree, parent int32, nodes []int32) {
 		if n == from.root {
 			continue
 		}
+		if _, ok := t.parents[n]; ok {
+			continue
+		}
 		if set[from.parents[n]] {
 			t.link(from.parents[n], n)
 		} else {
@@ -242,30 +377,4 @@ func (t *tree) shift(from *tree, parent int32, nodes []int32, inputToOutput bool
 		t.restoreList(nodes)
 	}
 	from.unlinkList(nodes, inputToOutput)
-}
-
-// given a set of IDs, return a subset of the tree's "children" hierarchy
-func (t *tree) hierarchy(ids []int32) map[int32][]int32 {
-	ret := make(map[int32][]int32)
-	var parent int32
-outer:
-	for _, id := range ids {
-		for {
-			parent = t.parents[id]
-			if _, ok := ret[parent]; ok {
-				if !slices.Contains(ret[parent], id) {
-					ret[parent] = append(ret[parent], id)
-				}
-				continue outer // our parent has already been added, so ancestors must also have been visited
-			}
-			ret[parent] = make([]int32, 1, 20)
-			ret[parent][0] = id
-			if parent == t.root {
-				continue outer
-			}
-			id = parent
-		}
-
-	}
-	return ret
 }

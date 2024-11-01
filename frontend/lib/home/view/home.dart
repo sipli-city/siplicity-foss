@@ -4,6 +4,7 @@ import 'package:siplicity/dataentry/view/dataentry_page.dart';
 import 'package:siplicity/home/provider/pane_provider.dart';
 import 'package:siplicity/workspace/view/workspace_page.dart';
 import 'package:siplicity/analysis/view/analysis_page.dart';
+import 'package:siplicity/settings/view/settings_page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -42,7 +43,7 @@ class HomePage extends ConsumerWidget {
               PaneItem(
                 icon: const Icon(FluentIcons.settings),
                 title: const Text('Settings'),
-                body: const Text("Todo"),
+                body: const SettingsPage(),
               ),
             ]));
   }

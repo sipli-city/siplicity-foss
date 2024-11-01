@@ -2,6 +2,7 @@ package siplicity
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -22,6 +23,11 @@ func outputName(rec *pb.GetRecordResponse) string {
 }
 
 func commit(s Store) walkFunc {
+	if !LICENSED {
+		return func(rec *pb.GetRecordResponse, id int32, depth int) error {
+			return fmt.Errorf("failed license check (%s); licenses are available at https://sipli.city", LICENSED_MESSAGE)
+		}
+	}
 	closure_paths := make([]string, 1, 5)
 
 	return func(rec *pb.GetRecordResponse, id int32, depth int) error {
@@ -29,7 +35,7 @@ func commit(s Store) walkFunc {
 		case pb.RecordType_RECORD_TYPE_ROOT:
 			paths := getFieldValues(rec.GetMetadata(), makePath([][2]string{{"siplicity", "output_location"}}, nil))
 			if len(paths) == 0 {
-				return errors.New("output path not set")
+				return errors.New("output location has not been set")
 			}
 			closure_paths[depth] = paths[0] // only need the first value
 			return os.MkdirAll(paths[0], 0777)

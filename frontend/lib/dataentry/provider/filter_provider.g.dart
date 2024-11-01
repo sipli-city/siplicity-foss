@@ -34,7 +34,7 @@ final queryStringProvider = NotifierProvider<QueryString, String?>.internal(
 );
 
 typedef _$QueryString = Notifier<String?>;
-String _$recordTypesHash() => r'238f0e99823f3e94be81042b07569145cb75226f';
+String _$recordTypesHash() => r'b7c76b18c3ca00367abd3ac73524cbda52fa5f1f';
 
 /// See also [RecordTypes].
 @ProviderFor(RecordTypes)

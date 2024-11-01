@@ -296,9 +296,27 @@ class OutputCommandBar extends ConsumerWidget {
               icon: const Icon(FluentIcons.fabric_folder_confirm),
               label: const Text('Commit'),
               onPressed: () async {
-                ref
+                final (success, message) = await ref
                     .read(outputRecordsProvider.notifier)
                     .putAction(action: "commit");
+                Duration duration =
+                    success ? Duration(seconds: 3) : Duration(minutes: 3);
+                displayInfoBar(context, duration: duration,
+                    builder: (context, close) {
+                  return InfoBar(
+                    title: const Text('Commit'),
+                    content: message.isEmpty
+                        ? Text("content successfully committed")
+                        : Text(message),
+                    action: IconButton(
+                      icon: const Icon(FluentIcons.clear),
+                      onPressed: close,
+                    ),
+                    severity: success
+                        ? InfoBarSeverity.success
+                        : InfoBarSeverity.error,
+                  );
+                });
               },
             ),
           ],

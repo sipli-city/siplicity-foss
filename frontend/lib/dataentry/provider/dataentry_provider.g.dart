@@ -6,7 +6,7 @@ part of 'dataentry_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$countEntriesHash() => r'a7d9cc48ef55977358ebbd3c43270bad7772e6b8';
+String _$countEntriesHash() => r'343ce9a6ab49c197ab6fbb3a04da7c721e980250';
 
 /// See also [countEntries].
 @ProviderFor(countEntries)
@@ -20,7 +20,7 @@ final countEntriesProvider = AutoDisposeFutureProvider<int>.internal(
 );
 
 typedef CountEntriesRef = AutoDisposeFutureProviderRef<int>;
-String _$dataEntryHash() => r'c5fd254d55ae829028f4b16702bdfaf48e08794c';
+String _$dataEntryHash() => r'811a66da7d8180dba55bebca6f6ec410682d50e3';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -6,7 +6,7 @@ part of 'features_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$featuresAvailableHash() => r'107727e58beb9b25dd8954f74ae4f840f8f14ae2';
+String _$featuresAvailableHash() => r'17a986673bbded55e7b79dec3321c4a9d9ad05d4';
 
 /// See also [featuresAvailable].
 @ProviderFor(featuresAvailable)
