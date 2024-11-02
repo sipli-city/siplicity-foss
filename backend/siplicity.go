@@ -42,7 +42,7 @@ func config(path string) Config {
 func PutLicense(key, license string) {
 	if key == "" || license == "" {
 		k, c, err := LoadLicense()
-		if err != nil {
+		if err == nil {
 			if key == "" {
 				key = k
 			}
