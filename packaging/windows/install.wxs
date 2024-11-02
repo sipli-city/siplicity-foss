@@ -2,7 +2,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
     <Package Name="Siplicity"
-             Version="1.0.0.0"
+             Version="0.0.0.1"
              Manufacturer="Richard Lehane"
              UpgradeCode="CAA4E00D-1329-445F-B4BA-F7039303D5F7">
         <MediaTemplate EmbedCab="yes" />
