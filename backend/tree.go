@@ -216,11 +216,21 @@ func (t *tree) link(parent, child int32) {
 
 // for a given container, give it a new child container and assign all its former children to that child
 func (t *tree) adopt(old, new int32) {
-	t.children[new] = t.children[old]
-	t.children[new] = deleteIdx(t.children[new], new)
-	for _, id := range t.children[new] {
+	if len(t.children[new]) == 0 {
+		t.children[new] = t.children[old]
+	} else {
+		t.children[new] = append(t.children[new], t.children[old]...)
+	}
+	for _, id := range t.children[old] {
 		t.parents[id] = new
 	}
+	if t.parents[old] == new { // if we are flattening, remove the old node
+		t.children[new] = deleteIdx(t.children[new], old)
+		delete(t.parents, old)
+		return
+	} 
+	// otherwise we are inserting
+	t.children[new] = deleteIdx(t.children[new], new)
 	t.children[old] = []int32{new}
 }
 

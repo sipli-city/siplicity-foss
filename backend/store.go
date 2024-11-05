@@ -72,7 +72,6 @@ func sizeBucket(sz int64) string {
 
 func Flatten(s Store, graph pb.GraphType, id int32) {
 	s.AdoptChildren(id, s.Parent(graph, id), graph)
-	s.UnlinkRecords(graph, []int32{id})
 }
 
 func NewParent(s Store, graph pb.GraphType, id int32, selection []int32) {
