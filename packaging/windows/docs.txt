@@ -1,4 +1,17 @@
 https://docs.flutter.dev/platform-integration/windows/building
 
+
+
+SIGNING
+
+"C:\Users\richa\.nuget\packages\microsoft.windows.sdk.buildtools\10.0.26100.1742\bin\10.0.26100.0\x64\signtool.exe" sign /v /debug /fd SHA256 /tr "http://timestamp.acs.microsoft.com" /td SHA256 /dlib "C:\Users\richa\.nuget\packages\microsoft.trusted.signing.client\1.0.60\bin\x64\Azure.CodeSigning.Dlib.dll" /dmdf metadata.json files\Siplicity.exe
+
+"C:\Users\richa\.nuget\packages\microsoft.windows.sdk.buildtools\10.0.26100.1742\bin\10.0.26100.0\x64\signtool.exe" sign /v /debug /fd SHA256 /tr "http://timestamp.acs.microsoft.com" /td SHA256 /dlib "C:\Users\richa\.nuget\packages\microsoft.trusted.signing.client\1.0.60\bin\x64\Azure.CodeSigning.Dlib.dll" /dmdf metadata.json files\siplicityServer.exe
+
+WIX
+
 wix build -ext WixToolset.UI.wixext -out siplicity.msi install.wxs
 
+SIGN MSI
+
+"C:\Users\richa\.nuget\packages\microsoft.windows.sdk.buildtools\10.0.26100.1742\bin\10.0.26100.0\x64\signtool.exe" sign /v /debug /fd SHA256 /tr "http://timestamp.acs.microsoft.com" /td SHA256 /dlib "C:\Users\richa\.nuget\packages\microsoft.trusted.signing.client\1.0.60\bin\x64\Azure.CodeSigning.Dlib.dll" /dmdf metadata.json siplicity.msi
