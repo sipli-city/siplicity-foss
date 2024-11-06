@@ -24,4 +24,4 @@ From /frontend directory, run `flutter build windows`
 
 ## Backend
 
-From /backend directory, run `go build -o siplicityServer.exe github.com/sipli-city/siplicity/server`
+From /backend directory, run `go install github.com/sipli-city/siplicity/siplicityServer`
