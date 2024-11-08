@@ -424,10 +424,6 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, display
 	return m.addNode(id, t.children, dtyp, fields)
 }
 
-func (m *MemStore) Drop(n int32, graph pb.GraphType) {
-	m.getTree(graph).unlink(n)
-}
-
 func (m *MemStore) Ids(filter string) []int32 {
 	ret := make([]int32, 0, len(m.records)-3)
 	for i, rec := range m.records {
@@ -456,6 +452,10 @@ func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32,
 		return
 	}
 	t.copy(f, parent, nodes)
+}
+
+func (m *MemStore) Unlink(graph pb.GraphType, n int32, descend bool) {
+	m.getTree(graph).unlink(n, descend)
 }
 
 func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {

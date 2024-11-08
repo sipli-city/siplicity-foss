@@ -29,6 +29,7 @@ type Store interface {
 	Ids(string) []int32
 	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
 	UnlinkRecords(graph pb.GraphType, nodes []int32)
+	Unlink(graph pb.GraphType, node int32, descend bool)
 	Purge(graph pb.GraphType)
 	Walk(int32, pb.GraphType, walkFunc) error
 	Contents(int32) io.Reader
@@ -78,6 +79,7 @@ func NewParent(s Store, graph pb.GraphType, id int32, selection []int32) {
 	name := s.Name(graph, id)
 	name = strings.TrimSuffix(name, filepath.Ext(name))
 	parent := s.PutChild(s.Parent(graph, id), &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY, Path: name}, graph)
+	s.Unlink(graph, id, false)
 	s.AttachChild(parent, id, graph)
 }
 
