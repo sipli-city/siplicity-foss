@@ -1,0 +1,47 @@
+<?xml version="1.0"?> 
+<OPEXMetadata xmlns="http://www.openpreservationexchange.org/opex/v1.0"> 
+  <Properties> 
+    <Title>Board Minutes December 2023</Title> 
+    <Description>Final approved minutes for December</Description> 
+    <Identifiers> 
+      <Identifier type="Statutory">Board/Mins/2023/Dec/Final</Identifier> 
+    </Identifiers> 
+    <SecurityDescriptor>confidential</SecurityDescriptor> 
+  </Properties> 
+  <Transfer> 
+  <SourceID>6168</SourceID> 
+  <Fixities> 
+   <Fixity type="MD5" value="338d18af09df7857e061692a59723e97"/> 
+   <Fixity type="SHA-1" value="173884f47e2eb7991a6c9929c49e4e515158b087"/> 
+  </Fixities> 
+  <OriginalFilename>Interesting reaction.jpg</OriginalFilename> 
+</Transfer>
+  <DescriptiveMetadata> 
+  <oai_dc:dc  
+     xmlns:dc="http://purl.org/dc/elements/1.1/"  
+     xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"  
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai_dc/ oai_dc.xsd"> 
+    <dc:title>Board Minutes December 2023</dc:title> 
+    <dc:creator>Brian Brain (Company Secretary)</dc:creator> 
+    <dc:subject>Corporate governance</dc:subject> 
+    <dc:description>Final board minutes of the Dec 2023 meeting</dc:description> 
+    <dc:publisher>MyCorporation plc</dc:publisher> 
+    <dc:type>Minutes</dc:type> 
+    <dc:identifier>25549</dc:identifier> 
+  </oai_dc:dc> 
+</DescriptiveMetadata> 
+  <History></History> 
+  <Relationships></Relationships> 
+</OPEXMetadata>
+
+//https://developers.preservica.com/documentation/open-preservation-exchange-opex
+
+//Title	The title of the asset or folder	Used for the Title field. If missing on ingest the file name (without suffix) or folder name is used.
+// Description	The description of the asset or folder	Used for the Description field. If missing on ingest will be set to blank
+// Identifiers	A list of identifiers. Don’t use this for SourceID identifiers; those should be in Transfer (see below)	
+// Identifier	An identifier with a type and a value	Maps onto the Identifier for the asset or folder
+// SecurityDescriptor	A string describing the access control for the asset or folder	Used to map onto the Preservica security tag. If missing on ingest the parent value will be used. If the tag does not exist the item will not be ingested.
+
+
+// https://developers.preservica.com/documentation/preservation-asset-exchange-pax PAX: maybe leave PAX for now!
