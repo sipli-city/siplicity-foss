@@ -1,6 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/widgets/output_tree.dart';
-import '../widgets/input_tree.dart';
+import 'package:siplicity/records/widgets/records_body.dart';
 import '../widgets/menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: TreeView(items: intputTreeViewItems)),
+                      Expanded(child: RecordsBody()),
                       Column(children: [
                         IconButton(
                           icon: const Icon(FluentIcons.double_chevron_right,
