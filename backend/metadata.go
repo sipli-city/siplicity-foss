@@ -6,10 +6,9 @@ import (
 
 func getField(meta []*pb.Metadata, ns, name string) string {
 	for _, v := range meta {
-		for _, field := range v.GetFields() {
-			if field.GetNamespace() == ns && field.GetName() == name {
-				return field.GetValue()
-			}
+		field := v.GetField()
+		if field.GetNamespace() == ns && field.GetName() == name {
+			return field.GetValue()
 		}
 		ret := getField(v.GetChildren(), ns, name)
 		if ret != "" {

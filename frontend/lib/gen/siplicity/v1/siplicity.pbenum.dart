@@ -19,8 +19,8 @@ class RecordType extends $pb.ProtobufEnum {
   static const RecordType RECORD_TYPE_VIRTUAL_FILE = RecordType._(2, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_FILE');
   static const RecordType RECORD_TYPE_DIRECTORY = RecordType._(3, _omitEnumNames ? '' : 'RECORD_TYPE_DIRECTORY');
   static const RecordType RECORD_TYPE_VIRTUAL_DIRECTORY = RecordType._(4, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_DIRECTORY');
-  static const RecordType RECORD_TYPE_COMPRESSED_FILE = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_COMPRESSED_FILE');
-  static const RecordType RECORD_TYPE_COMPRESSED_DIRECTORY = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_COMPRESSED_DIRECTORY');
+  static const RecordType RECORD_TYPE_COMPRESSED = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_COMPRESSED');
+  static const RecordType RECORD_TYPE_VIRTUAL_COMPRESSED = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_COMPRESSED');
 
   static const $core.List<RecordType> values = <RecordType> [
     RECORD_TYPE_UNSPECIFIED,
@@ -28,8 +28,8 @@ class RecordType extends $pb.ProtobufEnum {
     RECORD_TYPE_VIRTUAL_FILE,
     RECORD_TYPE_DIRECTORY,
     RECORD_TYPE_VIRTUAL_DIRECTORY,
-    RECORD_TYPE_COMPRESSED_FILE,
-    RECORD_TYPE_COMPRESSED_DIRECTORY,
+    RECORD_TYPE_COMPRESSED,
+    RECORD_TYPE_VIRTUAL_COMPRESSED,
   ];
 
   static final $core.Map<$core.int, RecordType> _byValue = $pb.ProtobufEnum.initByValue(values);

@@ -1,16 +1,17 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:siplicity/records/provider/provider.dart';
 import 'package:siplicity/widgets/output_tree.dart';
 import 'package:siplicity/records/widgets/records_body.dart';
-import '../widgets/menu.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   int currentIndex = 0;
   List<Tab> tabs = [];
 
@@ -32,7 +33,51 @@ class _HomePageState extends State<HomePage> {
           header: Container(
             color: FluentTheme.of(context).activeColor,
             padding: const EdgeInsets.all(12.0),
-            child: myCommandBar(),
+            child: CommandBar(
+              overflowBehavior: CommandBarOverflowBehavior.noWrap,
+              primaryItems: <CommandBarItem>[
+                CommandBarBuilderItem(
+                  builder: (context, mode, w) => Tooltip(
+                    message: "Add files or directories",
+                    child: w,
+                  ),
+                  wrappedItem: CommandBarButton(
+                    icon: const Icon(FluentIcons.add),
+                    label: const Text('Add'),
+                    onPressed: () {
+                      final path = FilePicker.platform.getDirectoryPath();
+                      ref.read(recordsProvider.notifier).putFilePath(path);
+                    },
+                  ),
+                ),
+                CommandBarBuilderItem(
+                  builder: (context, mode, w) => Tooltip(
+                    message: "Delete what is currently selected!",
+                    child: w,
+                  ),
+                  wrappedItem: CommandBarButton(
+                    icon: const Icon(FluentIcons.delete),
+                    label: const Text('Delete'),
+                    onPressed: () {},
+                  ),
+                ),
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.move),
+                  label: const Text('Move'),
+                  onPressed: () {},
+                ),
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.activity_feed),
+                  label: const Text('Action'),
+                  onPressed: () {},
+                ),
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.confirm_event),
+                  label: const Text('Commit'),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
           content: SingleChildScrollView(
               child: Container(
@@ -40,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(child: RecordsBody()),
+                      const Expanded(child: RecordsBody()),
                       Column(children: [
                         IconButton(
                           icon: const Icon(FluentIcons.double_chevron_right,

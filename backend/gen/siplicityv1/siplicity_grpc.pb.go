@@ -24,6 +24,7 @@ const (
 	SiplicityService_PutJob_FullMethodName      = "/siplicity.v1.SiplicityService/PutJob"
 	SiplicityService_ListRecords_FullMethodName = "/siplicity.v1.SiplicityService/ListRecords"
 	SiplicityService_GetRecord_FullMethodName   = "/siplicity.v1.SiplicityService/GetRecord"
+	SiplicityService_Shutdown_FullMethodName    = "/siplicity.v1.SiplicityService/Shutdown"
 )
 
 // SiplicityServiceClient is the client API for SiplicityService service.
@@ -35,6 +36,7 @@ type SiplicityServiceClient interface {
 	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
 	ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
 	GetRecord(ctx context.Context, in *GetRecordRequest, opts ...grpc.CallOption) (*GetRecordResponse, error)
+	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 }
 
 type siplicityServiceClient struct {
@@ -95,6 +97,16 @@ func (c *siplicityServiceClient) GetRecord(ctx context.Context, in *GetRecordReq
 	return out, nil
 }
 
+func (c *siplicityServiceClient) Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ShutdownResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_Shutdown_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SiplicityServiceServer is the server API for SiplicityService service.
 // All implementations must embed UnimplementedSiplicityServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type SiplicityServiceServer interface {
 	PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error)
 	ListRecords(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error)
 	GetRecord(context.Context, *GetRecordRequest) (*GetRecordResponse, error)
+	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	mustEmbedUnimplementedSiplicityServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedSiplicityServiceServer) ListRecords(context.Context, *ListRec
 }
 func (UnimplementedSiplicityServiceServer) GetRecord(context.Context, *GetRecordRequest) (*GetRecordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRecord not implemented")
+}
+func (UnimplementedSiplicityServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Shutdown not implemented")
 }
 func (UnimplementedSiplicityServiceServer) mustEmbedUnimplementedSiplicityServiceServer() {}
 func (UnimplementedSiplicityServiceServer) testEmbeddedByValue()                          {}
@@ -240,6 +256,24 @@ func _SiplicityService_GetRecord_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SiplicityService_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShutdownRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).Shutdown(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_Shutdown_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).Shutdown(ctx, req.(*ShutdownRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SiplicityService_ServiceDesc is the grpc.ServiceDesc for SiplicityService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRecord",
 			Handler:    _SiplicityService_GetRecord_Handler,
+		},
+		{
+			MethodName: "Shutdown",
+			Handler:    _SiplicityService_Shutdown_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
