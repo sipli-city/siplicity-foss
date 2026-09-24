@@ -8,8 +8,6 @@ import (
 
 type MemStore struct {
 	records   []*pb.GetRecordResponse
-	lRoot     int32
-	rRoot     int32
 	lParent   map[int32]int32
 	rParent   map[int32]int32
 	lChildren map[int32][]int32
@@ -17,8 +15,11 @@ type MemStore struct {
 }
 
 func NewMemStore() *MemStore {
+	records := make([]*pb.GetRecordResponse, 2, 1000)
+	records[0] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Input"}
+	records[1] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Path: "Output"}
 	return &MemStore{
-		records:   make([]*pb.GetRecordResponse, 0, 1000),
+		records:   records,
 		lParent:   make(map[int32]int32), // child -> parent
 		rParent:   make(map[int32]int32),
 		lChildren: make(map[int32][]int32), // parent -> children
@@ -29,30 +30,16 @@ func NewMemStore() *MemStore {
 func (m *MemStore) PutChild(n int32, r *pb.GetRecordResponse, output bool) int32 {
 	m.records = append(m.records, r)
 	idx := int32(len(m.records) - 1)
-	if n == -1 {
-		//	if idx == 0 { // we've only got one, root record
-		if output {
-			m.rRoot = idx
-		} else {
-			m.lRoot = idx
-		}
-		return idx
-		//	}
-		/*	if output {
-				m.rParent[m.rRoot] = idx
-				m.rChildren[idx] = append(m.rChildren[idx], m.rRoot)
-				m.rRoot = idx
-				return idx
-			}
-			m.lParent[m.lRoot] = idx
-			m.lChildren[idx] = append(m.lChildren[idx], m.lRoot)
-			m.lRoot = idx
-			return idx*/
-	}
 	if output {
+		if n == -1 {
+			n = 1
+		}
 		m.rParent[idx] = n
 		m.rChildren[n] = append(m.rChildren[n], idx)
 		return idx
+	}
+	if n == -1 {
+		n = 0
 	}
 	m.lParent[idx] = n
 	m.lChildren[n] = append(m.lChildren[n], idx)
@@ -69,19 +56,47 @@ func (m *MemStore) AttachChild(parent, child int32, output bool) {
 	m.lChildren[parent] = append(m.lChildren[parent], child)
 }
 
+// For a set of children, give them a new parent, and remove them from the list of children of their old parent(s)
+func (m *MemStore) AttachParent(parent int32, children []int32, output bool) {
+	if output {
+		var grandparent int32
+		for i, child := range children {
+			if i == 0 {
+				grandparent = m.rParent[child]
+				m.AttachChild(grandparent, parent, output) // give the new parent a parent
+				m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+			} else {
+				if grandparent != m.rParent[child] {
+					grandparent = m.rParent[child]
+					m.rChildren[grandparent] = slices.DeleteFunc(m.rChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+				}
+			}
+			m.AttachChild(parent, child, output)
+		}
+		return
+	}
+	var grandparent int32
+	for i, child := range children {
+		if i == 0 {
+			grandparent = m.lParent[child]
+			m.AttachChild(grandparent, parent, output) // give the new parent a parent
+			m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+		} else {
+			if grandparent != m.lParent[child] {
+				grandparent = m.lParent[child]
+				m.lChildren[grandparent] = slices.DeleteFunc(m.lChildren[grandparent], func(e int32) bool { return slices.Contains(children, e) })
+			}
+		}
+		m.AttachChild(parent, child, output)
+	}
+}
+
 func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 	return m.records[int(n)]
 }
 
-func (m *MemStore) Root(output bool) int32 {
-	if output {
-		return m.rRoot
-	}
-	return m.lRoot
-}
-
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecordsResponse {
-	name := m.records[int(id)].GetName()
+	name := m.records[int(id)].GetPath()
 	display := getField(m.records[int(id)].GetMetadata(), "siplicity", "display_name")
 	if display != "" {
 		name = display
@@ -100,24 +115,24 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32) *pb.ListRecord
 }
 
 func (m *MemStore) ListRecords(id int32, output bool) *pb.ListRecordsResponse {
-	if len(m.records) == 0 {
+	if len(m.records) == 2 {
 		return nil
 	}
 	if output {
 		if id == -1 {
-			id = m.rRoot
+			id = 1
 		}
 		return m.addNode(id, m.rChildren)
 	}
 	if id == -1 {
-		id = m.lRoot
+		id = 0
 	}
 	return m.addNode(id, m.lChildren)
 }
 
 func (m *MemStore) Drop(n int32, output bool) {
 	if output {
-		if n == m.rRoot {
+		if n == 1 {
 			return
 		}
 		delete(m.rChildren, n)
@@ -125,7 +140,7 @@ func (m *MemStore) Drop(n int32, output bool) {
 		m.rChildren[parent] = slices.DeleteFunc(m.rChildren[parent], func(v int32) bool { return n == v })
 		return
 	}
-	if n == m.lRoot {
+	if n == 0 {
 		return
 	}
 	delete(m.lChildren, n)
@@ -134,7 +149,7 @@ func (m *MemStore) Drop(n int32, output bool) {
 }
 
 func (m *MemStore) Ids(filter string) []int32 {
-	ret := make([]int32, 0, len(m.records))
+	ret := make([]int32, 0, len(m.records)-2)
 	for i, rec := range m.records {
 		if Filter(filter, rec) {
 			ret = append(ret, int32(i))

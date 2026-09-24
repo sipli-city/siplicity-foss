@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
-	"time"
 
 	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
 )
@@ -13,7 +12,6 @@ type Store interface {
 	PutChild(int32, *pb.GetRecordResponse, bool) int32 // -1 = root
 	AttachChild(int32, int32, bool)
 	Get(int32) *pb.GetRecordResponse
-	Root(bool) int32
 	ListRecords(int32, bool) *pb.ListRecordsResponse
 	Ids(string) []int32
 }
@@ -37,10 +35,10 @@ func AddPath(path string, s Store) error {
 			typ = pb.RecordType_RECORD_TYPE_DIRECTORY
 		}
 		rec := &pb.GetRecordResponse{
-			Typ:     typ,
-			Name:    p,
-			Size:    info.Size(),
-			Modtime: info.ModTime().Format(time.RFC3339),
+			Typ:  typ,
+			Path: p,
+			Size: info.Size(),
+			//Modtime: info.ModTime().Format(time.RFC3339),
 		}
 		if root {
 			strStack[idx] = p

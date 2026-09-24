@@ -1,7 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:siplicity/records/provider/provider.dart';
-import 'package:siplicity/widgets/output_tree.dart';
 import 'package:siplicity/records/widgets/records_body.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -46,7 +45,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                     label: const Text('Add'),
                     onPressed: () {
                       final path = FilePicker.platform.getDirectoryPath();
-                      ref.read(recordsProvider.notifier).putFilePath(path);
+                      ref
+                          .read(recordsProvider(false).notifier)
+                          .putFilePath(path);
                     },
                   ),
                 ),
@@ -98,7 +99,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           onPressed: () => debugPrint('pressed button'),
                         ),
                       ]),
-                      Expanded(child: TreeView(items: outputTreeViewItems)),
+                      const Expanded(child: RecordsBody(output: true)),
                     ],
                   )))),
       onClosed: () {

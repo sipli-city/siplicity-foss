@@ -48,17 +48,18 @@ message ListRecordsResponse {
 message ListRecordsRequest {
     optional int32 id = 1;
     optional bool output = 2;
-    optional GetField name = 3;
+    optional GetField display = 3;
 }
 
 enum RecordType {
   RECORD_TYPE_UNSPECIFIED = 0;
-  RECORD_TYPE_FILE = 1;
-  RECORD_TYPE_VIRTUAL_FILE = 2;
-  RECORD_TYPE_DIRECTORY = 3;
-  RECORD_TYPE_VIRTUAL_DIRECTORY = 4;
-  RECORD_TYPE_COMPRESSED = 5;
-  RECORD_TYPE_VIRTUAL_COMPRESSED = 6;
+  RECORD_TYPE_ROOT = 1;
+  RECORD_TYPE_FILE = 2;
+  RECORD_TYPE_VIRTUAL_FILE = 3;
+  RECORD_TYPE_DIRECTORY = 4;
+  RECORD_TYPE_VIRTUAL_DIRECTORY = 5;
+  RECORD_TYPE_ARCHIVE = 6;
+  RECORD_TYPE_VIRTUAL_ARCHIVE = 7;
 }
 
 message GetRecordRequest {
@@ -83,10 +84,9 @@ message Metadata {
 
 message GetRecordResponse {
     RecordType typ = 1;
-    string name = 2;
+    string path = 2;
     int64 size = 3;
-    string modtime = 4;
-    repeated Metadata metadata = 5;
+    repeated Metadata metadata = 4;
 }
 
 message ShutdownRequest {}

@@ -18,21 +18,23 @@ const RecordType$json = {
   '1': 'RecordType',
   '2': [
     {'1': 'RECORD_TYPE_UNSPECIFIED', '2': 0},
-    {'1': 'RECORD_TYPE_FILE', '2': 1},
-    {'1': 'RECORD_TYPE_VIRTUAL_FILE', '2': 2},
-    {'1': 'RECORD_TYPE_DIRECTORY', '2': 3},
-    {'1': 'RECORD_TYPE_VIRTUAL_DIRECTORY', '2': 4},
-    {'1': 'RECORD_TYPE_COMPRESSED', '2': 5},
-    {'1': 'RECORD_TYPE_VIRTUAL_COMPRESSED', '2': 6},
+    {'1': 'RECORD_TYPE_ROOT', '2': 1},
+    {'1': 'RECORD_TYPE_FILE', '2': 2},
+    {'1': 'RECORD_TYPE_VIRTUAL_FILE', '2': 3},
+    {'1': 'RECORD_TYPE_DIRECTORY', '2': 4},
+    {'1': 'RECORD_TYPE_VIRTUAL_DIRECTORY', '2': 5},
+    {'1': 'RECORD_TYPE_ARCHIVE', '2': 6},
+    {'1': 'RECORD_TYPE_VIRTUAL_ARCHIVE', '2': 7},
   ],
 };
 
 /// Descriptor for `RecordType`. Decode as a `google.protobuf.EnumDescriptorProto`.
 final $typed_data.Uint8List recordTypeDescriptor = $convert.base64Decode(
     'CgpSZWNvcmRUeXBlEhsKF1JFQ09SRF9UWVBFX1VOU1BFQ0lGSUVEEAASFAoQUkVDT1JEX1RZUE'
-    'VfRklMRRABEhwKGFJFQ09SRF9UWVBFX1ZJUlRVQUxfRklMRRACEhkKFVJFQ09SRF9UWVBFX0RJ'
-    'UkVDVE9SWRADEiEKHVJFQ09SRF9UWVBFX1ZJUlRVQUxfRElSRUNUT1JZEAQSGgoWUkVDT1JEX1'
-    'RZUEVfQ09NUFJFU1NFRBAFEiIKHlJFQ09SRF9UWVBFX1ZJUlRVQUxfQ09NUFJFU1NFRBAG');
+    'VfUk9PVBABEhQKEFJFQ09SRF9UWVBFX0ZJTEUQAhIcChhSRUNPUkRfVFlQRV9WSVJUVUFMX0ZJ'
+    'TEUQAxIZChVSRUNPUkRfVFlQRV9ESVJFQ1RPUlkQBBIhCh1SRUNPUkRfVFlQRV9WSVJUVUFMX0'
+    'RJUkVDVE9SWRAFEhcKE1JFQ09SRF9UWVBFX0FSQ0hJVkUQBhIfChtSRUNPUkRfVFlQRV9WSVJU'
+    'VUFMX0FSQ0hJVkUQBw==');
 
 @$core.Deprecated('Use getStatusRequestDescriptor instead')
 const GetStatusRequest$json = {
@@ -134,20 +136,20 @@ const ListRecordsRequest$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'output', '3': 2, '4': 1, '5': 8, '9': 1, '10': 'output', '17': true},
-    {'1': 'name', '3': 3, '4': 1, '5': 11, '6': '.siplicity.v1.GetField', '9': 2, '10': 'name', '17': true},
+    {'1': 'display', '3': 3, '4': 1, '5': 11, '6': '.siplicity.v1.GetField', '9': 2, '10': 'display', '17': true},
   ],
   '8': [
     {'1': '_id'},
     {'1': '_output'},
-    {'1': '_name'},
+    {'1': '_display'},
   ],
 };
 
 /// Descriptor for `ListRecordsRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List listRecordsRequestDescriptor = $convert.base64Decode(
     'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESGwoGb3V0cHV0GAIgAS'
-    'gISAFSBm91dHB1dIgBARIvCgRuYW1lGAMgASgLMhYuc2lwbGljaXR5LnYxLkdldEZpZWxkSAJS'
-    'BG5hbWWIAQFCBQoDX2lkQgkKB19vdXRwdXRCBwoFX25hbWU=');
+    'gISAFSBm91dHB1dIgBARI1CgdkaXNwbGF5GAMgASgLMhYuc2lwbGljaXR5LnYxLkdldEZpZWxk'
+    'SAJSB2Rpc3BsYXmIAQFCBQoDX2lkQgkKB19vdXRwdXRCCgoIX2Rpc3BsYXk=');
 
 @$core.Deprecated('Use getRecordRequestDescriptor instead')
 const GetRecordRequest$json = {
@@ -209,19 +211,17 @@ const GetRecordResponse$json = {
   '1': 'GetRecordResponse',
   '2': [
     {'1': 'typ', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.RecordType', '10': 'typ'},
-    {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
+    {'1': 'path', '3': 2, '4': 1, '5': 9, '10': 'path'},
     {'1': 'size', '3': 3, '4': 1, '5': 3, '10': 'size'},
-    {'1': 'modtime', '3': 4, '4': 1, '5': 9, '10': 'modtime'},
-    {'1': 'metadata', '3': 5, '4': 3, '5': 11, '6': '.siplicity.v1.Metadata', '10': 'metadata'},
+    {'1': 'metadata', '3': 4, '4': 3, '5': 11, '6': '.siplicity.v1.Metadata', '10': 'metadata'},
   ],
 };
 
 /// Descriptor for `GetRecordResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getRecordResponseDescriptor = $convert.base64Decode(
     'ChFHZXRSZWNvcmRSZXNwb25zZRIqCgN0eXAYASABKA4yGC5zaXBsaWNpdHkudjEuUmVjb3JkVH'
-    'lwZVIDdHlwEhIKBG5hbWUYAiABKAlSBG5hbWUSEgoEc2l6ZRgDIAEoA1IEc2l6ZRIYCgdtb2R0'
-    'aW1lGAQgASgJUgdtb2R0aW1lEjIKCG1ldGFkYXRhGAUgAygLMhYuc2lwbGljaXR5LnYxLk1ldG'
-    'FkYXRhUghtZXRhZGF0YQ==');
+    'lwZVIDdHlwEhIKBHBhdGgYAiABKAlSBHBhdGgSEgoEc2l6ZRgDIAEoA1IEc2l6ZRIyCghtZXRh'
+    'ZGF0YRgEIAMoCzIWLnNpcGxpY2l0eS52MS5NZXRhZGF0YVIIbWV0YWRhdGE=');
 
 @$core.Deprecated('Use shutdownRequestDescriptor instead')
 const ShutdownRequest$json = {
