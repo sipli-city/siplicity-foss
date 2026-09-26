@@ -5,17 +5,26 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 part 'records_provider.g.dart';
 
+List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
+  return list
+      .map((item) => TreeViewItem(
+          content: Text(item.name),
+          value: Text(item.name),
+          children: addChildren(item.children)))
+      .toList();
+}
+/*
+Iterable<TreeNode<String>> _addChildren(List<ListRecordsResponse> list) {
+  return list.map((item) => TreeNode(data: item.name)
+    ..addAll(addChildren(item.children) as Iterable<Node>));
+}*/
+
 @riverpod
-class Records extends _$Records {
+class InputRecords extends _$InputRecords {
   @override
-  Future<List<TreeViewItem>> build(bool output) async {
-    final request = output
-        ? ListRecordsRequest(
-            id: -1,
-            output: output,
-            display: GetField(namespace: "siplicity", name: "display_name"))
-        : ListRecordsRequest(id: -1);
-    final response = await siplicityServiceClient.listRecords(request);
+  Future<List<TreeViewItem>> build() async {
+    final response =
+        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: Text(response.name),
@@ -42,13 +51,51 @@ class Records extends _$Records {
       await Future.delayed(const Duration(milliseconds: 20));
     }
   }
+
+  Future<void> putAction({String? filter, String? action}) async {
+    final status = await siplicityServiceClient
+        .putJob(PutJobRequest(filter: filter, action: action));
+    while (true) {
+      final done = await siplicityServiceClient
+          .getStatus(GetStatusRequest(status: status.status));
+      if (done.done) {
+        ref.invalidateSelf();
+        break;
+      }
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+  }
 }
 
-List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
-  return list
-      .map((item) => TreeViewItem(
-          content: Text(item.name),
-          value: Text(item.name),
-          children: addChildren(item.children)))
-      .toList();
+@riverpod
+class OutputRecords extends _$OutputRecords {
+  @override
+  Future<List<TreeViewItem>> build() async {
+    final response = await siplicityServiceClient.listRecords(
+        ListRecordsRequest(
+            id: -1,
+            output: true,
+            display: GetField(namespace: "siplicity", name: "display_name")));
+    final tvi = TreeViewItem(
+        content: Text(response.name),
+        value: Text(response.name),
+        children: addChildren(response.children));
+    return <TreeViewItem>[
+      tvi,
+    ];
+  }
+
+  Future<void> putAction({String? filter, String? action}) async {
+    final status = await siplicityServiceClient
+        .putJob(PutJobRequest(filter: filter, action: action));
+    while (true) {
+      final done = await siplicityServiceClient
+          .getStatus(GetStatusRequest(status: status.status));
+      if (done.done) {
+        ref.invalidateSelf();
+        break;
+      }
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+  }
 }
