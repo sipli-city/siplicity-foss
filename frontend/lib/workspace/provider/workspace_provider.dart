@@ -3,7 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
-part 'records_provider.g.dart';
+part 'workspace_provider.g.dart';
 
 List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
   return list
@@ -13,11 +13,6 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
           children: addChildren(item.children)))
       .toList();
 }
-/*
-Iterable<TreeNode<String>> _addChildren(List<ListRecordsResponse> list) {
-  return list.map((item) => TreeNode(data: item.name)
-    ..addAll(addChildren(item.children) as Iterable<Node>));
-}*/
 
 @riverpod
 class InputRecords extends _$InputRecords {
@@ -34,11 +29,11 @@ class InputRecords extends _$InputRecords {
     ];
   }
 
-  Future<void> putFilePath(Future<String?> path) async {
-    final p = await path;
-    if (p == null) {
-      return;
-    }
+  Future<void> putFilePaths(List<String?> paths) async {
+    for (var p in paths) {
+      if (p == null) {
+        continue;
+      }
     final status =
         await siplicityServiceClient.putFilePath(PutFilePathRequest(path: p));
     while (true) {
@@ -49,6 +44,7 @@ class InputRecords extends _$InputRecords {
         break;
       }
       await Future.delayed(const Duration(milliseconds: 20));
+    }
     }
   }
 

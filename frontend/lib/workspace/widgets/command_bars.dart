@@ -1,19 +1,67 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:siplicity/records/records.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:siplicity/workspace/provider/workspace_provider.dart';
 
-class RecordsPage extends ConsumerWidget {
-  /// {@macro records_page}
-  const RecordsPage({super.key});
+class TreeMenu extends StatelessWidget {
+  const TreeMenu({
+    super.key,
+    required this.heading,
+    required this.actions,
+  });
+
+  final String heading;
+  final List<Widget> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(constraints: const BoxConstraints(minWidth: 40.0), child: Title(color: FluentTheme.of(context).activeColor, child: Text(heading))),
+        ...actions,
+      ],
+    );
+  }
+}
+
+Future<void> putFiles(Future<FilePickerResult?> result, WidgetRef ref) async {
+  final res = await result;
+  if (res != null) {
+    ref.read(inputRecordsProvider.notifier).putFilePaths(res.paths);
+  } 
+}
+
+class InputCommandBar extends ConsumerWidget {
+  const InputCommandBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ScaffoldPage(
-        padding: EdgeInsets.zero,
-        header: Container(
-          color: FluentTheme.of(context).activeColor,
-          padding: const EdgeInsets.all(12.0),
-          child: CommandBar(
+    return TreeMenu(heading: 'Input', actions: [
+      DropDownButton(
+  title: const Text('Add'),
+  items: [
+    MenuFlyoutItem(
+      text: const Text('Add local files'), 
+      onPressed: () {
+      final result = FilePicker.platform.pickFiles();
+      putFiles(result, ref);
+    },
+    ),
+    //const MenuFlyoutSeparator(),
+    //MenuFlyoutItem(text: const Text('Add remote bucket'), onPressed: () {}),
+  ],
+  ),
+    ]);
+  }
+}
+
+/*
+class InputCommandBar extends ConsumerWidget {
+  const InputCommandBar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+  return CommandBar(
             overflowBehavior: CommandBarOverflowBehavior.noWrap,
             primaryItems: <CommandBarItem>[
               CommandBarBuilderItem(
@@ -65,29 +113,6 @@ class RecordsPage extends ConsumerWidget {
                 onPressed: () {},
               ),
             ],
-          ),
-        ),
-        content: SingleChildScrollView(
-            child: Container(
-                color: FluentTheme.of(context).activeColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Expanded(child: InputRecordsBody()),
-                    Column(children: [
-                      IconButton(
-                        icon: const Icon(FluentIcons.double_chevron_right,
-                            size: 24.0),
-                        onPressed: () => debugPrint('pressed button'),
-                      ),
-                      IconButton(
-                        icon: const Icon(FluentIcons.double_chevron_left,
-                            size: 24.0),
-                        onPressed: () => debugPrint('pressed button'),
-                      ),
-                    ]),
-                    const Expanded(child: OutputRecordsBody()),
-                  ],
-                ))));
+          );
   }
-}
+}*/

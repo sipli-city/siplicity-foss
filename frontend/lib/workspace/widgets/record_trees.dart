@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:siplicity/records/provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:siplicity/workspace/provider/workspace_provider.dart';
 
 class InputRecordsBody extends ConsumerWidget {
   const InputRecordsBody({super.key});
@@ -8,7 +9,14 @@ class InputRecordsBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final records = ref.watch(inputRecordsProvider);
     return switch (records) {
-      AsyncData(:final value) => TreeView(items: value),
+      AsyncData(:final value) => TreeView(
+       selectionMode: TreeViewSelectionMode.multiple,
+      shrinkWrap: true,
+      items: value,
+  onItemInvoked: (item, details) async {},
+  onSelectionChanged: (selectedItems) async {},
+  onSecondaryTap: (item, details) async {},
+  ),
       _ => const Text('loading'),
     };
   }
