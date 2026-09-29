@@ -40,6 +40,9 @@ func AddPath(path string, s Store) error {
 			Size: info.Size(),
 			//Modtime: info.ModTime().Format(time.RFC3339),
 		}
+		rec.Metadata = append(rec.Metadata, &pb.Metadata{
+			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
+		})
 		if root {
 			strStack[idx] = p
 			nidStack[idx] = s.PutChild(-1, rec, false)

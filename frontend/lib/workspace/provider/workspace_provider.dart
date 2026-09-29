@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
@@ -9,7 +10,7 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
   return list
       .map((item) => TreeViewItem(
           content: Text(item.name),
-          value: Text(item.name),
+          value: item.id,
           children: addChildren(item.children)))
       .toList();
 }
@@ -18,33 +19,50 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
 class InputRecords extends _$InputRecords {
   @override
   Future<List<TreeViewItem>> build() async {
-    final response =
-        await siplicityServiceClient.listRecords(ListRecordsRequest(id: -1));
+    final response = await siplicityServiceClient.listRecords(
+        ListRecordsRequest(
+            id: -1,
+            display: GetField(namespace: "siplicity", name: "display_name")));
     final tvi = TreeViewItem(
         content: Text(response.name),
-        value: Text(response.name),
+        value: response.id,
         children: addChildren(response.children));
     return <TreeViewItem>[
       tvi,
     ];
   }
 
-  Future<void> putFilePaths(List<String?> paths) async {
-    for (var p in paths) {
-      if (p == null) {
-        continue;
-      }
-    final status =
-        await siplicityServiceClient.putFilePath(PutFilePathRequest(path: p));
+  Future<void> _putSinglePath(String path) async {
+    final status = await siplicityServiceClient
+        .putFilePath(PutFilePathRequest(path: path));
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
       if (done.done) {
-        ref.invalidateSelf();
         break;
       }
       await Future.delayed(const Duration(milliseconds: 20));
     }
+  }
+
+  Future<void> putFilePath(Future<String?> result) async {
+    final path = await result;
+    if (path != null) {
+      await _putSinglePath(path);
+      ref.invalidateSelf();
+    }
+  }
+
+  Future<void> putFilePaths(Future<FilePickerResult?> result) async {
+    final res = await result;
+    if (res != null) {
+      for (var path in res.paths) {
+        if (path == null) {
+          continue;
+        }
+        await _putSinglePath(path);
+      }
+      ref.invalidateSelf();
     }
   }
 
@@ -74,7 +92,7 @@ class OutputRecords extends _$OutputRecords {
             display: GetField(namespace: "siplicity", name: "display_name")));
     final tvi = TreeViewItem(
         content: Text(response.name),
-        value: Text(response.name),
+        value: response.id,
         children: addChildren(response.children));
     return <TreeViewItem>[
       tvi,

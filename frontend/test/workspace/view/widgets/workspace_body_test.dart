@@ -8,7 +8,7 @@ void main() {
   group('WorkspaceBody', () {
     testWidgets('renders Text', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(home: InputRecordsBody()),
+        MaterialApp(home: InputRecordsTree()),
       );
 
       expect(find.byType(Text), findsOneWidget);

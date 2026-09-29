@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> {
             title: const Text('Analysis'),
             body: const Text("Todo"),
           ),
+          PaneItemSeparator(),
+          PaneItem(
+            icon: const Icon(FluentIcons.add_table),
+            title: const Text('Data entry'),
+            body: const Text("Data entry"),
+          ),
         ],
             footerItems: [
           PaneItem(
