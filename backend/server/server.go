@@ -15,7 +15,7 @@ import (
 
 	"github.com/sipli-city/siplicity"
 
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 var (
@@ -28,14 +28,6 @@ type siplicityServiceServer struct {
 	store    siplicity.Store
 	statuses []bool
 }
-
-/*
-rpc GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
-	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
-	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
-	ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
-	GetRecord(ctx context.Context, in *GetRecordRequest, opts ...grpc.CallOption) (*GetRecordResponse, error)
-*/
 
 func (s *siplicityServiceServer) GetStatus(ctx context.Context, in *pb.GetStatusRequest) (*pb.GetStatusResponse, error) {
 	return &pb.GetStatusResponse{
@@ -66,12 +58,42 @@ func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobReques
 	return &pb.PutJobResponse{Status: sidx}, nil
 }
 
+func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountRecordsRequest) (*pb.CountRecordsResponse, error) {
+	return nil, nil
+}
+
 func (s *siplicityServiceServer) ListRecords(ctx context.Context, in *pb.ListRecordsRequest) (*pb.ListRecordsResponse, error) {
-	return s.store.ListRecords(in.GetId(), in.GetOutput()), nil
+	return s.store.ListRecords(in.GetId(), in.GetGraph(), in.GetFilter(), in.GetDisplay(), in.GetFields()), nil
 }
 
 func (s *siplicityServiceServer) GetRecord(ctx context.Context, in *pb.GetRecordRequest) (*pb.GetRecordResponse, error) {
 	return s.store.Get(in.GetId()), nil
+}
+
+func (s *siplicityServiceServer) PutRecord(ctx context.Context, in *pb.PutRecordRequest) (*pb.PutRecordResponse, error) {
+	return &pb.PutRecordResponse{Id: s.store.PutChild(in.GetId(), in.GetRecord(), in.GetGraph())}, nil
+}
+
+func (s *siplicityServiceServer) UpdateRecord(ctx context.Context, in *pb.UpdateRecordRequest) (*pb.UpdateRecordResponse, error) {
+	s.store.UpdateRecord(in.GetId(), in.GetRecord())
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) UpdateField(ctx context.Context, in *pb.UpdateFieldRequest) (*pb.UpdateFieldResponse, error) {
+	s.store.UpdateField(in.GetId(), in.GetPath(), in.GetField())
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) LinkRecords(ctx context.Context, in *pb.LinkRecordsRequest) (*pb.LinkRecordsResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.UnlinkRecordsRequest) (*pb.UnlinkRecordsResponse, error) {
+	return nil, nil
+}
+
+func (s *siplicityServiceServer) Commit(ctx context.Context, in *pb.CommitRequest) (*pb.CommitResponse, error) {
+	return nil, nil
 }
 
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {

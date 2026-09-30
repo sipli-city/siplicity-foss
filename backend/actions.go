@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/richardlehane/siegfried"
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
 type Action interface {

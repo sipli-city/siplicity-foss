@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	pb "github.com/sipli-city/siplicity/gen/siplicityv1"
+	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

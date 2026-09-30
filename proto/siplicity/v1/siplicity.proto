@@ -5,50 +5,83 @@ package siplicity.v1;
 option go_package = "./;siplicityv1";
 
 service SiplicityService {
-    rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {}
-    rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
-    rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
-    rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse) {}
-    rpc GetRecord(GetRecordRequest) returns (GetRecordResponse) {}
-    rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
+  rpc GetStatus(GetStatusRequest) returns (GetStatusResponse) {}
+  rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
+  rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
+  rpc CountRecords(CountRecordsRequest) returns (CountRecordsResponse) {}
+  rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse) {}
+  rpc GetRecord(GetRecordRequest) returns (GetRecordResponse) {}
+  rpc PutRecord(PutRecordRequest) returns (PutRecordResponse) {}
+  rpc UpdateRecord(UpdateRecordRequest) returns (UpdateRecordResponse) {}
+  rpc UpdateField(UpdateFieldRequest) returns (UpdateFieldResponse) {}
+  rpc LinkRecords(LinkRecordsRequest) returns (LinkRecordsResponse) {}
+  rpc UnlinkRecords(UnlinkRecordsRequest) returns (UnlinkRecordsResponse) {}
+  rpc Commit(CommitRequest) returns (CommitResponse) {}
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
 }
 
 message GetStatusRequest {
-    int32 status = 1;
+  int32 status = 1;
 }
 
 message GetStatusResponse {
-    bool done = 1;
+  bool done = 1;
 }
 
 message PutFilePathRequest {
-    string path = 1;
+  string path = 1;
 }
 
 message PutFilePathResponse {
-    int32 status = 1;
+  int32 status = 1;
+}
+
+message Selection {
+  repeated int32 id = 1;
 }
 
 message PutJobRequest {
-    optional string filter = 1;
-    string action = 2;
+  optional Selection selection = 1;
+  optional string filter = 2;
+  string action = 3;
 }
 
 message PutJobResponse {
-    int32 status = 1;
+  int32 status = 1;
 }
 
-message ListRecordsResponse {
-    int32 id = 1;
-    RecordType typ = 2;
-    string name = 3;
-    repeated ListRecordsResponse children = 4;
+enum GraphType {
+  GRAPH_TYPE_UNSPECIFIED = 0;
+  GRAPH_TYPE_INPUT = 1;
+  GRAPH_TYPE_OUTPUT = 2;
+  GRAPH_TYPE_DUPLICATE = 3;
+}
+
+message CountRecordsRequest {
+  optional int32 id = 1;
+  optional GraphType graph = 2;
+  optional string filter = 3;
+}
+
+message CountRecordsResponse {
+  int32 count = 1;
+}
+
+message FieldPath {
+  message Entry {
+    optional string namespace = 1;
+    string name = 2;
+    optional int32 index = 3;
+  }
+  repeated Entry entries = 1;
 }
 
 message ListRecordsRequest {
-    optional int32 id = 1;
-    optional bool output = 2;
-    optional GetField display = 3;
+  optional int32 id = 1;
+  optional GraphType graph = 2;
+  optional string filter = 3;
+  optional FieldPath display = 4;
+  repeated FieldPath fields = 5;
 }
 
 enum RecordType {
@@ -62,32 +95,81 @@ enum RecordType {
   RECORD_TYPE_VIRTUAL_ARCHIVE = 7;
 }
 
-message GetRecordRequest {
-    int32 id = 1;
-}
-
-message GetField {
-    string namespace = 1;
-    string name = 2;
-}
-
 message Field {
-    string namespace = 1;
-    string name = 2;
-    string value = 3;
+  string namespace = 1;
+  string name = 2;
+  string value = 3;
+}
+
+message ListRecordsResponse {
+  int32 id = 1;
+  RecordType typ = 2;
+  string name = 3;
+  repeated Field fields = 4;
+  repeated ListRecordsResponse children = 5;
+}
+
+message GetRecordRequest {
+  int32 id = 1;
 }
 
 message Metadata {
-    Field field = 1;
-    repeated Metadata children = 2;
+  Field field = 1;
+  repeated Metadata children = 2;
 }
 
 message GetRecordResponse {
-    RecordType typ = 1;
-    string path = 2;
-    int64 size = 3;
-    repeated Metadata metadata = 4;
+  RecordType typ = 1;
+  string path = 2;
+  int64 size = 3;
+  repeated Metadata metadata = 4;
 }
+
+message PutRecordRequest {
+  optional int32 id = 1;
+  optional GraphType graph = 2;
+  GetRecordResponse record = 3;
+}
+
+message PutRecordResponse {
+  int32 id = 1;
+}
+
+message UpdateRecordRequest {
+  int32 id = 1;
+  GetRecordResponse record = 2;
+}
+
+message UpdateRecordResponse {}
+
+message UpdateFieldRequest {
+  int32 id = 1;
+  optional FieldPath path = 2;
+  Field field = 3;
+}
+
+message UpdateFieldResponse {}
+
+message LinkRecordsRequest {
+  optional int32 id = 1;
+  GraphType graph = 2;
+  Selection records = 3;
+  optional bool flatten = 4; // if flatten is true, ignore directories (including virtual) and attach all other records to the root of the request
+}
+
+message LinkRecordsResponse {}
+
+message UnlinkRecordsRequest {
+  GraphType graph = 1;
+  Selection records = 2;
+  optional bool flatten = 3; // if flatten is true, don't drop kids as well - change their parent to grandparent
+}
+
+message UnlinkRecordsResponse {}
+
+message CommitRequest {}
+
+message CommitResponse {}
 
 message ShutdownRequest {}
 
