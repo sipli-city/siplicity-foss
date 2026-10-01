@@ -13,12 +13,17 @@ type Store interface {
 	UpdateRecord(int32, *pb.GetRecordResponse)
 	UpdateField(int32, *pb.FieldPath, *pb.Field)
 	AttachChild(int32, int32, pb.GraphType)
+	AdoptChildren(int32, int32, pb.GraphType)
 	Get(int32) *pb.GetRecordResponse
 	ListRecords(int32, pb.GraphType, string, *pb.FieldPath, []*pb.FieldPath) *pb.ListRecordsResponse
 	Ids(string) []int32
+	LinkRecords(to pb.GraphType, from pb.GraphType, parent int32, nodes []int32, shift bool)
+	UnlinkRecords(graph pb.GraphType, nodes []int32)
+	Walk(pb.GraphType, func(string, *pb.GetRecordResponse) (string, error)) error
 }
 
 func AddPath(path string, s Store) error {
+	s.UpdateField(0, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
 	stackSize := 20
 	strStack := make([]string, stackSize)
 	nidStack := make([]int32, stackSize)
@@ -42,7 +47,7 @@ func AddPath(path string, s Store) error {
 			Size: info.Size(),
 		}
 		rec.Metadata = append(rec.Metadata, &pb.Metadata{
-			Field: &pb.Field{Namespace: "siplicity", Name: "base_name", Value: filepath.Base(p)},
+			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
 		})
 		fi := fileinfo(path, info)
 		if fi != nil {

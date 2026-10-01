@@ -16,7 +16,6 @@ service SiplicityService {
   rpc UpdateField(UpdateFieldRequest) returns (UpdateFieldResponse) {}
   rpc LinkRecords(LinkRecordsRequest) returns (LinkRecordsResponse) {}
   rpc UnlinkRecords(UnlinkRecordsRequest) returns (UnlinkRecordsResponse) {}
-  rpc Commit(CommitRequest) returns (CommitResponse) {}
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
 }
 
@@ -153,8 +152,9 @@ message UpdateFieldResponse {}
 message LinkRecordsRequest {
   optional int32 id = 1;
   GraphType graph = 2;
-  Selection records = 3;
-  optional bool flatten = 4; // if flatten is true, ignore directories (including virtual) and attach all other records to the root of the request
+  optional GraphType origin = 3;
+  optional bool shift = 4;
+  Selection records = 5;
 }
 
 message LinkRecordsResponse {}
@@ -162,14 +162,9 @@ message LinkRecordsResponse {}
 message UnlinkRecordsRequest {
   GraphType graph = 1;
   Selection records = 2;
-  optional bool flatten = 3; // if flatten is true, don't drop kids as well - change their parent to grandparent
 }
 
 message UnlinkRecordsResponse {}
-
-message CommitRequest {}
-
-message CommitResponse {}
 
 message ShutdownRequest {}
 

@@ -1458,8 +1458,9 @@ class LinkRecordsRequest extends $pb.GeneratedMessage {
   factory LinkRecordsRequest({
     $core.int? id,
     GraphType? graph,
+    GraphType? origin,
+    $core.bool? shift,
     Selection? records,
-    $core.bool? flatten,
   }) {
     final $result = create();
     if (id != null) {
@@ -1468,11 +1469,14 @@ class LinkRecordsRequest extends $pb.GeneratedMessage {
     if (graph != null) {
       $result.graph = graph;
     }
+    if (origin != null) {
+      $result.origin = origin;
+    }
+    if (shift != null) {
+      $result.shift = shift;
+    }
     if (records != null) {
       $result.records = records;
-    }
-    if (flatten != null) {
-      $result.flatten = flatten;
     }
     return $result;
   }
@@ -1483,8 +1487,9 @@ class LinkRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'LinkRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
-    ..aOM<Selection>(3, _omitFieldNames ? '' : 'records', subBuilder: Selection.create)
-    ..aOB(4, _omitFieldNames ? '' : 'flatten')
+    ..e<GraphType>(3, _omitFieldNames ? '' : 'origin', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
+    ..aOB(4, _omitFieldNames ? '' : 'shift')
+    ..aOM<Selection>(5, _omitFieldNames ? '' : 'records', subBuilder: Selection.create)
     ..hasRequiredFields = false
   ;
 
@@ -1528,24 +1533,33 @@ class LinkRecordsRequest extends $pb.GeneratedMessage {
   void clearGraph() => clearField(2);
 
   @$pb.TagNumber(3)
-  Selection get records => $_getN(2);
+  GraphType get origin => $_getN(2);
   @$pb.TagNumber(3)
-  set records(Selection v) { setField(3, v); }
+  set origin(GraphType v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasRecords() => $_has(2);
+  $core.bool hasOrigin() => $_has(2);
   @$pb.TagNumber(3)
-  void clearRecords() => clearField(3);
-  @$pb.TagNumber(3)
-  Selection ensureRecords() => $_ensure(2);
+  void clearOrigin() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.bool get flatten => $_getBF(3);
+  $core.bool get shift => $_getBF(3);
   @$pb.TagNumber(4)
-  set flatten($core.bool v) { $_setBool(3, v); }
+  set shift($core.bool v) { $_setBool(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasFlatten() => $_has(3);
+  $core.bool hasShift() => $_has(3);
   @$pb.TagNumber(4)
-  void clearFlatten() => clearField(4);
+  void clearShift() => clearField(4);
+
+  @$pb.TagNumber(5)
+  Selection get records => $_getN(4);
+  @$pb.TagNumber(5)
+  set records(Selection v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasRecords() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearRecords() => clearField(5);
+  @$pb.TagNumber(5)
+  Selection ensureRecords() => $_ensure(4);
 }
 
 class LinkRecordsResponse extends $pb.GeneratedMessage {
@@ -1584,7 +1598,6 @@ class UnlinkRecordsRequest extends $pb.GeneratedMessage {
   factory UnlinkRecordsRequest({
     GraphType? graph,
     Selection? records,
-    $core.bool? flatten,
   }) {
     final $result = create();
     if (graph != null) {
@@ -1592,9 +1605,6 @@ class UnlinkRecordsRequest extends $pb.GeneratedMessage {
     }
     if (records != null) {
       $result.records = records;
-    }
-    if (flatten != null) {
-      $result.flatten = flatten;
     }
     return $result;
   }
@@ -1605,7 +1615,6 @@ class UnlinkRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UnlinkRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..e<GraphType>(1, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
     ..aOM<Selection>(2, _omitFieldNames ? '' : 'records', subBuilder: Selection.create)
-    ..aOB(3, _omitFieldNames ? '' : 'flatten')
     ..hasRequiredFields = false
   ;
 
@@ -1649,15 +1658,6 @@ class UnlinkRecordsRequest extends $pb.GeneratedMessage {
   void clearRecords() => clearField(2);
   @$pb.TagNumber(2)
   Selection ensureRecords() => $_ensure(1);
-
-  @$pb.TagNumber(3)
-  $core.bool get flatten => $_getBF(2);
-  @$pb.TagNumber(3)
-  set flatten($core.bool v) { $_setBool(2, v); }
-  @$pb.TagNumber(3)
-  $core.bool hasFlatten() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearFlatten() => clearField(3);
 }
 
 class UnlinkRecordsResponse extends $pb.GeneratedMessage {
@@ -1690,70 +1690,6 @@ class UnlinkRecordsResponse extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static UnlinkRecordsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UnlinkRecordsResponse>(create);
   static UnlinkRecordsResponse? _defaultInstance;
-}
-
-class CommitRequest extends $pb.GeneratedMessage {
-  factory CommitRequest() => create();
-  CommitRequest._() : super();
-  factory CommitRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CommitRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CommitRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CommitRequest clone() => CommitRequest()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CommitRequest copyWith(void Function(CommitRequest) updates) => super.copyWith((message) => updates(message as CommitRequest)) as CommitRequest;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CommitRequest create() => CommitRequest._();
-  CommitRequest createEmptyInstance() => create();
-  static $pb.PbList<CommitRequest> createRepeated() => $pb.PbList<CommitRequest>();
-  @$core.pragma('dart2js:noInline')
-  static CommitRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommitRequest>(create);
-  static CommitRequest? _defaultInstance;
-}
-
-class CommitResponse extends $pb.GeneratedMessage {
-  factory CommitResponse() => create();
-  CommitResponse._() : super();
-  factory CommitResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CommitResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CommitResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..hasRequiredFields = false
-  ;
-
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
-  'Will be removed in next major version')
-  CommitResponse clone() => CommitResponse()..mergeFromMessage(this);
-  @$core.Deprecated(
-  'Using this can add significant overhead to your binary. '
-  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
-  'Will be removed in next major version')
-  CommitResponse copyWith(void Function(CommitResponse) updates) => super.copyWith((message) => updates(message as CommitResponse)) as CommitResponse;
-
-  $pb.BuilderInfo get info_ => _i;
-
-  @$core.pragma('dart2js:noInline')
-  static CommitResponse create() => CommitResponse._();
-  CommitResponse createEmptyInstance() => create();
-  static $pb.PbList<CommitResponse> createRepeated() => $pb.PbList<CommitResponse>();
-  @$core.pragma('dart2js:noInline')
-  static CommitResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<CommitResponse>(create);
-  static CommitResponse? _defaultInstance;
 }
 
 class ShutdownRequest extends $pb.GeneratedMessage {

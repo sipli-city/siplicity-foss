@@ -85,14 +85,12 @@ func (s *siplicityServiceServer) UpdateField(ctx context.Context, in *pb.UpdateF
 }
 
 func (s *siplicityServiceServer) LinkRecords(ctx context.Context, in *pb.LinkRecordsRequest) (*pb.LinkRecordsResponse, error) {
+	s.store.LinkRecords(in.GetGraph(), in.GetOrigin(), in.GetId(), in.GetRecords().GetId(), in.GetShift())
 	return nil, nil
 }
 
 func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.UnlinkRecordsRequest) (*pb.UnlinkRecordsResponse, error) {
-	return nil, nil
-}
-
-func (s *siplicityServiceServer) Commit(ctx context.Context, in *pb.CommitRequest) (*pb.CommitResponse, error) {
+	s.store.UnlinkRecords(in.GetGraph(), in.GetRecords().GetId())
 	return nil, nil
 }
 
