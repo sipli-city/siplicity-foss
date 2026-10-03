@@ -28,7 +28,7 @@ func findMeta(meta []*pb.Metadata, entry *pb.FieldPath_Entry) *pb.Metadata {
 	return nil
 }
 
-func getParent(meta []*pb.Metadata, path *pb.FieldPath) *pb.Metadata {
+func getMeta(meta []*pb.Metadata, path *pb.FieldPath) *pb.Metadata {
 	entries := path.GetEntries()
 	for idx, entry := range entries {
 		m := findMeta(meta, entry)
@@ -43,10 +43,25 @@ func getParent(meta []*pb.Metadata, path *pb.FieldPath) *pb.Metadata {
 	return nil
 }
 
-func getField(meta []*pb.Metadata, path *pb.FieldPath) string {
-	p := getParent(meta, path)
+func getFieldValue(meta []*pb.Metadata, path *pb.FieldPath) string {
+	p := getMeta(meta, path)
 	if p == nil {
 		return ""
 	}
 	return p.GetField().GetValue()
+}
+
+func makePath(entries [][2]string, indexes []int32) *pb.FieldPath {
+	e := make([]*pb.FieldPath_Entry, len(entries))
+	for i, v := range entries {
+		e[i] = &pb.FieldPath_Entry{}
+		if v[0] != "" {
+			e[i].Namespace = &v[0]
+		}
+		e[i].Name = v[1]
+		if indexes != nil && indexes[i] >= 0 {
+			e[i].Index = &indexes[i]
+		}
+	}
+	return &pb.FieldPath{Entries: e}
 }

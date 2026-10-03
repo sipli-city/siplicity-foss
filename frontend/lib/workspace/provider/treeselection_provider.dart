@@ -4,16 +4,26 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'treeselection_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class InputSelection extends _$InputSelection {
-  List<int> selection = <int>[];
-  
   @override
-  List<int> build() {
-    return selection;
+  Iterable<int> build() {
+    return [];
   }
 
-  void update(List<int> list) {
-    selection = list;
-  } 
+  void selectionChanged(Iterable<int> selection) {
+    state = selection;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class OutputSelection extends _$OutputSelection {
+  @override
+  Iterable<int> build() {
+    return [];
+  }
+
+  void selectionChanged(Iterable<int> selection) {
+    state = selection;
+  }
 }

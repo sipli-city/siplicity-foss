@@ -14,7 +14,7 @@ func Filter(filter string, rec *pb.GetRecordResponse) bool {
 	switch parts[0] {
 	case "puid":
 		ns := "pronom"
-		if getField(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &ns, Name: "puid"}}}) == parts[1] {
+		if getFieldValue(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &ns, Name: "puid"}}}) == parts[1] {
 			return true
 		}
 	}

@@ -5,6 +5,7 @@ import (
 	"hash"
 	"io"
 	"os"
+	"time"
 
 	"github.com/richardlehane/siegfried"
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
@@ -38,12 +39,18 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse) error {
 		puid = ids[0].String()
 	}
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
-		Field: &pb.Field{Namespace: "pronom", Name: "puid", Value: puid},
+		Field: &pb.Field{Namespace: "siplicity", Name: "format_identification"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{Namespace: "siplicity", Name: "PRONOM_version", Value: "v118"}},
+			{Field: &pb.Field{Namespace: "siplicity", Name: "siegfried_version", Value: "1.11.1"}},
+			{Field: &pb.Field{Namespace: "siplicity", Name: "PUID", Value: puid}},
+		},
 	})
 	return nil
 }
 
 type hashAction struct {
+	label string
 	hash.Hash
 }
 
@@ -60,7 +67,12 @@ func (h *hashAction) Do(rec *pb.GetRecordResponse) error {
 		return err
 	}
 	rec.Metadata = append(rec.Metadata, &pb.Metadata{
-		Field: &pb.Field{Namespace: "checksum", Name: "sha256", Value: fmt.Sprintf("%x", h.Sum(nil))},
+		Field: &pb.Field{Namespace: "siplicity", Name: "checksum"},
+		Children: []*pb.Metadata{
+			{Field: &pb.Field{Namespace: "siplicity", Name: "algorithm", Value: h.label}},
+			{Field: &pb.Field{Namespace: "siplicity", Name: "hash", Value: fmt.Sprintf("%x", h.Sum(nil))}},
+			{Field: &pb.Field{Namespace: "siplicity", Name: "calculated_at", Value: time.Now().Format(time.RFC3339)}},
+		},
 	})
 	h.Reset()
 	return nil

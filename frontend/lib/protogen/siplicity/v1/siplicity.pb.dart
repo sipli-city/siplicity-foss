@@ -1344,7 +1344,8 @@ class UpdateFieldRequest extends $pb.GeneratedMessage {
   factory UpdateFieldRequest({
     $core.int? id,
     FieldPath? path,
-    Field? field_3,
+    $core.bool? overwrite,
+    Field? field_4,
   }) {
     final $result = create();
     if (id != null) {
@@ -1353,8 +1354,11 @@ class UpdateFieldRequest extends $pb.GeneratedMessage {
     if (path != null) {
       $result.path = path;
     }
-    if (field_3 != null) {
-      $result.field_3 = field_3;
+    if (overwrite != null) {
+      $result.overwrite = overwrite;
+    }
+    if (field_4 != null) {
+      $result.field_4 = field_4;
     }
     return $result;
   }
@@ -1365,7 +1369,8 @@ class UpdateFieldRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'UpdateFieldRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..aOM<FieldPath>(2, _omitFieldNames ? '' : 'path', subBuilder: FieldPath.create)
-    ..aOM<Field>(3, _omitFieldNames ? '' : 'field', subBuilder: Field.create)
+    ..aOB(3, _omitFieldNames ? '' : 'overwrite')
+    ..aOM<Field>(4, _omitFieldNames ? '' : 'field', subBuilder: Field.create)
     ..hasRequiredFields = false
   ;
 
@@ -1411,15 +1416,24 @@ class UpdateFieldRequest extends $pb.GeneratedMessage {
   FieldPath ensurePath() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  Field get field_3 => $_getN(2);
+  $core.bool get overwrite => $_getBF(2);
   @$pb.TagNumber(3)
-  set field_3(Field v) { setField(3, v); }
+  set overwrite($core.bool v) { $_setBool(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasField_3() => $_has(2);
+  $core.bool hasOverwrite() => $_has(2);
   @$pb.TagNumber(3)
-  void clearField_3() => clearField(3);
-  @$pb.TagNumber(3)
-  Field ensureField_3() => $_ensure(2);
+  void clearOverwrite() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Field get field_4 => $_getN(3);
+  @$pb.TagNumber(4)
+  set field_4(Field v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasField_4() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearField_4() => clearField(4);
+  @$pb.TagNumber(4)
+  Field ensureField_4() => $_ensure(3);
 }
 
 class UpdateFieldResponse extends $pb.GeneratedMessage {

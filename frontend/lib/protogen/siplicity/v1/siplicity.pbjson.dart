@@ -371,18 +371,21 @@ const UpdateFieldRequest$json = {
   '2': [
     {'1': 'id', '3': 1, '4': 1, '5': 5, '10': 'id'},
     {'1': 'path', '3': 2, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath', '9': 0, '10': 'path', '17': true},
-    {'1': 'field', '3': 3, '4': 1, '5': 11, '6': '.siplicity.v1.Field', '10': 'field'},
+    {'1': 'overwrite', '3': 3, '4': 1, '5': 8, '9': 1, '10': 'overwrite', '17': true},
+    {'1': 'field', '3': 4, '4': 1, '5': 11, '6': '.siplicity.v1.Field', '10': 'field'},
   ],
   '8': [
     {'1': '_path'},
+    {'1': '_overwrite'},
   ],
 };
 
 /// Descriptor for `UpdateFieldRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List updateFieldRequestDescriptor = $convert.base64Decode(
     'ChJVcGRhdGVGaWVsZFJlcXVlc3QSDgoCaWQYASABKAVSAmlkEjAKBHBhdGgYAiABKAsyFy5zaX'
-    'BsaWNpdHkudjEuRmllbGRQYXRoSABSBHBhdGiIAQESKQoFZmllbGQYAyABKAsyEy5zaXBsaWNp'
-    'dHkudjEuRmllbGRSBWZpZWxkQgcKBV9wYXRo');
+    'BsaWNpdHkudjEuRmllbGRQYXRoSABSBHBhdGiIAQESIQoJb3ZlcndyaXRlGAMgASgISAFSCW92'
+    'ZXJ3cml0ZYgBARIpCgVmaWVsZBgEIAEoCzITLnNpcGxpY2l0eS52MS5GaWVsZFIFZmllbGRCBw'
+    'oFX3BhdGhCDAoKX292ZXJ3cml0ZQ==');
 
 @$core.Deprecated('Use updateFieldResponseDescriptor instead')
 const UpdateFieldResponse$json = {

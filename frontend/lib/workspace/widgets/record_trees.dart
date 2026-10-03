@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
+import 'package:siplicity/workspace/widgets/record_details.dart';
 
 class InputRecordsTree extends ConsumerWidget {
   const InputRecordsTree({super.key});
@@ -15,8 +16,16 @@ class InputRecordsTree extends ConsumerWidget {
           shrinkWrap: true,
           items: value,
           onItemInvoked: (item, details) async {},
-          onSelectionChanged: (selectedItems) async {},
-          onSecondaryTap: (item, details) async {},
+          onSelectionChanged: (selectedItems) async {
+            ref
+                .read(inputSelectionProvider.notifier)
+                .selectionChanged(selectedItems.map((item) => item.value));
+          },
+          onSecondaryTap: (item, details) async {
+            await showDialog<String>(
+                context: context,
+                builder: (context) => RecordDetails(item: item.value));
+          },
         ),
       _ => const Text('loading'),
     };
@@ -35,7 +44,11 @@ class OutputRecordsTree extends ConsumerWidget {
           shrinkWrap: true,
           items: value,
           onItemInvoked: (item, details) async {},
-          onSelectionChanged: (selectedItems) async { ref.read(inputSelectionProvider.notifier).update(List<int>.from(selectedItems.map((item) => item.value )));},
+          onSelectionChanged: (selectedItems) async {
+            ref
+                .read(outputSelectionProvider.notifier)
+                .selectionChanged(selectedItems.map((item) => item.value));
+          },
           onSecondaryTap: (item, details) async {},
         ),
       _ => const Text('loading'),

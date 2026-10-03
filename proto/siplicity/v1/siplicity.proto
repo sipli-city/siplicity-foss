@@ -144,7 +144,8 @@ message UpdateRecordResponse {}
 message UpdateFieldRequest {
   int32 id = 1;
   optional FieldPath path = 2;
-  Field field = 3;
+  optional bool overwrite = 3;
+  Field field = 4;
 }
 
 message UpdateFieldResponse {}

@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/workspace/widgets/command_bars.dart';
 import 'package:siplicity/workspace/widgets/record_trees.dart';
+import 'package:siplicity/workspace/provider/workspace_provider.dart';
 
 class RecordsPage extends ConsumerWidget {
   const RecordsPage({super.key});
@@ -36,12 +37,16 @@ class RecordsPage extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(FluentIcons.double_chevron_right,
                         size: 24.0),
-                    onPressed: () {ref.read()},
+                    onPressed: () {
+                      ref.read(inputRecordsProvider.notifier).linkRecords();
+                    },
                   ),
                   IconButton(
                     icon:
                         const Icon(FluentIcons.double_chevron_left, size: 24.0),
-                    onPressed: () {},
+                    onPressed: () {
+                      ref.read(outputRecordsProvider.notifier).linkRecords();
+                    },
                   ),
                 ],
               )),
