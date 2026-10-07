@@ -4,11 +4,16 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+	"strings"
 
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
+const MonthOnly = "2006-01"
+
 type Store interface {
+	AddReport(string, string)
+	Report(pb.ReportType, int32) *pb.PreparedFeatureCountResponse
 	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
 	UpdateRecord(int32, *pb.GetRecordResponse)
 	UpdateField(int32, *pb.FieldPath, bool, *pb.Field)
@@ -24,7 +29,7 @@ type Store interface {
 }
 
 func AddPath(path string, s Store) error {
-	s.UpdateField(0, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, true, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
+	s.UpdateField(INPUT_GRAPH, &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Name: "display_name"}}}, true, &pb.Field{Namespace: "siplicity", Name: "display_name", Value: "Input"})
 	stackSize := 20
 	strStack := make([]string, stackSize)
 	nidStack := make([]int32, stackSize)
@@ -50,9 +55,16 @@ func AddPath(path string, s Store) error {
 		rec.Metadata = append(rec.Metadata, &pb.Metadata{
 			Field: &pb.Field{Namespace: "siplicity", Name: "display_name", Value: filepath.Base(p)},
 		})
-		fi := fileinfo(path, info)
+		if typ == pb.RecordType_RECORD_TYPE_FILE {
+			ext := strings.TrimPrefix(filepath.Ext(p), ".")
+			if ext != "" {
+				s.AddReport("extension", ext)
+			}
+		}
+		fi, mod := fileinfo(p, info)
 		if fi != nil {
 			rec.Metadata = append(rec.Metadata, fi)
+			s.AddReport("modtime", mod.Format(MonthOnly))
 		}
 		if root {
 			strStack[idx] = p

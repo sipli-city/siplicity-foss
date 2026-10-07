@@ -4,6 +4,25 @@ import (
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
+func findMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) []*pb.Metadata {
+	var ret []*pb.Metadata
+	for _, m := range metas {
+		f := m.GetField()
+		if entry.GetName() == f.GetName() {
+			if entry.GetNamespace() == "" || entry.GetNamespace() == f.GetNamespace() {
+				ret = append(ret, m)
+			}
+		}
+		if children := m.GetChildren(); children != nil {
+			if nret := findMetas(children, entry); len(nret) != 0 {
+				ret = append(ret, nret...)
+			}
+		}
+	}
+	return ret
+}
+
+// find first *pb.Metadata which matches the entry
 func findMeta(meta []*pb.Metadata, entry *pb.FieldPath_Entry) *pb.Metadata {
 	var n int32
 	for _, m := range meta {

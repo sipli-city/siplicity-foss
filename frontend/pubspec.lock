@@ -610,6 +610,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  primer_progress_bar:
+    dependency: "direct main"
+    description:
+      name: primer_progress_bar
+      sha256: "41a3a9f6b5c54e35959346da653ac48219364ecf0b020756d5cde78e34084083"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   protobuf:
     dependency: "direct main"
     description:

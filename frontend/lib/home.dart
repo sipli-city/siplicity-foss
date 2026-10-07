@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:siplicity/dataentry/view/dataentry_page.dart';
 import 'package:siplicity/workspace/view/workspace_page.dart';
 import 'package:siplicity/analysis/view/analysis_page.dart';
 
@@ -15,6 +16,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
+        transitionBuilder: (child, animation) {
+          return SuppressPageTransition(child: child);
+        },
         pane: NavigationPane(
             displayMode: PaneDisplayMode.top,
             selected: choice,
@@ -22,30 +26,30 @@ class _HomePageState extends State<HomePage> {
                   choice = index;
                 }),
             items: [
-          PaneItem(
-            icon: const Icon(FluentIcons.home),
-            title: const Text('Workspace'),
-            body: const RecordsPage(),
-          ),
-          PaneItemSeparator(),
-          PaneItem(
-            icon: const Icon(FluentIcons.pie_double),
-            title: const Text('Analysis'),
-            body: const AnalysisPage(),
-          ),
-          PaneItemSeparator(),
-          PaneItem(
-            icon: const Icon(FluentIcons.add_table),
-            title: const Text('Data entry'),
-            body: const Text("Data entry"),
-          ),
-        ],
+              PaneItem(
+                icon: const Icon(FluentIcons.home),
+                title: const Text('Workspace'),
+                body: const RecordsPage(),
+              ),
+              PaneItemSeparator(),
+              PaneItem(
+                icon: const Icon(FluentIcons.pie_double),
+                title: const Text('Analysis'),
+                body: const AnalysisPage(),
+              ),
+              PaneItemSeparator(),
+              PaneItem(
+                icon: const Icon(FluentIcons.add_table),
+                title: const Text('Data entry'),
+                body: const DataEntryPage(),
+              ),
+            ],
             footerItems: [
-          PaneItem(
-            icon: const Icon(FluentIcons.settings),
-            title: const Text('Settings'),
-            body: const Text("Todo"),
-          ),
-        ]));
+              PaneItem(
+                icon: const Icon(FluentIcons.settings),
+                title: const Text('Settings'),
+                body: const Text("Todo"),
+              ),
+            ]));
   }
 }

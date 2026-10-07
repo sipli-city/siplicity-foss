@@ -9,6 +9,8 @@ service SiplicityService {
   rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
   rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
   rpc CountRecords(CountRecordsRequest) returns (CountRecordsResponse) {}
+  rpc CountFeatures(CountFeaturesRequest) returns (CountFeaturesResponse) {}
+  rpc PreparedFeatureCount(PreparedFeatureCountRequest) returns (PreparedFeatureCountResponse) {}
   rpc ListRecords(ListRecordsRequest) returns (ListRecordsResponse) {}
   rpc GetRecord(GetRecordRequest) returns (GetRecordResponse) {}
   rpc PutRecord(PutRecordRequest) returns (PutRecordResponse) {}
@@ -41,8 +43,8 @@ message Selection {
 
 message PutJobRequest {
   optional Selection selection = 1;
-  optional string filter = 2;
-  string action = 3;
+  optional string filter = 2; // TODO: change filter fields to query fields
+  string action = 3; // TODO: change to enum
 }
 
 message PutJobResponse {
@@ -53,17 +55,56 @@ enum GraphType {
   GRAPH_TYPE_UNSPECIFIED = 0;
   GRAPH_TYPE_INPUT = 1;
   GRAPH_TYPE_OUTPUT = 2;
-  GRAPH_TYPE_DUPLICATE = 3;
 }
 
 message CountRecordsRequest {
   optional int32 id = 1;
-  optional GraphType graph = 2;
-  optional string filter = 3;
+  optional GraphType graph = 2; // If graph isn't specified, check all records
+  optional string filter = 3; // TODO: change filter fields to query fields
 }
 
 message CountRecordsResponse {
   int32 count = 1;
+}
+
+enum ReportType {
+  REPORT_TYPE_UNSPECIFIED = 0;
+  REPORT_TYPE_EXTENSIONS = 1;
+  REPORT_TYPE_MODIFIED = 2;
+  REPORT_TYPE_ZERO_BYTE = 3;
+  REPORT_TYPE_DUPLICATES = 4;
+  REPORT_TYPE_FORMAT_CLASS = 5;
+  REPORT_TYPE_MIME_TYPE = 6;
+  REPORT_TYPE_FILE_FORMAT = 7;
+  REPORT_TYPE_UNKNOWN = 8;
+  REPORT_TYPE_MULTIPLE_IDENTIFICATION = 9;
+}
+
+message PreparedFeatureCountRequest {
+  ReportType report = 1;
+  optional int32 max = 2;
+}
+
+message PreparedFeatureCountResponse {
+  message Feature {
+    string value = 1;
+    int32 count = 2;
+  }
+  repeated Feature features = 1;
+}
+
+message CountFeaturesRequest {
+  optional int32 id = 1;
+  optional GraphType graph = 2; // If graph isn't specified, check all records
+  optional FieldPath feature = 3; // TODO: change filter fields to query fields
+}
+
+message CountFeaturesResponse {
+  message Feature {
+    string value = 1;
+    int32 count = 2;
+  }
+  repeated Feature features = 1;
 }
 
 message FieldPath {
@@ -85,13 +126,14 @@ message ListRecordsRequest {
 
 enum RecordType {
   RECORD_TYPE_UNSPECIFIED = 0;
-  RECORD_TYPE_ROOT = 1;
-  RECORD_TYPE_FILE = 2;
-  RECORD_TYPE_VIRTUAL_FILE = 3;
-  RECORD_TYPE_DIRECTORY = 4;
-  RECORD_TYPE_VIRTUAL_DIRECTORY = 5;
-  RECORD_TYPE_ARCHIVE = 6;
-  RECORD_TYPE_VIRTUAL_ARCHIVE = 7;
+  RECORD_TYPE_SCHEMA = 1;
+  RECORD_TYPE_ROOT = 2;
+  RECORD_TYPE_FILE = 3;
+  RECORD_TYPE_VIRTUAL_FILE = 4;
+  RECORD_TYPE_DIRECTORY = 5;
+  RECORD_TYPE_VIRTUAL_DIRECTORY = 6;
+  RECORD_TYPE_ARCHIVE = 7;
+  RECORD_TYPE_VIRTUAL_ARCHIVE = 8;
 }
 
 message Field {

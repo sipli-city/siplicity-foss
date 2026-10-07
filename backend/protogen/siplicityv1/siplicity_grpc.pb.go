@@ -19,18 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SiplicityService_GetStatus_FullMethodName     = "/siplicity.v1.SiplicityService/GetStatus"
-	SiplicityService_PutFilePath_FullMethodName   = "/siplicity.v1.SiplicityService/PutFilePath"
-	SiplicityService_PutJob_FullMethodName        = "/siplicity.v1.SiplicityService/PutJob"
-	SiplicityService_CountRecords_FullMethodName  = "/siplicity.v1.SiplicityService/CountRecords"
-	SiplicityService_ListRecords_FullMethodName   = "/siplicity.v1.SiplicityService/ListRecords"
-	SiplicityService_GetRecord_FullMethodName     = "/siplicity.v1.SiplicityService/GetRecord"
-	SiplicityService_PutRecord_FullMethodName     = "/siplicity.v1.SiplicityService/PutRecord"
-	SiplicityService_UpdateRecord_FullMethodName  = "/siplicity.v1.SiplicityService/UpdateRecord"
-	SiplicityService_UpdateField_FullMethodName   = "/siplicity.v1.SiplicityService/UpdateField"
-	SiplicityService_LinkRecords_FullMethodName   = "/siplicity.v1.SiplicityService/LinkRecords"
-	SiplicityService_UnlinkRecords_FullMethodName = "/siplicity.v1.SiplicityService/UnlinkRecords"
-	SiplicityService_Shutdown_FullMethodName      = "/siplicity.v1.SiplicityService/Shutdown"
+	SiplicityService_GetStatus_FullMethodName            = "/siplicity.v1.SiplicityService/GetStatus"
+	SiplicityService_PutFilePath_FullMethodName          = "/siplicity.v1.SiplicityService/PutFilePath"
+	SiplicityService_PutJob_FullMethodName               = "/siplicity.v1.SiplicityService/PutJob"
+	SiplicityService_CountRecords_FullMethodName         = "/siplicity.v1.SiplicityService/CountRecords"
+	SiplicityService_CountFeatures_FullMethodName        = "/siplicity.v1.SiplicityService/CountFeatures"
+	SiplicityService_PreparedFeatureCount_FullMethodName = "/siplicity.v1.SiplicityService/PreparedFeatureCount"
+	SiplicityService_ListRecords_FullMethodName          = "/siplicity.v1.SiplicityService/ListRecords"
+	SiplicityService_GetRecord_FullMethodName            = "/siplicity.v1.SiplicityService/GetRecord"
+	SiplicityService_PutRecord_FullMethodName            = "/siplicity.v1.SiplicityService/PutRecord"
+	SiplicityService_UpdateRecord_FullMethodName         = "/siplicity.v1.SiplicityService/UpdateRecord"
+	SiplicityService_UpdateField_FullMethodName          = "/siplicity.v1.SiplicityService/UpdateField"
+	SiplicityService_LinkRecords_FullMethodName          = "/siplicity.v1.SiplicityService/LinkRecords"
+	SiplicityService_UnlinkRecords_FullMethodName        = "/siplicity.v1.SiplicityService/UnlinkRecords"
+	SiplicityService_Shutdown_FullMethodName             = "/siplicity.v1.SiplicityService/Shutdown"
 )
 
 // SiplicityServiceClient is the client API for SiplicityService service.
@@ -41,6 +43,8 @@ type SiplicityServiceClient interface {
 	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
 	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
 	CountRecords(ctx context.Context, in *CountRecordsRequest, opts ...grpc.CallOption) (*CountRecordsResponse, error)
+	CountFeatures(ctx context.Context, in *CountFeaturesRequest, opts ...grpc.CallOption) (*CountFeaturesResponse, error)
+	PreparedFeatureCount(ctx context.Context, in *PreparedFeatureCountRequest, opts ...grpc.CallOption) (*PreparedFeatureCountResponse, error)
 	ListRecords(ctx context.Context, in *ListRecordsRequest, opts ...grpc.CallOption) (*ListRecordsResponse, error)
 	GetRecord(ctx context.Context, in *GetRecordRequest, opts ...grpc.CallOption) (*GetRecordResponse, error)
 	PutRecord(ctx context.Context, in *PutRecordRequest, opts ...grpc.CallOption) (*PutRecordResponse, error)
@@ -93,6 +97,26 @@ func (c *siplicityServiceClient) CountRecords(ctx context.Context, in *CountReco
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CountRecordsResponse)
 	err := c.cc.Invoke(ctx, SiplicityService_CountRecords_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) CountFeatures(ctx context.Context, in *CountFeaturesRequest, opts ...grpc.CallOption) (*CountFeaturesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CountFeaturesResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_CountFeatures_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) PreparedFeatureCount(ctx context.Context, in *PreparedFeatureCountRequest, opts ...grpc.CallOption) (*PreparedFeatureCountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PreparedFeatureCountResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_PreparedFeatureCount_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -187,6 +211,8 @@ type SiplicityServiceServer interface {
 	PutFilePath(context.Context, *PutFilePathRequest) (*PutFilePathResponse, error)
 	PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error)
 	CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error)
+	CountFeatures(context.Context, *CountFeaturesRequest) (*CountFeaturesResponse, error)
+	PreparedFeatureCount(context.Context, *PreparedFeatureCountRequest) (*PreparedFeatureCountResponse, error)
 	ListRecords(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error)
 	GetRecord(context.Context, *GetRecordRequest) (*GetRecordResponse, error)
 	PutRecord(context.Context, *PutRecordRequest) (*PutRecordResponse, error)
@@ -216,6 +242,12 @@ func (UnimplementedSiplicityServiceServer) PutJob(context.Context, *PutJobReques
 }
 func (UnimplementedSiplicityServiceServer) CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountRecords not implemented")
+}
+func (UnimplementedSiplicityServiceServer) CountFeatures(context.Context, *CountFeaturesRequest) (*CountFeaturesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CountFeatures not implemented")
+}
+func (UnimplementedSiplicityServiceServer) PreparedFeatureCount(context.Context, *PreparedFeatureCountRequest) (*PreparedFeatureCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PreparedFeatureCount not implemented")
 }
 func (UnimplementedSiplicityServiceServer) ListRecords(context.Context, *ListRecordsRequest) (*ListRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRecords not implemented")
@@ -330,6 +362,42 @@ func _SiplicityService_CountRecords_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SiplicityServiceServer).CountRecords(ctx, req.(*CountRecordsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_CountFeatures_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CountFeaturesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).CountFeatures(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_CountFeatures_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).CountFeatures(ctx, req.(*CountFeaturesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_PreparedFeatureCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PreparedFeatureCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).PreparedFeatureCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_PreparedFeatureCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).PreparedFeatureCount(ctx, req.(*PreparedFeatureCountRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -500,6 +568,14 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CountRecords",
 			Handler:    _SiplicityService_CountRecords_Handler,
+		},
+		{
+			MethodName: "CountFeatures",
+			Handler:    _SiplicityService_CountFeatures_Handler,
+		},
+		{
+			MethodName: "PreparedFeatureCount",
+			Handler:    _SiplicityService_PreparedFeatureCount_Handler,
 		},
 		{
 			MethodName: "ListRecords",

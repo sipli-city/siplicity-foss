@@ -9,12 +9,22 @@ import (
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
-func fileinfo(_ string, info fs.FileInfo) *pb.Metadata {
+func fileinfoSchema() *pb.Metadata {
 	return &pb.Metadata{
 		Field: &pb.Field{
 			Namespace: "siplicity",
 			Name:      "FileModifiedTime",
-			Value:     info.ModTime().Format(time.RFC3339),
 		},
 	}
+}
+
+func fileinfo(_ string, info fs.FileInfo) (*pb.Metadata, time.Time) {
+	modtime := info.ModTime()
+	return &pb.Metadata{
+		Field: &pb.Field{
+			Namespace: "siplicity",
+			Name:      "FileModifiedTime",
+			Value:     modtime.Format(time.RFC3339),
+		},
+	}, modtime
 }

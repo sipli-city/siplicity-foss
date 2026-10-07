@@ -17,13 +17,11 @@ class GraphType extends $pb.ProtobufEnum {
   static const GraphType GRAPH_TYPE_UNSPECIFIED = GraphType._(0, _omitEnumNames ? '' : 'GRAPH_TYPE_UNSPECIFIED');
   static const GraphType GRAPH_TYPE_INPUT = GraphType._(1, _omitEnumNames ? '' : 'GRAPH_TYPE_INPUT');
   static const GraphType GRAPH_TYPE_OUTPUT = GraphType._(2, _omitEnumNames ? '' : 'GRAPH_TYPE_OUTPUT');
-  static const GraphType GRAPH_TYPE_DUPLICATE = GraphType._(3, _omitEnumNames ? '' : 'GRAPH_TYPE_DUPLICATE');
 
   static const $core.List<GraphType> values = <GraphType> [
     GRAPH_TYPE_UNSPECIFIED,
     GRAPH_TYPE_INPUT,
     GRAPH_TYPE_OUTPUT,
-    GRAPH_TYPE_DUPLICATE,
   ];
 
   static final $core.Map<$core.int, GraphType> _byValue = $pb.ProtobufEnum.initByValue(values);
@@ -32,18 +30,51 @@ class GraphType extends $pb.ProtobufEnum {
   const GraphType._($core.int v, $core.String n) : super(v, n);
 }
 
+class ReportType extends $pb.ProtobufEnum {
+  static const ReportType REPORT_TYPE_UNSPECIFIED = ReportType._(0, _omitEnumNames ? '' : 'REPORT_TYPE_UNSPECIFIED');
+  static const ReportType REPORT_TYPE_EXTENSIONS = ReportType._(1, _omitEnumNames ? '' : 'REPORT_TYPE_EXTENSIONS');
+  static const ReportType REPORT_TYPE_MODIFIED = ReportType._(2, _omitEnumNames ? '' : 'REPORT_TYPE_MODIFIED');
+  static const ReportType REPORT_TYPE_ZERO_BYTE = ReportType._(3, _omitEnumNames ? '' : 'REPORT_TYPE_ZERO_BYTE');
+  static const ReportType REPORT_TYPE_DUPLICATES = ReportType._(4, _omitEnumNames ? '' : 'REPORT_TYPE_DUPLICATES');
+  static const ReportType REPORT_TYPE_FORMAT_CLASS = ReportType._(5, _omitEnumNames ? '' : 'REPORT_TYPE_FORMAT_CLASS');
+  static const ReportType REPORT_TYPE_MIME_TYPE = ReportType._(6, _omitEnumNames ? '' : 'REPORT_TYPE_MIME_TYPE');
+  static const ReportType REPORT_TYPE_FILE_FORMAT = ReportType._(7, _omitEnumNames ? '' : 'REPORT_TYPE_FILE_FORMAT');
+  static const ReportType REPORT_TYPE_UNKNOWN = ReportType._(8, _omitEnumNames ? '' : 'REPORT_TYPE_UNKNOWN');
+  static const ReportType REPORT_TYPE_MULTIPLE_IDENTIFICATION = ReportType._(9, _omitEnumNames ? '' : 'REPORT_TYPE_MULTIPLE_IDENTIFICATION');
+
+  static const $core.List<ReportType> values = <ReportType> [
+    REPORT_TYPE_UNSPECIFIED,
+    REPORT_TYPE_EXTENSIONS,
+    REPORT_TYPE_MODIFIED,
+    REPORT_TYPE_ZERO_BYTE,
+    REPORT_TYPE_DUPLICATES,
+    REPORT_TYPE_FORMAT_CLASS,
+    REPORT_TYPE_MIME_TYPE,
+    REPORT_TYPE_FILE_FORMAT,
+    REPORT_TYPE_UNKNOWN,
+    REPORT_TYPE_MULTIPLE_IDENTIFICATION,
+  ];
+
+  static final $core.Map<$core.int, ReportType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static ReportType? valueOf($core.int value) => _byValue[value];
+
+  const ReportType._($core.int v, $core.String n) : super(v, n);
+}
+
 class RecordType extends $pb.ProtobufEnum {
   static const RecordType RECORD_TYPE_UNSPECIFIED = RecordType._(0, _omitEnumNames ? '' : 'RECORD_TYPE_UNSPECIFIED');
-  static const RecordType RECORD_TYPE_ROOT = RecordType._(1, _omitEnumNames ? '' : 'RECORD_TYPE_ROOT');
-  static const RecordType RECORD_TYPE_FILE = RecordType._(2, _omitEnumNames ? '' : 'RECORD_TYPE_FILE');
-  static const RecordType RECORD_TYPE_VIRTUAL_FILE = RecordType._(3, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_FILE');
-  static const RecordType RECORD_TYPE_DIRECTORY = RecordType._(4, _omitEnumNames ? '' : 'RECORD_TYPE_DIRECTORY');
-  static const RecordType RECORD_TYPE_VIRTUAL_DIRECTORY = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_DIRECTORY');
-  static const RecordType RECORD_TYPE_ARCHIVE = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_ARCHIVE');
-  static const RecordType RECORD_TYPE_VIRTUAL_ARCHIVE = RecordType._(7, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_ARCHIVE');
+  static const RecordType RECORD_TYPE_SCHEMA = RecordType._(1, _omitEnumNames ? '' : 'RECORD_TYPE_SCHEMA');
+  static const RecordType RECORD_TYPE_ROOT = RecordType._(2, _omitEnumNames ? '' : 'RECORD_TYPE_ROOT');
+  static const RecordType RECORD_TYPE_FILE = RecordType._(3, _omitEnumNames ? '' : 'RECORD_TYPE_FILE');
+  static const RecordType RECORD_TYPE_VIRTUAL_FILE = RecordType._(4, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_FILE');
+  static const RecordType RECORD_TYPE_DIRECTORY = RecordType._(5, _omitEnumNames ? '' : 'RECORD_TYPE_DIRECTORY');
+  static const RecordType RECORD_TYPE_VIRTUAL_DIRECTORY = RecordType._(6, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_DIRECTORY');
+  static const RecordType RECORD_TYPE_ARCHIVE = RecordType._(7, _omitEnumNames ? '' : 'RECORD_TYPE_ARCHIVE');
+  static const RecordType RECORD_TYPE_VIRTUAL_ARCHIVE = RecordType._(8, _omitEnumNames ? '' : 'RECORD_TYPE_VIRTUAL_ARCHIVE');
 
   static const $core.List<RecordType> values = <RecordType> [
     RECORD_TYPE_UNSPECIFIED,
+    RECORD_TYPE_SCHEMA,
     RECORD_TYPE_ROOT,
     RECORD_TYPE_FILE,
     RECORD_TYPE_VIRTUAL_FILE,
