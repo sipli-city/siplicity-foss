@@ -884,7 +884,9 @@ class FieldPath_Entry extends $pb.GeneratedMessage {
   factory FieldPath_Entry({
     $core.String? namespace,
     $core.String? name,
+    $core.String? value,
     $core.int? index,
+    FieldPath_Entry? contains,
   }) {
     final $result = create();
     if (namespace != null) {
@@ -893,8 +895,14 @@ class FieldPath_Entry extends $pb.GeneratedMessage {
     if (name != null) {
       $result.name = name;
     }
+    if (value != null) {
+      $result.value = value;
+    }
     if (index != null) {
       $result.index = index;
+    }
+    if (contains != null) {
+      $result.contains = contains;
     }
     return $result;
   }
@@ -905,7 +913,9 @@ class FieldPath_Entry extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'FieldPath.Entry', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'namespace')
     ..aOS(2, _omitFieldNames ? '' : 'name')
-    ..a<$core.int>(3, _omitFieldNames ? '' : 'index', $pb.PbFieldType.O3)
+    ..aOS(3, _omitFieldNames ? '' : 'value')
+    ..a<$core.int>(4, _omitFieldNames ? '' : 'index', $pb.PbFieldType.O3)
+    ..aOM<FieldPath_Entry>(5, _omitFieldNames ? '' : 'contains', subBuilder: FieldPath_Entry.create)
     ..hasRequiredFields = false
   ;
 
@@ -949,13 +959,33 @@ class FieldPath_Entry extends $pb.GeneratedMessage {
   void clearName() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.int get index => $_getIZ(2);
+  $core.String get value => $_getSZ(2);
   @$pb.TagNumber(3)
-  set index($core.int v) { $_setSignedInt32(2, v); }
+  set value($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasIndex() => $_has(2);
+  $core.bool hasValue() => $_has(2);
   @$pb.TagNumber(3)
-  void clearIndex() => clearField(3);
+  void clearValue() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.int get index => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set index($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasIndex() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearIndex() => clearField(4);
+
+  @$pb.TagNumber(5)
+  FieldPath_Entry get contains => $_getN(4);
+  @$pb.TagNumber(5)
+  set contains(FieldPath_Entry v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasContains() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearContains() => clearField(5);
+  @$pb.TagNumber(5)
+  FieldPath_Entry ensureContains() => $_ensure(4);
 }
 
 class FieldPath extends $pb.GeneratedMessage {

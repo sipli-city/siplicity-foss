@@ -82,12 +82,14 @@ InfoLabel metadataInput(
 }
 
 List<TreeViewItem> addChildren(List<Metadata> metadata) {
+  int index = 0; // how do I increment this?
   return metadata
       .map((item) => TreeViewItem(
           content: metadataInput(
               namespace: item.field_1.namespace,
               name: item.field_1.name,
               value: item.field_1.value),
+            value: (item.field_1.namespace, item.field_1.name, index), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
           children: addChildren(item.children)))
       .toList();
 }

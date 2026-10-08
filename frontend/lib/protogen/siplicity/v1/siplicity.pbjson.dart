@@ -305,20 +305,26 @@ const FieldPath_Entry$json = {
   '2': [
     {'1': 'namespace', '3': 1, '4': 1, '5': 9, '9': 0, '10': 'namespace', '17': true},
     {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
-    {'1': 'index', '3': 3, '4': 1, '5': 5, '9': 1, '10': 'index', '17': true},
+    {'1': 'value', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'value', '17': true},
+    {'1': 'index', '3': 4, '4': 1, '5': 5, '9': 2, '10': 'index', '17': true},
+    {'1': 'contains', '3': 5, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath.Entry', '9': 3, '10': 'contains', '17': true},
   ],
   '8': [
     {'1': '_namespace'},
+    {'1': '_value'},
     {'1': '_index'},
+    {'1': '_contains'},
   ],
 };
 
 /// Descriptor for `FieldPath`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List fieldPathDescriptor = $convert.base64Decode(
     'CglGaWVsZFBhdGgSNwoHZW50cmllcxgBIAMoCzIdLnNpcGxpY2l0eS52MS5GaWVsZFBhdGguRW'
-    '50cnlSB2VudHJpZXMacQoFRW50cnkSIQoJbmFtZXNwYWNlGAEgASgJSABSCW5hbWVzcGFjZYgB'
-    'ARISCgRuYW1lGAIgASgJUgRuYW1lEhkKBWluZGV4GAMgASgFSAFSBWluZGV4iAEBQgwKCl9uYW'
-    '1lc3BhY2VCCAoGX2luZGV4');
+    '50cnlSB2VudHJpZXMa4wEKBUVudHJ5EiEKCW5hbWVzcGFjZRgBIAEoCUgAUgluYW1lc3BhY2WI'
+    'AQESEgoEbmFtZRgCIAEoCVIEbmFtZRIZCgV2YWx1ZRgDIAEoCUgBUgV2YWx1ZYgBARIZCgVpbm'
+    'RleBgEIAEoBUgCUgVpbmRleIgBARI+Cghjb250YWlucxgFIAEoCzIdLnNpcGxpY2l0eS52MS5G'
+    'aWVsZFBhdGguRW50cnlIA1IIY29udGFpbnOIAQFCDAoKX25hbWVzcGFjZUIICgZfdmFsdWVCCA'
+    'oGX2luZGV4QgsKCV9jb250YWlucw==');
 
 @$core.Deprecated('Use listRecordsRequestDescriptor instead')
 const ListRecordsRequest$json = {

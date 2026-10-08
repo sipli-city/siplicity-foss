@@ -66,20 +66,20 @@ func (m *MemStore) UpdateField(id int32, p *pb.FieldPath, overwrite bool, f *pb.
 	}
 	meta := &pb.Metadata{}
 	if p != nil {
-		parent := getMeta(m.records[int(id)].GetMetadata(), p)
-		if parent == nil {
+		parent := getMetas(m.records[int(id)].GetMetadata(), p)
+		if len(parent) != 1 {
 			return
 		}
 		if overwrite {
-			meta = parent
+			meta = parent[0]
 		} else {
-			parent.Children = append(parent.Children, meta)
+			parent[0].Children = append(parent[0].Children, meta)
 		}
 	} else {
 		if overwrite {
-			existing := getMeta(m.records[int(id)].GetMetadata(), makePath([][2]string{{f.GetNamespace(), f.GetName()}}, nil))
-			if existing != nil {
-				existing.Field = f
+			existing := getMetas(m.records[int(id)].GetMetadata(), makePath([][2]string{{f.GetNamespace(), f.GetName()}}, nil))
+			if len(existing) == 1 {
+				existing[0].Field = f
 				if f.GetName() == "output_location" {
 					m.UpdateField(OUTPUT_GRAPH, makePath([][2]string{{"siplicity", "display_name"}}, nil),
 						true,
@@ -205,9 +205,9 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, filter string, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
 	if display != nil {
-		nm := getFieldValue(m.records[int(id)].GetMetadata(), display)
-		if nm != "" {
-			name = nm
+		nm := getFieldValues(m.records[int(id)].GetMetadata(), display)
+		if len(nm) == 1 {
+			name = nm[0]
 		}
 	}
 	ret := &pb.ListRecordsResponse{

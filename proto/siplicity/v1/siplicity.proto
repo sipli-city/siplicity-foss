@@ -111,7 +111,9 @@ message FieldPath {
   message Entry {
     optional string namespace = 1;
     string name = 2;
-    optional int32 index = 3;
+    optional string value = 3;
+    optional int32 index = 4;
+    optional Entry contains = 5;
   }
   repeated Entry entries = 1;
 }

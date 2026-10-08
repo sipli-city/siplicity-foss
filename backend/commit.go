@@ -11,11 +11,11 @@ import (
 func commit(dir string, rec *pb.GetRecordResponse) (string, error) {
 	switch rec.Typ {
 	case pb.RecordType_RECORD_TYPE_ROOT:
-		path := getFieldValue(rec.GetMetadata(), makePath([][2]string{{"siplicity", "output_location"}}, nil))
-		if path == "" {
+		paths := getFieldValues(rec.GetMetadata(), makePath([][2]string{{"siplicity", "output_location"}}, nil))
+		if len(paths) == 0 {
 			return "", errors.New("output path not set")
 		}
-		return path, os.MkdirAll(path, 0777)
+		return paths[0], os.MkdirAll(paths[0], 0777)
 	case pb.RecordType_RECORD_TYPE_DIRECTORY, pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY:
 		path := filepath.Join(dir, filepath.Base(rec.GetPath()))
 		return path, os.Mkdir(path, 0777)
