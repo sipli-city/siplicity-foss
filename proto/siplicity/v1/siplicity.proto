@@ -43,7 +43,7 @@ message Selection {
 
 message PutJobRequest {
   optional Selection selection = 1;
-  optional string filter = 2; // TODO: change filter fields to query fields
+  optional string query = 2; 
   string action = 3; // TODO: change to enum
 }
 
@@ -60,7 +60,7 @@ enum GraphType {
 message CountRecordsRequest {
   optional int32 id = 1;
   optional GraphType graph = 2; // If graph isn't specified, check all records
-  optional string filter = 3; // TODO: change filter fields to query fields
+  optional string query = 3; 
 }
 
 message CountRecordsResponse {
@@ -96,7 +96,7 @@ message PreparedFeatureCountResponse {
 message CountFeaturesRequest {
   optional int32 id = 1;
   optional GraphType graph = 2; // If graph isn't specified, check all records
-  optional FieldPath feature = 3; // TODO: change filter fields to query fields
+  optional FieldPath feature = 3; 
 }
 
 message CountFeaturesResponse {
@@ -121,7 +121,7 @@ message FieldPath {
 message ListRecordsRequest {
   optional int32 id = 1;
   optional GraphType graph = 2;
-  optional string filter = 3;
+  optional string query = 3;
   optional FieldPath display = 4;
   repeated FieldPath fields = 5;
 }

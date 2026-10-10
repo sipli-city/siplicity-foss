@@ -9,6 +9,7 @@ import (
 	"hash/crc32"
 
 	"github.com/cespare/xxhash"
+	"github.com/gofrs/uuid/v5"
 	"github.com/richardlehane/siegfried/pkg/static"
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 	"golang.org/x/crypto/blake2b"
@@ -24,6 +25,15 @@ func Job(action string, filter string, store Store) error {
 	case "bagit":
 		Bagit(filter, store)
 		return nil
+	case "uuid4":
+		gen := uuid.NewGen()
+		act = &uuidAction{gen: gen, version: "v4", fn: gen.NewV4}
+	case "uuid6":
+		gen := uuid.NewGen()
+		act = &uuidAction{gen: gen, version: "v6", fn: gen.NewV6}
+	case "uuid7":
+		gen := uuid.NewGen()
+		act = &uuidAction{gen: gen, version: "v7", fn: gen.NewV7}
 	case "siegfried":
 		act = &siegfriedAction{sf: static.New()}
 	case "sha512":

@@ -8,6 +8,7 @@ import (
 	"slices"
 	"time"
 
+	"github.com/gofrs/uuid/v5"
 	"github.com/richardlehane/siegfried"
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
@@ -20,6 +21,29 @@ const (
 type Action interface {
 	Do(rec *pb.GetRecordResponse, s Store) error
 	Schema() *pb.Metadata
+}
+
+type uuidAction struct {
+	gen     *uuid.Gen
+	version string
+	fn      func() (uuid.UUID, error)
+}
+
+func (uu *uuidAction) Do(rec *pb.GetRecordResponse, s Store) error {
+	u, err := uu.fn()
+	if err != nil {
+		return err
+	}
+	rec.Metadata = append(rec.Metadata, &pb.Metadata{
+		Field: &pb.Field{Namespace: "siplicity", Name: "uuid" + uu.version, Value: u.String()},
+	})
+	return nil
+}
+
+func (uu *uuidAction) Schema() *pb.Metadata {
+	return &pb.Metadata{
+		Field: &pb.Field{Namespace: "siplicity", Name: "uuid" + uu.version},
+	}
 }
 
 type siegfriedAction struct {

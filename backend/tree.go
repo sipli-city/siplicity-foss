@@ -160,3 +160,29 @@ func (t *tree) shift(from *tree, parent int32, nodes []int32) {
 	t.copy(from, parent, nodes)
 	from.unlinkList(nodes)
 }
+
+// given a set of IDs, return a subset of the tree's "children" hierarchy
+func (t *tree) hierarchy(ids []int32) map[int32][]int32 {
+	ret := make(map[int32][]int32)
+	var parent int32
+outer:
+	for _, id := range ids {
+		for {
+			parent = t.parents[id]
+			if _, ok := ret[parent]; ok {
+				if !slices.Contains(ret[parent], id) {
+					ret[parent] = append(ret[parent], id)
+				}
+				continue outer // our parent has already been added, so ancestors must also have been visited
+			}
+			ret[parent] = make([]int32, 1, 20)
+			ret[parent][0] = id
+			if parent == t.root {
+				continue outer
+			}
+			id = parent
+		}
+
+	}
+	return ret
+}

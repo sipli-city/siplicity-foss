@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	github.com/cespare/xxhash v1.1.0
+	github.com/gofrs/uuid/v5 v5.3.0
 	github.com/richardlehane/msoleps v1.0.4
 	github.com/richardlehane/siegfried v1.11.1
 	golang.org/x/crypto v0.27.0

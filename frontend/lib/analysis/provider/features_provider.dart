@@ -6,13 +6,6 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 part 'features_provider.g.dart';
 
-List<Map<dynamic, dynamic>> tuple(
-    String label, PreparedFeatureCountResponse response) {
-  return response.features
-      .map((item) => {label: item.value, "count": item.count})
-      .toList();
-}
-
 Color getColor(int index) {
   switch (index) {
     case 0:
@@ -67,22 +60,15 @@ List<Segment> segment(String label, PreparedFeatureCountResponse response) {
   return li;
 }
 
-/* [
-  Segment(value: 80, color: Colors.purple, label: Text("Done")),
-  Segment(value: 14, color: Colors.deepOrange, label: Text("In progress")),
-  Segment(value: 6, color: Colors.green, label: Text("Open")),
-];
-*/
 @riverpod
 class FeatureSegments extends _$FeatureSegments {
   @override
-  Future<List<Segment>> build(ReportType report) async {
+  Future<List<Segment>> build({required ReportType report, int? max}) async {
     PreparedFeatureCountResponse response =
         await siplicityServiceClient.preparedFeatureCount(
-            PreparedFeatureCountRequest(report: report, max: 20));
+            PreparedFeatureCountRequest(report: report, max: max));
     switch (report) {
       case ReportType.REPORT_TYPE_EXTENSIONS:
-        debugPrint("calling segment function");
         return segment("extension", response);
       case ReportType.REPORT_TYPE_FILE_FORMAT:
         return segment("file format", response);
@@ -91,18 +77,26 @@ class FeatureSegments extends _$FeatureSegments {
       case ReportType.REPORT_TYPE_MIME_TYPE:
         return segment("mime", response);
       default:
-        debugPrint("switch didn't return value");
         return List.empty();
     }
   }
 }
 
+List<Map<dynamic, dynamic>> tuple(
+    String label, PreparedFeatureCountResponse response) {
+  return response.features
+      .map((item) => {label: item.value, "count": item.count})
+      .toList();
+}
+
 @riverpod
-class Features extends _$Features {
+class FeatureTuples extends _$FeatureTuples {
   @override
-  Future<List<Map<dynamic, dynamic>>> build(ReportType report) async {
-    PreparedFeatureCountResponse response = await siplicityServiceClient
-        .preparedFeatureCount(PreparedFeatureCountRequest(report: report));
+  Future<List<Map<dynamic, dynamic>>> build(
+      {required ReportType report, int? max}) async {
+    PreparedFeatureCountResponse response =
+        await siplicityServiceClient.preparedFeatureCount(
+            PreparedFeatureCountRequest(report: report, max: max));
     switch (report) {
       case ReportType.REPORT_TYPE_EXTENSIONS:
         return tuple("extension", response);

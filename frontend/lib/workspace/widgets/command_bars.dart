@@ -87,7 +87,7 @@ final class InputCommandBar extends ConsumerWidget {
                     ),
                 wrappedItem: CommandBarButton(
                   icon: const Icon(FluentIcons.set_action),
-                  label: const Text('Input actions'),
+                  label: const Text('Actions'),
                   onPressed: () {
                     inputActionController.showFlyout(
                       autoModeConfiguration: FlyoutAutoConfiguration(
@@ -100,7 +100,7 @@ final class InputCommandBar extends ConsumerWidget {
                       builder: (context) {
                         return MenuFlyout(items: [
                           MenuFlyoutItem(
-                            leading: const Icon(FluentIcons.search_and_apps),
+                            leading: const Icon(FluentIcons.file_comment),
                             text: const Text('Identify with siegfried'),
                             onPressed: () async {
                               ref
@@ -109,6 +109,39 @@ final class InputCommandBar extends ConsumerWidget {
                               Flyout.of(context).close();
                             },
                           ),
+                          const MenuFlyoutSeparator(),
+                          MenuFlyoutSubItem(
+                              leading: const Icon(FluentIcons.tag),
+                              text: const Text('Assign UUIDs'),
+                              items: (_) => [
+                                    MenuFlyoutItem(
+                                      text: const Text('UUIDv4'),
+                                      onPressed: () async {
+                                        ref
+                                            .read(inputRecordsProvider.notifier)
+                                            .putAction(action: "uuid4");
+                                        Flyout.of(context).close();
+                                      },
+                                    ),
+                                    MenuFlyoutItem(
+                                      text: const Text('UUIDv6'),
+                                      onPressed: () async {
+                                        ref
+                                            .read(inputRecordsProvider.notifier)
+                                            .putAction(action: "uuid6");
+                                        Flyout.of(context).close();
+                                      },
+                                    ),
+                                    MenuFlyoutItem(
+                                      text: const Text('UUIDv7'),
+                                      onPressed: () async {
+                                        ref
+                                            .read(inputRecordsProvider.notifier)
+                                            .putAction(action: "uuid");
+                                        Flyout.of(context).close();
+                                      },
+                                    ),
+                                  ]),
                           const MenuFlyoutSeparator(),
                           MenuFlyoutSubItem(
                             leading: const Icon(FluentIcons.calculator),
@@ -233,8 +266,8 @@ class OutputCommandBar extends ConsumerWidget {
                 child: w,
               ),
               wrappedItem: CommandBarButton(
-                  icon: const Icon(FluentIcons.set_action),
-                  label: const Text('Output actions'),
+                  icon: const Icon(FluentIcons.package),
+                  label: const Text('Package'),
                   onPressed: () {
                     outputActionController.showFlyout(
                         autoModeConfiguration: FlyoutAutoConfiguration(
@@ -246,7 +279,7 @@ class OutputCommandBar extends ConsumerWidget {
                         builder: (context) {
                           return MenuFlyout(items: [
                             MenuFlyoutItem(
-                              leading: const Icon(FluentIcons.airplane),
+                              leading: const Icon(FluentIcons.suitcase),
                               text: const Text('Bagit'),
                               onPressed: () async {
                                 ref

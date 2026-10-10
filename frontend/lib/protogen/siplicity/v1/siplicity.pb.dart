@@ -265,15 +265,15 @@ class Selection extends $pb.GeneratedMessage {
 class PutJobRequest extends $pb.GeneratedMessage {
   factory PutJobRequest({
     Selection? selection,
-    $core.String? filter,
+    $core.String? query,
     $core.String? action,
   }) {
     final $result = create();
     if (selection != null) {
       $result.selection = selection;
     }
-    if (filter != null) {
-      $result.filter = filter;
+    if (query != null) {
+      $result.query = query;
     }
     if (action != null) {
       $result.action = action;
@@ -286,7 +286,7 @@ class PutJobRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PutJobRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..aOM<Selection>(1, _omitFieldNames ? '' : 'selection', subBuilder: Selection.create)
-    ..aOS(2, _omitFieldNames ? '' : 'filter')
+    ..aOS(2, _omitFieldNames ? '' : 'query')
     ..aOS(3, _omitFieldNames ? '' : 'action')
     ..hasRequiredFields = false
   ;
@@ -324,13 +324,13 @@ class PutJobRequest extends $pb.GeneratedMessage {
   Selection ensureSelection() => $_ensure(0);
 
   @$pb.TagNumber(2)
-  $core.String get filter => $_getSZ(1);
+  $core.String get query => $_getSZ(1);
   @$pb.TagNumber(2)
-  set filter($core.String v) { $_setString(1, v); }
+  set query($core.String v) { $_setString(1, v); }
   @$pb.TagNumber(2)
-  $core.bool hasFilter() => $_has(1);
+  $core.bool hasQuery() => $_has(1);
   @$pb.TagNumber(2)
-  void clearFilter() => clearField(2);
+  void clearQuery() => clearField(2);
 
   @$pb.TagNumber(3)
   $core.String get action => $_getSZ(2);
@@ -396,7 +396,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
   factory CountRecordsRequest({
     $core.int? id,
     GraphType? graph,
-    $core.String? filter,
+    $core.String? query,
   }) {
     final $result = create();
     if (id != null) {
@@ -405,8 +405,8 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     if (graph != null) {
       $result.graph = graph;
     }
-    if (filter != null) {
-      $result.filter = filter;
+    if (query != null) {
+      $result.query = query;
     }
     return $result;
   }
@@ -417,7 +417,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'CountRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
-    ..aOS(3, _omitFieldNames ? '' : 'filter')
+    ..aOS(3, _omitFieldNames ? '' : 'query')
     ..hasRequiredFields = false
   ;
 
@@ -461,13 +461,13 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
   void clearGraph() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get filter => $_getSZ(2);
+  $core.String get query => $_getSZ(2);
   @$pb.TagNumber(3)
-  set filter($core.String v) { $_setString(2, v); }
+  set query($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFilter() => $_has(2);
+  $core.bool hasQuery() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFilter() => clearField(3);
+  void clearQuery() => clearField(3);
 }
 
 class CountRecordsResponse extends $pb.GeneratedMessage {
@@ -1036,7 +1036,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   factory ListRecordsRequest({
     $core.int? id,
     GraphType? graph,
-    $core.String? filter,
+    $core.String? query,
     FieldPath? display,
     $core.Iterable<FieldPath>? fields,
   }) {
@@ -1047,8 +1047,8 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
     if (graph != null) {
       $result.graph = graph;
     }
-    if (filter != null) {
-      $result.filter = filter;
+    if (query != null) {
+      $result.query = query;
     }
     if (display != null) {
       $result.display = display;
@@ -1065,7 +1065,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
-    ..aOS(3, _omitFieldNames ? '' : 'filter')
+    ..aOS(3, _omitFieldNames ? '' : 'query')
     ..aOM<FieldPath>(4, _omitFieldNames ? '' : 'display', subBuilder: FieldPath.create)
     ..pc<FieldPath>(5, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldPath.create)
     ..hasRequiredFields = false
@@ -1111,13 +1111,13 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   void clearGraph() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get filter => $_getSZ(2);
+  $core.String get query => $_getSZ(2);
   @$pb.TagNumber(3)
-  set filter($core.String v) { $_setString(2, v); }
+  set query($core.String v) { $_setString(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasFilter() => $_has(2);
+  $core.bool hasQuery() => $_has(2);
   @$pb.TagNumber(3)
-  void clearFilter() => clearField(3);
+  void clearQuery() => clearField(3);
 
   @$pb.TagNumber(4)
   FieldPath get display => $_getN(3);

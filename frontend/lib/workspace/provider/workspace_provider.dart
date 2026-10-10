@@ -7,9 +7,26 @@ import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 
 part 'workspace_provider.g.dart';
 
+Icon? getIcon(RecordType typ) {
+  switch (typ) {
+    case RecordType.RECORD_TYPE_DIRECTORY:
+      return Icon(
+        FluentIcons.fabric_folder,
+        color: Colors.orange,
+      );
+    case RecordType.RECORD_TYPE_FILE:
+      return Icon(
+        FluentIcons.text_document,
+      );
+    default:
+      return null;
+  }
+}
+
 List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
   return list
       .map((item) => TreeViewItem(
+          leading: getIcon(item.typ),
           content: Text(item.name),
           value: item.id,
           children: addChildren(item.children)))
@@ -70,9 +87,9 @@ class InputRecords extends _$InputRecords {
     }
   }
 
-  Future<void> putAction({String? filter, String? action}) async {
+  Future<void> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
-        .putJob(PutJobRequest(filter: filter, action: action));
+        .putJob(PutJobRequest(query: query, action: action));
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
@@ -127,9 +144,9 @@ class OutputRecords extends _$OutputRecords {
     ];
   }
 
-  Future<void> putAction({String? filter, String? action}) async {
+  Future<void> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
-        .putJob(PutJobRequest(filter: filter, action: action));
+        .putJob(PutJobRequest(query: query, action: action));
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
