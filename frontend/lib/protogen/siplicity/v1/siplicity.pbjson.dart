@@ -585,9 +585,12 @@ final $typed_data.Uint8List shutdownRequestDescriptor = $convert.base64Decode(
 @$core.Deprecated('Use shutdownResponseDescriptor instead')
 const ShutdownResponse$json = {
   '1': 'ShutdownResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+  ],
 };
 
 /// Descriptor for `ShutdownResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List shutdownResponseDescriptor = $convert.base64Decode(
-    'ChBTaHV0ZG93blJlc3BvbnNl');
+    'ChBTaHV0ZG93blJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3M=');
 

@@ -107,8 +107,8 @@ func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.Unlin
 }
 
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
-	s.srv.Stop()
-	return nil, nil
+	go s.srv.Stop()
+	return &pb.ShutdownResponse{Success: true}, nil
 }
 
 func main() {

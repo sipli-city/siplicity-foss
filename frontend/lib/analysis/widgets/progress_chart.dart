@@ -10,14 +10,16 @@ class ProgressChart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final segments = ref.watch(featureSegmentsProvider(report: typ, max: 20));
+    final segments = ref.watch(featuresProvider(report: typ));
 
     return switch (segments) {
       AsyncData(:final value) => Container(
-          margin: const EdgeInsets.only(top: 10),
-          width: 350,
-          height: 200,
-          child: PrimerProgressBar(segments: value)),
+          width: 500,
+          height: 300,
+          alignment: Alignment.center,
+          child: value.features.isNotEmpty
+              ? PrimerProgressBar(segments: asSegments(limit(value, 15)))
+              : Text("Placeholder")),
       _ => const Text("loading"),
     };
   }

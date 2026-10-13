@@ -59,10 +59,7 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse, s Store) error {
 		return err
 	}
 	defer f.Close()
-	ids, err := sa.sf.Identify(f, rec.GetPath(), "")
-	if err != nil {
-		return err
-	}
+	ids, _ := sa.sf.Identify(f, rec.GetPath(), "") // Eat the error as it just reports zero byte size and other anomalies like that
 	identifications := make([]*pb.Metadata, len(ids))
 	for i, v := range ids {
 		idfields := make([]*pb.Metadata, len(v.Values())-1)
