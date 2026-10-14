@@ -14,6 +14,7 @@ const MonthOnly = "2006-01"
 type Store interface {
 	AddReport(string, string)
 	Report(pb.ReportType, int32) *pb.PreparedFeatureCountResponse
+	Reports() *pb.PreparedFeatureAvailableResponse
 	PutChild(int32, *pb.GetRecordResponse, pb.GraphType) int32 // -1 = root
 	UpdateRecord(int32, *pb.GetRecordResponse)
 	UpdateField(int32, *pb.FieldPath, bool, *pb.Field)

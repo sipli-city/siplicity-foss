@@ -109,6 +109,27 @@ func (m *MemStore) AddReport(k1, k2 string) {
 	m2[k2]++
 }
 
+func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
+	ret := &pb.PreparedFeatureAvailableResponse{}
+	ret.Report = make([]pb.ReportType, 0, len(m.reports))
+	if _, ok := m.reports["modtime"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MODIFIED)
+	}
+	if _, ok := m.reports["extension"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_EXTENSIONS)
+	}
+	if _, ok := m.reports["id"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_FILE_FORMAT)
+	}
+	if _, ok := m.reports["mime"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MIME_TYPE)
+	}
+	if _, ok := m.reports["class"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_FORMAT_CLASS)
+	}
+	return ret
+}
+
 func (m *MemStore) Report(typ pb.ReportType, max int32) *pb.PreparedFeatureCountResponse {
 	var t string
 	switch typ {
@@ -201,6 +222,10 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 	return m.records[int(n)]
 }
 
+func sortFn(a, b *pb.ListRecordsResponse) int {
+	return strings.Compare(a.GetName(), b.GetName())
+}
+
 // recursive function to build a tree of records based on a given hierarchy
 func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.FieldPath, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	name := m.records[int(id)].GetPath()
@@ -220,6 +245,7 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display *pb.Fi
 	for i, v := range children {
 		ret.Children[i] = m.addNode(v, hierarchy, display, fields)
 	}
+	slices.SortFunc(ret.Children, sortFn)
 	return ret
 }
 
@@ -288,14 +314,14 @@ func (m *MemStore) LinkRecords(to pb.GraphType, from pb.GraphType, parent int32,
 	}
 	f := m.getTree(from)
 	if shift {
-		t.shift(f, parent, nodes)
+		t.shift(f, parent, nodes, from == pb.GraphType_GRAPH_TYPE_INPUT)
 		return
 	}
 	t.copy(f, parent, nodes)
 }
 
 func (m *MemStore) UnlinkRecords(g pb.GraphType, nodes []int32) {
-	m.getTree(g).unlinkList(nodes)
+	m.getTree(g).unlinkList(nodes, false)
 }
 
 func (m *MemStore) Purge(g pb.GraphType) {

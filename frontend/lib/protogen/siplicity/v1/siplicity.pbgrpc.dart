@@ -37,6 +37,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/CountRecords',
       ($0.CountRecordsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.CountRecordsResponse.fromBuffer(value));
+  static final _$totalVolume = $grpc.ClientMethod<$0.TotalVolumeRequest, $0.TotalVolumeResponse>(
+      '/siplicity.v1.SiplicityService/TotalVolume',
+      ($0.TotalVolumeRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.TotalVolumeResponse.fromBuffer(value));
   static final _$countFeatures = $grpc.ClientMethod<$0.CountFeaturesRequest, $0.CountFeaturesResponse>(
       '/siplicity.v1.SiplicityService/CountFeatures',
       ($0.CountFeaturesRequest value) => value.writeToBuffer(),
@@ -45,6 +49,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/PreparedFeatureCount',
       ($0.PreparedFeatureCountRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.PreparedFeatureCountResponse.fromBuffer(value));
+  static final _$preparedFeatureAvailable = $grpc.ClientMethod<$0.PreparedFeatureAvailableRequest, $0.PreparedFeatureAvailableResponse>(
+      '/siplicity.v1.SiplicityService/PreparedFeatureAvailable',
+      ($0.PreparedFeatureAvailableRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.PreparedFeatureAvailableResponse.fromBuffer(value));
   static final _$listRecords = $grpc.ClientMethod<$0.ListRecordsRequest, $0.ListRecordsResponse>(
       '/siplicity.v1.SiplicityService/ListRecords',
       ($0.ListRecordsRequest value) => value.writeToBuffer(),
@@ -100,12 +108,20 @@ class SiplicityServiceClient extends $grpc.Client {
     return $createUnaryCall(_$countRecords, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.TotalVolumeResponse> totalVolume($0.TotalVolumeRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$totalVolume, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.CountFeaturesResponse> countFeatures($0.CountFeaturesRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$countFeatures, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.PreparedFeatureCountResponse> preparedFeatureCount($0.PreparedFeatureCountRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$preparedFeatureCount, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.PreparedFeatureAvailableResponse> preparedFeatureAvailable($0.PreparedFeatureAvailableRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$preparedFeatureAvailable, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.ListRecordsResponse> listRecords($0.ListRecordsRequest request, {$grpc.CallOptions? options}) {
@@ -174,6 +190,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.CountRecordsRequest.fromBuffer(value),
         ($0.CountRecordsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.TotalVolumeRequest, $0.TotalVolumeResponse>(
+        'TotalVolume',
+        totalVolume_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.TotalVolumeRequest.fromBuffer(value),
+        ($0.TotalVolumeResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CountFeaturesRequest, $0.CountFeaturesResponse>(
         'CountFeatures',
         countFeatures_Pre,
@@ -188,6 +211,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.PreparedFeatureCountRequest.fromBuffer(value),
         ($0.PreparedFeatureCountResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.PreparedFeatureAvailableRequest, $0.PreparedFeatureAvailableResponse>(
+        'PreparedFeatureAvailable',
+        preparedFeatureAvailable_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.PreparedFeatureAvailableRequest.fromBuffer(value),
+        ($0.PreparedFeatureAvailableResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ListRecordsRequest, $0.ListRecordsResponse>(
         'ListRecords',
         listRecords_Pre,
@@ -262,12 +292,20 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return countRecords(call, await request);
   }
 
+  $async.Future<$0.TotalVolumeResponse> totalVolume_Pre($grpc.ServiceCall call, $async.Future<$0.TotalVolumeRequest> request) async {
+    return totalVolume(call, await request);
+  }
+
   $async.Future<$0.CountFeaturesResponse> countFeatures_Pre($grpc.ServiceCall call, $async.Future<$0.CountFeaturesRequest> request) async {
     return countFeatures(call, await request);
   }
 
   $async.Future<$0.PreparedFeatureCountResponse> preparedFeatureCount_Pre($grpc.ServiceCall call, $async.Future<$0.PreparedFeatureCountRequest> request) async {
     return preparedFeatureCount(call, await request);
+  }
+
+  $async.Future<$0.PreparedFeatureAvailableResponse> preparedFeatureAvailable_Pre($grpc.ServiceCall call, $async.Future<$0.PreparedFeatureAvailableRequest> request) async {
+    return preparedFeatureAvailable(call, await request);
   }
 
   $async.Future<$0.ListRecordsResponse> listRecords_Pre($grpc.ServiceCall call, $async.Future<$0.ListRecordsRequest> request) async {
@@ -306,8 +344,10 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.PutFilePathResponse> putFilePath($grpc.ServiceCall call, $0.PutFilePathRequest request);
   $async.Future<$0.PutJobResponse> putJob($grpc.ServiceCall call, $0.PutJobRequest request);
   $async.Future<$0.CountRecordsResponse> countRecords($grpc.ServiceCall call, $0.CountRecordsRequest request);
+  $async.Future<$0.TotalVolumeResponse> totalVolume($grpc.ServiceCall call, $0.TotalVolumeRequest request);
   $async.Future<$0.CountFeaturesResponse> countFeatures($grpc.ServiceCall call, $0.CountFeaturesRequest request);
   $async.Future<$0.PreparedFeatureCountResponse> preparedFeatureCount($grpc.ServiceCall call, $0.PreparedFeatureCountRequest request);
+  $async.Future<$0.PreparedFeatureAvailableResponse> preparedFeatureAvailable($grpc.ServiceCall call, $0.PreparedFeatureAvailableRequest request);
   $async.Future<$0.ListRecordsResponse> listRecords($grpc.ServiceCall call, $0.ListRecordsRequest request);
   $async.Future<$0.GetRecordResponse> getRecord($grpc.ServiceCall call, $0.GetRecordRequest request);
   $async.Future<$0.PutRecordResponse> putRecord($grpc.ServiceCall call, $0.PutRecordRequest request);

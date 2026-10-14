@@ -392,6 +392,134 @@ class PutJobResponse extends $pb.GeneratedMessage {
   void clearStatus() => clearField(1);
 }
 
+class TotalVolumeRequest extends $pb.GeneratedMessage {
+  factory TotalVolumeRequest({
+    $core.int? id,
+    GraphType? graph,
+    $core.String? query,
+  }) {
+    final $result = create();
+    if (id != null) {
+      $result.id = id;
+    }
+    if (graph != null) {
+      $result.graph = graph;
+    }
+    if (query != null) {
+      $result.query = query;
+    }
+    return $result;
+  }
+  TotalVolumeRequest._() : super();
+  factory TotalVolumeRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TotalVolumeRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TotalVolumeRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
+    ..aOS(3, _omitFieldNames ? '' : 'query')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TotalVolumeRequest clone() => TotalVolumeRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TotalVolumeRequest copyWith(void Function(TotalVolumeRequest) updates) => super.copyWith((message) => updates(message as TotalVolumeRequest)) as TotalVolumeRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static TotalVolumeRequest create() => TotalVolumeRequest._();
+  TotalVolumeRequest createEmptyInstance() => create();
+  static $pb.PbList<TotalVolumeRequest> createRepeated() => $pb.PbList<TotalVolumeRequest>();
+  @$core.pragma('dart2js:noInline')
+  static TotalVolumeRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TotalVolumeRequest>(create);
+  static TotalVolumeRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.int get id => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set id($core.int v) { $_setSignedInt32(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => clearField(1);
+
+  @$pb.TagNumber(2)
+  GraphType get graph => $_getN(1);
+  @$pb.TagNumber(2)
+  set graph(GraphType v) { setField(2, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasGraph() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearGraph() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get query => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set query($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasQuery() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearQuery() => clearField(3);
+}
+
+class TotalVolumeResponse extends $pb.GeneratedMessage {
+  factory TotalVolumeResponse({
+    $fixnum.Int64? volume,
+  }) {
+    final $result = create();
+    if (volume != null) {
+      $result.volume = volume;
+    }
+    return $result;
+  }
+  TotalVolumeResponse._() : super();
+  factory TotalVolumeResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TotalVolumeResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'TotalVolumeResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aInt64(1, _omitFieldNames ? '' : 'volume')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  TotalVolumeResponse clone() => TotalVolumeResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  TotalVolumeResponse copyWith(void Function(TotalVolumeResponse) updates) => super.copyWith((message) => updates(message as TotalVolumeResponse)) as TotalVolumeResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static TotalVolumeResponse create() => TotalVolumeResponse._();
+  TotalVolumeResponse createEmptyInstance() => create();
+  static $pb.PbList<TotalVolumeResponse> createRepeated() => $pb.PbList<TotalVolumeResponse>();
+  @$core.pragma('dart2js:noInline')
+  static TotalVolumeResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<TotalVolumeResponse>(create);
+  static TotalVolumeResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get volume => $_getI64(0);
+  @$pb.TagNumber(1)
+  set volume($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasVolume() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearVolume() => clearField(1);
+}
+
 class CountRecordsRequest extends $pb.GeneratedMessage {
   factory CountRecordsRequest({
     $core.int? id,
@@ -690,6 +818,82 @@ class PreparedFeatureCountResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<PreparedFeatureCountResponse_Feature> get features => $_getList(0);
+}
+
+class PreparedFeatureAvailableRequest extends $pb.GeneratedMessage {
+  factory PreparedFeatureAvailableRequest() => create();
+  PreparedFeatureAvailableRequest._() : super();
+  factory PreparedFeatureAvailableRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PreparedFeatureAvailableRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureAvailableRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureAvailableRequest clone() => PreparedFeatureAvailableRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureAvailableRequest copyWith(void Function(PreparedFeatureAvailableRequest) updates) => super.copyWith((message) => updates(message as PreparedFeatureAvailableRequest)) as PreparedFeatureAvailableRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureAvailableRequest create() => PreparedFeatureAvailableRequest._();
+  PreparedFeatureAvailableRequest createEmptyInstance() => create();
+  static $pb.PbList<PreparedFeatureAvailableRequest> createRepeated() => $pb.PbList<PreparedFeatureAvailableRequest>();
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureAvailableRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PreparedFeatureAvailableRequest>(create);
+  static PreparedFeatureAvailableRequest? _defaultInstance;
+}
+
+class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
+  factory PreparedFeatureAvailableResponse({
+    $core.Iterable<ReportType>? report,
+  }) {
+    final $result = create();
+    if (report != null) {
+      $result.report.addAll(report);
+    }
+    return $result;
+  }
+  PreparedFeatureAvailableResponse._() : super();
+  factory PreparedFeatureAvailableResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PreparedFeatureAvailableResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureAvailableResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..pc<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.KE, valueOf: ReportType.valueOf, enumValues: ReportType.values, defaultEnumValue: ReportType.REPORT_TYPE_UNSPECIFIED)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureAvailableResponse clone() => PreparedFeatureAvailableResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PreparedFeatureAvailableResponse copyWith(void Function(PreparedFeatureAvailableResponse) updates) => super.copyWith((message) => updates(message as PreparedFeatureAvailableResponse)) as PreparedFeatureAvailableResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureAvailableResponse create() => PreparedFeatureAvailableResponse._();
+  PreparedFeatureAvailableResponse createEmptyInstance() => create();
+  static $pb.PbList<PreparedFeatureAvailableResponse> createRepeated() => $pb.PbList<PreparedFeatureAvailableResponse>();
+  @$core.pragma('dart2js:noInline')
+  static PreparedFeatureAvailableResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PreparedFeatureAvailableResponse>(create);
+  static PreparedFeatureAvailableResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<ReportType> get report => $_getList(0);
 }
 
 class CountFeaturesRequest extends $pb.GeneratedMessage {

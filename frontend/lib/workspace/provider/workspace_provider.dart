@@ -7,6 +7,18 @@ import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 
 part 'workspace_provider.g.dart';
 
+@riverpod
+class QueryRecords extends _$QueryRecords {
+  @override
+  String? build() {
+    return null;
+  }
+
+  void updateQuery(String? query) {
+    state = query;
+  }
+}
+
 Icon? getIcon(RecordType typ) {
   switch (typ) {
     case RecordType.RECORD_TYPE_DIRECTORY:
@@ -37,13 +49,16 @@ List<TreeViewItem> addChildren(List<ListRecordsResponse> list) {
 class InputRecords extends _$InputRecords {
   @override
   Future<List<TreeViewItem>> build() async {
-    final response = await siplicityServiceClient.listRecords(
-        ListRecordsRequest(
+    final response =
+        await siplicityServiceClient.listRecords(ListRecordsRequest(
             id: -1,
             graph: GraphType.GRAPH_TYPE_INPUT,
-            display: FieldPath(entries: <FieldPath_Entry>[
-              FieldPath_Entry(namespace: "siplicity", name: "display_name")
-            ])));
+            display: FieldPath(
+              entries: <FieldPath_Entry>[
+                FieldPath_Entry(namespace: "siplicity", name: "display_name"),
+              ],
+            ),
+            query: ref.watch(queryRecordsProvider)));
     final tvi = TreeViewItem(
         content: Text(response.name),
         value: response.id,
