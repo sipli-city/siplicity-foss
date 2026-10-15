@@ -1,10 +1,11 @@
 package siplicity
 
 import (
-	"maps"
+	"fmt"
 	"slices"
 	"strings"
 
+	"github.com/dustin/go-humanize"
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
 
@@ -112,6 +113,9 @@ func (m *MemStore) AddReport(k1, k2 string) {
 func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
 	ret := &pb.PreparedFeatureAvailableResponse{}
 	ret.Report = make([]pb.ReportType, 0, len(m.reports))
+	if _, ok := m.reports["sizes"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_SIZES)
+	}
 	if _, ok := m.reports["modtime"]; ok {
 		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MODIFIED)
 	}
@@ -127,84 +131,127 @@ func (m *MemStore) Reports() *pb.PreparedFeatureAvailableResponse {
 	if _, ok := m.reports["class"]; ok {
 		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_FORMAT_CLASS)
 	}
+	if _, ok := m.reports["multiple"]; ok {
+		ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_MULTIPLE_IDENTIFICATION)
+	}
+	var dupes int32
+	if _, ok := m.reports["duplicates"]; ok {
+		for _, v := range m.reports["duplicates"] {
+			if v > 1 {
+				ret.Report = append(ret.Report, pb.ReportType_REPORT_TYPE_DUPLICATES)
+				dupes += v
+			}
+		}
+	}
+	var message string
+	if len(ret.Report) > 0 {
+		inputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
+		if inputCount > 0 {
+			inputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_INPUT, "")
+			message = fmt.Sprintf("There are %d files in the input pane, with a total size of %s. ", inputCount, humanize.Bytes(uint64(inputSize)))
+		}
+		outputCount := RecordCount(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "", []pb.RecordType{pb.RecordType_RECORD_TYPE_FILE})
+		if outputCount > 0 {
+			outputSize := TotalVolume(m, -1, pb.GraphType_GRAPH_TYPE_OUTPUT, "")
+			message += fmt.Sprintf("There are %d files in the output pane, with a total size of %s. ", outputCount, humanize.Bytes(uint64(outputSize)))
+		}
+		if dupes > 0 {
+			message += fmt.Sprintf("There are %d duplicates.", dupes)
+		}
+	}
+	ret.Digest = message
 	return ret
 }
 
-func (m *MemStore) Report(typ pb.ReportType, max int32) *pb.PreparedFeatureCountResponse {
+func (m *MemStore) Report(typ pb.ReportType) *pb.PreparedFeatureCountResponse {
 	var t string
 	switch typ {
+	case pb.ReportType_REPORT_TYPE_SIZES:
+		t = "sizes"
 	case pb.ReportType_REPORT_TYPE_MODIFIED:
 		t = "modtime"
 	case pb.ReportType_REPORT_TYPE_EXTENSIONS:
 		t = "extension"
-	case pb.ReportType_REPORT_TYPE_FORMAT_CLASS:
-		t = "class"
 	case pb.ReportType_REPORT_TYPE_FILE_FORMAT:
 		t = "id"
 	case pb.ReportType_REPORT_TYPE_MIME_TYPE:
 		t = "mime"
+	case pb.ReportType_REPORT_TYPE_FORMAT_CLASS:
+		t = "class"
+	case pb.ReportType_REPORT_TYPE_MULTIPLE_IDENTIFICATION:
+		t = "multiple"
+	case pb.ReportType_REPORT_TYPE_DUPLICATES:
+		t = "duplicates"
 	}
 	rep, ok := m.reports[t]
 	if !ok {
 		return nil
 	}
+	if typ == pb.ReportType_REPORT_TYPE_DUPLICATES {
+		dupes := make(map[string]int32)
+		for k, v := range rep {
+			if v > 1 {
+				dupes[k] = v
+			}
+		}
+		rep = dupes
+	}
 	if empty, ok := rep[""]; ok {
 		rep["empty"] += empty
 		delete(rep, "")
 	}
-	var feats []*pb.PreparedFeatureCountResponse_Feature
-	if max > 0 && int(max) < len(rep) {
-		var others int32
-		feats = make([]*pb.PreparedFeatureCountResponse_Feature, int(max))
-		for i, val := range slices.SortedFunc(
-			maps.Values(rep),
-			func(a, b int32) int {
-				return int(b - a)
-			},
-		) {
-			if i >= int(max)-1 {
-				others += val
-				continue
-			}
-			feats[i] = &pb.PreparedFeatureCountResponse_Feature{Count: val}
-		}
-		feats[len(feats)-1] = &pb.PreparedFeatureCountResponse_Feature{Value: "other", Count: others}
-		if len(feats) > 1 {
-			for k, v := range rep {
-				if v >= feats[len(feats)-2].Count {
-					for ii, vv := range feats {
-						if vv.Count == v && vv.Value == "" {
-							feats[ii].Value = k
-							break
-						}
-					}
-				}
-			}
-		}
+	feats := make([]*pb.PreparedFeatureCountResponse_Feature, len(rep))
+	var i int
+	for k, v := range rep {
+		feats[i] = &pb.PreparedFeatureCountResponse_Feature{Value: k, Count: v}
+		i++
+	}
+	if typ == pb.ReportType_REPORT_TYPE_SIZES {
+		slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
+			return slices.Index(sizeLabels[:], a.Value) - slices.Index(sizeLabels[:], b.Value)
+		})
+	} else if typ == pb.ReportType_REPORT_TYPE_MODIFIED {
+		slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
+			return strings.Compare(a.Value, b.Value)
+		})
 	} else {
-		feats = make([]*pb.PreparedFeatureCountResponse_Feature, len(rep))
-		var i int
-		for k, v := range rep {
-			feats[i] = &pb.PreparedFeatureCountResponse_Feature{Value: k, Count: v}
-			i++
-		}
-		if typ == pb.ReportType_REPORT_TYPE_MODIFIED {
-			slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
-				return strings.Compare(a.Value, b.Value)
-			})
-		} else {
-			slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
-				if a.Value == "empty" {
-					return 1
-				}
-				if b.Value == "empty" {
-					return -1
-				}
-				return int(b.Count - a.Count)
-			})
-		}
+		slices.SortFunc(feats, func(a, b *pb.PreparedFeatureCountResponse_Feature) int {
+			if a.Value == "empty" {
+				return 1
+			}
+			if b.Value == "empty" {
+				return -1
+			}
+			return int(b.Count - a.Count)
+		})
 	}
 	return &pb.PreparedFeatureCountResponse{Features: feats}
+}
+
+func (m *MemStore) FeatureReport(root int32, graph pb.GraphType, feature *pb.FieldPath) *pb.CountFeaturesResponse {
+	count := make(map[string]int32)
+	wf := countFeatures(feature, &count)
+	m.Walk(root, graph, wf)
+	if empty, ok := count[""]; ok {
+		count["empty"] += empty
+		delete(count, "")
+	}
+	feats := make([]*pb.CountFeaturesResponse_Feature, len(count))
+	var i int
+	for k, v := range count {
+		feats[i] = &pb.CountFeaturesResponse_Feature{Value: k, Count: v}
+		i++
+	}
+	slices.SortFunc(feats, func(a, b *pb.CountFeaturesResponse_Feature) int {
+		if a.Value == "empty" {
+			return 1
+		}
+		if b.Value == "empty" {
+			return -1
+		}
+		return int(b.Count - a.Count)
+	})
+	return &pb.CountFeaturesResponse{Features: feats}
 }
 
 func (m *MemStore) AttachChild(parent, child int32, graph pb.GraphType) {
@@ -328,24 +375,36 @@ func (m *MemStore) Purge(g pb.GraphType) {
 	m.getTree(g).purge()
 }
 
-func (m *MemStore) walkChildren(t *tree, nodes []int32, str string, fn func(string, *pb.GetRecordResponse) (string, error)) error {
+func (m *MemStore) walkChildren(t *tree, nodes []int32, depth int, fn walkFunc) error {
 	for _, n := range nodes {
-		nstr, err := fn(str, m.records[n])
-		if err != nil {
+		if err := fn(m.records[n], depth); err != nil {
 			return err
 		}
-		if err = m.walkChildren(t, t.children[n], nstr, fn); err != nil {
+		if err := m.walkChildren(t, t.children[n], depth+1, fn); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (m *MemStore) Walk(g pb.GraphType, fn func(string, *pb.GetRecordResponse) (string, error)) error {
+func (m *MemStore) Walk(root int32, g pb.GraphType, fn walkFunc) error {
+	if g == pb.GraphType_GRAPH_TYPE_UNSPECIFIED {
+		for i, rec := range m.records {
+			if i <= int(OUTPUT_GRAPH) {
+				continue
+			}
+			if err := fn(rec, 0); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
 	t := m.getTree(g)
-	str, err := fn("", m.records[t.root])
-	if err != nil {
+	if root < 0 {
+		root = t.root
+	}
+	if err := fn(m.records[root], 0); err != nil {
 		return err
 	}
-	return m.walkChildren(t, t.children[t.root], str, fn)
+	return m.walkChildren(t, t.children[root], 1, fn)
 }

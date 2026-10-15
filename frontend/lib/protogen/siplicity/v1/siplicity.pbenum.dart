@@ -13,6 +13,25 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+class StatusType extends $pb.ProtobufEnum {
+  static const StatusType STATUS_TYPE_UNSPECIFIED = StatusType._(0, _omitEnumNames ? '' : 'STATUS_TYPE_UNSPECIFIED');
+  static const StatusType STATUS_TYPE_WORKING = StatusType._(1, _omitEnumNames ? '' : 'STATUS_TYPE_WORKING');
+  static const StatusType STATUS_TYPE_DONE = StatusType._(2, _omitEnumNames ? '' : 'STATUS_TYPE_DONE');
+  static const StatusType STATUS_TYPE_FAILED = StatusType._(3, _omitEnumNames ? '' : 'STATUS_TYPE_FAILED');
+
+  static const $core.List<StatusType> values = <StatusType> [
+    STATUS_TYPE_UNSPECIFIED,
+    STATUS_TYPE_WORKING,
+    STATUS_TYPE_DONE,
+    STATUS_TYPE_FAILED,
+  ];
+
+  static final $core.Map<$core.int, StatusType> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static StatusType? valueOf($core.int value) => _byValue[value];
+
+  const StatusType._($core.int v, $core.String n) : super(v, n);
+}
+
 class GraphType extends $pb.ProtobufEnum {
   static const GraphType GRAPH_TYPE_UNSPECIFIED = GraphType._(0, _omitEnumNames ? '' : 'GRAPH_TYPE_UNSPECIFIED');
   static const GraphType GRAPH_TYPE_INPUT = GraphType._(1, _omitEnumNames ? '' : 'GRAPH_TYPE_INPUT');

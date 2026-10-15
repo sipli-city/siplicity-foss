@@ -74,7 +74,7 @@ class InputRecords extends _$InputRecords {
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
-      if (done.done) {
+      if (done.status != StatusType.STATUS_TYPE_WORKING) {
         break;
       }
       await Future.delayed(const Duration(milliseconds: 20));
@@ -108,7 +108,7 @@ class InputRecords extends _$InputRecords {
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
-      if (done.done) {
+      if (done.status != StatusType.STATUS_TYPE_WORKING) {
         ref.invalidateSelf();
         break;
       }
@@ -165,7 +165,7 @@ class OutputRecords extends _$OutputRecords {
     while (true) {
       final done = await siplicityServiceClient
           .getStatus(GetStatusRequest(status: status.status));
-      if (done.done) {
+      if (done.status != StatusType.STATUS_TYPE_WORKING) {
         ref.invalidateSelf();
         break;
       }

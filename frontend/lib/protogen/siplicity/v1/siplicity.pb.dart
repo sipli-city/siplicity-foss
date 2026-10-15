@@ -70,11 +70,15 @@ class GetStatusRequest extends $pb.GeneratedMessage {
 
 class GetStatusResponse extends $pb.GeneratedMessage {
   factory GetStatusResponse({
-    $core.bool? done,
+    StatusType? status,
+    $core.String? message,
   }) {
     final $result = create();
-    if (done != null) {
-      $result.done = done;
+    if (status != null) {
+      $result.status = status;
+    }
+    if (message != null) {
+      $result.message = message;
     }
     return $result;
   }
@@ -83,7 +87,8 @@ class GetStatusResponse extends $pb.GeneratedMessage {
   factory GetStatusResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetStatusResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..aOB(1, _omitFieldNames ? '' : 'done')
+    ..e<StatusType>(1, _omitFieldNames ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: StatusType.STATUS_TYPE_UNSPECIFIED, valueOf: StatusType.valueOf, enumValues: StatusType.values)
+    ..aOS(2, _omitFieldNames ? '' : 'message')
     ..hasRequiredFields = false
   ;
 
@@ -109,13 +114,22 @@ class GetStatusResponse extends $pb.GeneratedMessage {
   static GetStatusResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.bool get done => $_getBF(0);
+  StatusType get status => $_getN(0);
   @$pb.TagNumber(1)
-  set done($core.bool v) { $_setBool(0, v); }
+  set status(StatusType v) { setField(1, v); }
   @$pb.TagNumber(1)
-  $core.bool hasDone() => $_has(0);
+  $core.bool hasStatus() => $_has(0);
   @$pb.TagNumber(1)
-  void clearDone() => clearField(1);
+  void clearStatus() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get message => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set message($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
 }
 
 class PutFilePathRequest extends $pb.GeneratedMessage {
@@ -525,6 +539,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     $core.int? id,
     GraphType? graph,
     $core.String? query,
+    $core.Iterable<RecordType>? typs,
   }) {
     final $result = create();
     if (id != null) {
@@ -536,6 +551,9 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     if (query != null) {
       $result.query = query;
     }
+    if (typs != null) {
+      $result.typs.addAll(typs);
+    }
     return $result;
   }
   CountRecordsRequest._() : super();
@@ -546,6 +564,7 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
     ..aOS(3, _omitFieldNames ? '' : 'query')
+    ..pc<RecordType>(4, _omitFieldNames ? '' : 'typs', $pb.PbFieldType.KE, valueOf: RecordType.valueOf, enumValues: RecordType.values, defaultEnumValue: RecordType.RECORD_TYPE_UNSPECIFIED)
     ..hasRequiredFields = false
   ;
 
@@ -596,6 +615,9 @@ class CountRecordsRequest extends $pb.GeneratedMessage {
   $core.bool hasQuery() => $_has(2);
   @$pb.TagNumber(3)
   void clearQuery() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.List<RecordType> get typs => $_getList(3);
 }
 
 class CountRecordsResponse extends $pb.GeneratedMessage {
@@ -651,14 +673,10 @@ class CountRecordsResponse extends $pb.GeneratedMessage {
 class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
   factory PreparedFeatureCountRequest({
     ReportType? report,
-    $core.int? max,
   }) {
     final $result = create();
     if (report != null) {
       $result.report = report;
-    }
-    if (max != null) {
-      $result.max = max;
     }
     return $result;
   }
@@ -668,7 +686,6 @@ class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureCountRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..e<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.OE, defaultOrMaker: ReportType.REPORT_TYPE_UNSPECIFIED, valueOf: ReportType.valueOf, enumValues: ReportType.values)
-    ..a<$core.int>(2, _omitFieldNames ? '' : 'max', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
   ;
 
@@ -701,15 +718,6 @@ class PreparedFeatureCountRequest extends $pb.GeneratedMessage {
   $core.bool hasReport() => $_has(0);
   @$pb.TagNumber(1)
   void clearReport() => clearField(1);
-
-  @$pb.TagNumber(2)
-  $core.int get max => $_getIZ(1);
-  @$pb.TagNumber(2)
-  set max($core.int v) { $_setSignedInt32(1, v); }
-  @$pb.TagNumber(2)
-  $core.bool hasMax() => $_has(1);
-  @$pb.TagNumber(2)
-  void clearMax() => clearField(2);
 }
 
 class PreparedFeatureCountResponse_Feature extends $pb.GeneratedMessage {
@@ -854,9 +862,13 @@ class PreparedFeatureAvailableRequest extends $pb.GeneratedMessage {
 
 class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   factory PreparedFeatureAvailableResponse({
+    $core.String? digest,
     $core.Iterable<ReportType>? report,
   }) {
     final $result = create();
+    if (digest != null) {
+      $result.digest = digest;
+    }
     if (report != null) {
       $result.report.addAll(report);
     }
@@ -867,7 +879,8 @@ class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   factory PreparedFeatureAvailableResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PreparedFeatureAvailableResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..pc<ReportType>(1, _omitFieldNames ? '' : 'report', $pb.PbFieldType.KE, valueOf: ReportType.valueOf, enumValues: ReportType.values, defaultEnumValue: ReportType.REPORT_TYPE_UNSPECIFIED)
+    ..aOS(1, _omitFieldNames ? '' : 'digest')
+    ..pc<ReportType>(2, _omitFieldNames ? '' : 'report', $pb.PbFieldType.KE, valueOf: ReportType.valueOf, enumValues: ReportType.values, defaultEnumValue: ReportType.REPORT_TYPE_UNSPECIFIED)
     ..hasRequiredFields = false
   ;
 
@@ -893,7 +906,16 @@ class PreparedFeatureAvailableResponse extends $pb.GeneratedMessage {
   static PreparedFeatureAvailableResponse? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.List<ReportType> get report => $_getList(0);
+  $core.String get digest => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set digest($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasDigest() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearDigest() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<ReportType> get report => $_getList(1);
 }
 
 class CountFeaturesRequest extends $pb.GeneratedMessage {

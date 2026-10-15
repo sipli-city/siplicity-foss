@@ -6,7 +6,24 @@ part of 'features_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$featuresHash() => r'd5a73d2ca05ed5e983bdc9cf9233a2655cf1c9e9';
+String _$featuresAvailableHash() => r'107727e58beb9b25dd8954f74ae4f840f8f14ae2';
+
+/// See also [featuresAvailable].
+@ProviderFor(featuresAvailable)
+final featuresAvailableProvider =
+    AutoDisposeFutureProvider<PreparedFeatureAvailableResponse>.internal(
+  featuresAvailable,
+  name: r'featuresAvailableProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$featuresAvailableHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FeaturesAvailableRef
+    = AutoDisposeFutureProviderRef<PreparedFeatureAvailableResponse>;
+String _$featuresHash() => r'25fa30695d525bbd1f615d48ab8c44a82541c9a1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,11 +49,9 @@ class _SystemHash {
 abstract class _$Features
     extends BuildlessAutoDisposeAsyncNotifier<PreparedFeatureCountResponse> {
   late final ReportType report;
-  late final int? max;
 
   FutureOr<PreparedFeatureCountResponse> build({
     required ReportType report,
-    int? max,
   });
 }
 
@@ -52,11 +67,9 @@ class FeaturesFamily extends Family<AsyncValue<PreparedFeatureCountResponse>> {
   /// See also [Features].
   FeaturesProvider call({
     required ReportType report,
-    int? max,
   }) {
     return FeaturesProvider(
       report: report,
-      max: max,
     );
   }
 
@@ -66,7 +79,6 @@ class FeaturesFamily extends Family<AsyncValue<PreparedFeatureCountResponse>> {
   ) {
     return call(
       report: provider.report,
-      max: provider.max,
     );
   }
 
@@ -91,11 +103,8 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
   /// See also [Features].
   FeaturesProvider({
     required ReportType report,
-    int? max,
   }) : this._internal(
-          () => Features()
-            ..report = report
-            ..max = max,
+          () => Features()..report = report,
           from: featuresProvider,
           name: r'featuresProvider',
           debugGetCreateSourceHash:
@@ -105,7 +114,6 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
           dependencies: FeaturesFamily._dependencies,
           allTransitiveDependencies: FeaturesFamily._allTransitiveDependencies,
           report: report,
-          max: max,
         );
 
   FeaturesProvider._internal(
@@ -116,11 +124,9 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.report,
-    required this.max,
   }) : super.internal();
 
   final ReportType report;
-  final int? max;
 
   @override
   FutureOr<PreparedFeatureCountResponse> runNotifierBuild(
@@ -128,7 +134,6 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
   ) {
     return notifier.build(
       report: report,
-      max: max,
     );
   }
 
@@ -137,16 +142,13 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
     return ProviderOverride(
       origin: this,
       override: FeaturesProvider._internal(
-        () => create()
-          ..report = report
-          ..max = max,
+        () => create()..report = report,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         report: report,
-        max: max,
       ),
     );
   }
@@ -159,16 +161,13 @@ class FeaturesProvider extends AutoDisposeAsyncNotifierProviderImpl<Features,
 
   @override
   bool operator ==(Object other) {
-    return other is FeaturesProvider &&
-        other.report == report &&
-        other.max == max;
+    return other is FeaturesProvider && other.report == report;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, report.hashCode);
-    hash = _SystemHash.combine(hash, max.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -178,9 +177,6 @@ mixin FeaturesRef
     on AutoDisposeAsyncNotifierProviderRef<PreparedFeatureCountResponse> {
   /// The parameter `report` of this provider.
   ReportType get report;
-
-  /// The parameter `max` of this provider.
-  int? get max;
 }
 
 class _FeaturesProviderElement extends AutoDisposeAsyncNotifierProviderElement<
@@ -189,8 +185,6 @@ class _FeaturesProviderElement extends AutoDisposeAsyncNotifierProviderElement<
 
   @override
   ReportType get report => (origin as FeaturesProvider).report;
-  @override
-  int? get max => (origin as FeaturesProvider).max;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

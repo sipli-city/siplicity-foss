@@ -20,11 +20,11 @@ class LineChart extends ConsumerWidget {
           child: Chart(
             data: asTuples(label(typ), value),
             variables: {
-              'Last modified': Variable(
-                accessor: (Map map) => map['last modified'] as String,
+              label(typ): Variable(
+                accessor: (Map map) => map[label(typ)] as String,
                 scale: OrdinalScale(tickCount: 10),
               ),
-              'Count': Variable(
+              'count': Variable(
                 accessor: (Map map) => map['count'] as num,
               ),
             },

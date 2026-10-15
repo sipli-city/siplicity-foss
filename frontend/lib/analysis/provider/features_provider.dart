@@ -6,6 +6,14 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
 part 'features_provider.g.dart';
 
+@riverpod
+Future<PreparedFeatureAvailableResponse> featuresAvailable(
+    FeaturesAvailableRef ref) async {
+  final response = await siplicityServiceClient
+      .preparedFeatureAvailable(PreparedFeatureAvailableRequest());
+  return response;
+}
+
 // 14 colours + default = 15 max
 const List<Color> pallette = [
   Color(0xFFFF7F3E),
@@ -81,10 +89,9 @@ List<Map<dynamic, dynamic>> asTuples(
 class Features extends _$Features {
   @override
   Future<PreparedFeatureCountResponse> build(
-      {required ReportType report, int? max}) async {
-    PreparedFeatureCountResponse response =
-        await siplicityServiceClient.preparedFeatureCount(
-            PreparedFeatureCountRequest(report: report, max: max));
+      {required ReportType report}) async {
+    PreparedFeatureCountResponse response = await siplicityServiceClient
+        .preparedFeatureCount(PreparedFeatureCountRequest(report: report));
     return response;
   }
 }

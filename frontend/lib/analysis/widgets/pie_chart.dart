@@ -4,9 +4,9 @@ import 'package:graphic/graphic.dart';
 import 'package:siplicity/analysis/provider/features_provider.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
-class LineChart extends ConsumerWidget {
+class PieChart extends ConsumerWidget {
   final ReportType typ;
-  const LineChart({super.key, required this.typ});
+  const PieChart({super.key, required this.typ});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,8 +20,8 @@ class LineChart extends ConsumerWidget {
           child: Chart(
             data: asTuples(label(typ), value),
             variables: {
-              'extension': Variable(
-                accessor: (Map map) => map['extension'] as String,
+              label(typ): Variable(
+                accessor: (Map map) => map[label(typ)] as String,
               ),
               'count': Variable(
                 accessor: (Map map) => map['count'] as num,

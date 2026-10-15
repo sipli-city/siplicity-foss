@@ -13,6 +13,23 @@ import 'dart:convert' as $convert;
 import 'dart:core' as $core;
 import 'dart:typed_data' as $typed_data;
 
+@$core.Deprecated('Use statusTypeDescriptor instead')
+const StatusType$json = {
+  '1': 'StatusType',
+  '2': [
+    {'1': 'STATUS_TYPE_UNSPECIFIED', '2': 0},
+    {'1': 'STATUS_TYPE_WORKING', '2': 1},
+    {'1': 'STATUS_TYPE_DONE', '2': 2},
+    {'1': 'STATUS_TYPE_FAILED', '2': 3},
+  ],
+};
+
+/// Descriptor for `StatusType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List statusTypeDescriptor = $convert.base64Decode(
+    'CgpTdGF0dXNUeXBlEhsKF1NUQVRVU19UWVBFX1VOU1BFQ0lGSUVEEAASFwoTU1RBVFVTX1RZUE'
+    'VfV09SS0lORxABEhQKEFNUQVRVU19UWVBFX0RPTkUQAhIWChJTVEFUVVNfVFlQRV9GQUlMRUQQ'
+    'Aw==');
+
 @$core.Deprecated('Use graphTypeDescriptor instead')
 const GraphType$json = {
   '1': 'GraphType',
@@ -92,13 +109,19 @@ final $typed_data.Uint8List getStatusRequestDescriptor = $convert.base64Decode(
 const GetStatusResponse$json = {
   '1': 'GetStatusResponse',
   '2': [
-    {'1': 'done', '3': 1, '4': 1, '5': 8, '10': 'done'},
+    {'1': 'status', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.StatusType', '10': 'status'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'message', '17': true},
+  ],
+  '8': [
+    {'1': '_message'},
   ],
 };
 
 /// Descriptor for `GetStatusResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List getStatusResponseDescriptor = $convert.base64Decode(
-    'ChFHZXRTdGF0dXNSZXNwb25zZRISCgRkb25lGAEgASgIUgRkb25l');
+    'ChFHZXRTdGF0dXNSZXNwb25zZRIwCgZzdGF0dXMYASABKA4yGC5zaXBsaWNpdHkudjEuU3RhdH'
+    'VzVHlwZVIGc3RhdHVzEh0KB21lc3NhZ2UYAiABKAlIAFIHbWVzc2FnZYgBAUIKCghfbWVzc2Fn'
+    'ZQ==');
 
 @$core.Deprecated('Use putFilePathRequestDescriptor instead')
 const PutFilePathRequest$json = {
@@ -208,6 +231,7 @@ const CountRecordsRequest$json = {
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
     {'1': 'query', '3': 3, '4': 1, '5': 9, '9': 2, '10': 'query', '17': true},
+    {'1': 'typs', '3': 4, '4': 3, '5': 14, '6': '.siplicity.v1.RecordType', '10': 'typs'},
   ],
   '8': [
     {'1': '_id'},
@@ -220,7 +244,8 @@ const CountRecordsRequest$json = {
 final $typed_data.Uint8List countRecordsRequestDescriptor = $convert.base64Decode(
     'ChNDb3VudFJlY29yZHNSZXF1ZXN0EhMKAmlkGAEgASgFSABSAmlkiAEBEjIKBWdyYXBoGAIgAS'
     'gOMhcuc2lwbGljaXR5LnYxLkdyYXBoVHlwZUgBUgVncmFwaIgBARIZCgVxdWVyeRgDIAEoCUgC'
-    'UgVxdWVyeYgBAUIFCgNfaWRCCAoGX2dyYXBoQggKBl9xdWVyeQ==');
+    'UgVxdWVyeYgBARIsCgR0eXBzGAQgAygOMhguc2lwbGljaXR5LnYxLlJlY29yZFR5cGVSBHR5cH'
+    'NCBQoDX2lkQggKBl9ncmFwaEIICgZfcXVlcnk=');
 
 @$core.Deprecated('Use countRecordsResponseDescriptor instead')
 const CountRecordsResponse$json = {
@@ -239,17 +264,13 @@ const PreparedFeatureCountRequest$json = {
   '1': 'PreparedFeatureCountRequest',
   '2': [
     {'1': 'report', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
-    {'1': 'max', '3': 2, '4': 1, '5': 5, '9': 0, '10': 'max', '17': true},
-  ],
-  '8': [
-    {'1': '_max'},
   ],
 };
 
 /// Descriptor for `PreparedFeatureCountRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List preparedFeatureCountRequestDescriptor = $convert.base64Decode(
     'ChtQcmVwYXJlZEZlYXR1cmVDb3VudFJlcXVlc3QSMAoGcmVwb3J0GAEgASgOMhguc2lwbGljaX'
-    'R5LnYxLlJlcG9ydFR5cGVSBnJlcG9ydBIVCgNtYXgYAiABKAVIAFIDbWF4iAEBQgYKBF9tYXg=');
+    'R5LnYxLlJlcG9ydFR5cGVSBnJlcG9ydA==');
 
 @$core.Deprecated('Use preparedFeatureCountResponseDescriptor instead')
 const PreparedFeatureCountResponse$json = {
@@ -288,14 +309,15 @@ final $typed_data.Uint8List preparedFeatureAvailableRequestDescriptor = $convert
 const PreparedFeatureAvailableResponse$json = {
   '1': 'PreparedFeatureAvailableResponse',
   '2': [
-    {'1': 'report', '3': 1, '4': 3, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
+    {'1': 'digest', '3': 1, '4': 1, '5': 9, '10': 'digest'},
+    {'1': 'report', '3': 2, '4': 3, '5': 14, '6': '.siplicity.v1.ReportType', '10': 'report'},
   ],
 };
 
 /// Descriptor for `PreparedFeatureAvailableResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List preparedFeatureAvailableResponseDescriptor = $convert.base64Decode(
-    'CiBQcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXNwb25zZRIwCgZyZXBvcnQYASADKA4yGC5zaX'
-    'BsaWNpdHkudjEuUmVwb3J0VHlwZVIGcmVwb3J0');
+    'CiBQcmVwYXJlZEZlYXR1cmVBdmFpbGFibGVSZXNwb25zZRIWCgZkaWdlc3QYASABKAlSBmRpZ2'
+    'VzdBIwCgZyZXBvcnQYAiADKA4yGC5zaXBsaWNpdHkudjEuUmVwb3J0VHlwZVIGcmVwb3J0');
 
 @$core.Deprecated('Use countFeaturesRequestDescriptor instead')
 const CountFeaturesRequest$json = {

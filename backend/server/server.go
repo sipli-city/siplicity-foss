@@ -19,59 +19,84 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port = flag.Int("port", 50051, "Port for siplicity GRPC server")
 )
 
 type siplicityServiceServer struct {
 	pb.UnimplementedSiplicityServiceServer
-	srv      *grpc.Server
-	store    siplicity.Store
-	statuses []bool
+	srv            *grpc.Server
+	store          siplicity.Store
+	statuses       []int
+	statusMessages []string
 }
 
+const (
+	STATUS_DONE    = -2
+	STATUS_WORKING = -1
+)
+
 func (s *siplicityServiceServer) GetStatus(ctx context.Context, in *pb.GetStatusRequest) (*pb.GetStatusResponse, error) {
-	var done bool
+	var status = pb.StatusType_STATUS_TYPE_UNSPECIFIED
+	var message *string
 	if len(s.statuses) > 0 && in.GetStatus() >= 0 && int(in.GetStatus()) < len(s.statuses) {
-		done = s.statuses[int(in.GetStatus())]
+		idx := s.statuses[int(in.GetStatus())]
+		if idx == -2 {
+			status = pb.StatusType_STATUS_TYPE_DONE
+		} else if idx == -1 {
+			status = pb.StatusType_STATUS_TYPE_WORKING
+		} else {
+			status = pb.StatusType_STATUS_TYPE_FAILED
+			message = &s.statusMessages[idx]
+		}
 	}
 	return &pb.GetStatusResponse{
-		Done: done,
+		Status:  status,
+		Message: message,
 	}, nil
 }
 
 func (s *siplicityServiceServer) PutFilePath(ctx context.Context, req *pb.PutFilePathRequest) (*pb.PutFilePathResponse, error) {
-	s.statuses = append(s.statuses, false)
+	s.statuses = append(s.statuses, STATUS_WORKING)
 	sidx := int32(len(s.statuses) - 1)
 	go func() {
 		path := req.GetPath()
 		if path != "" {
 			_ = siplicity.AddPath(path, s.store)
 		}
-		s.statuses[sidx] = true
+		s.statuses[sidx] = STATUS_DONE
 	}()
 	return &pb.PutFilePathResponse{Status: sidx}, nil
 }
 
 func (s *siplicityServiceServer) PutJob(ctx context.Context, in *pb.PutJobRequest) (*pb.PutJobResponse, error) {
-	s.statuses = append(s.statuses, false)
+	s.statuses = append(s.statuses, STATUS_WORKING)
 	sidx := int32(len(s.statuses) - 1)
 	go func() {
-		_ = siplicity.Job(in.GetAction(), in.GetQuery(), s.store)
-		s.statuses[sidx] = true
+		err := siplicity.Job(in.GetAction(), in.GetQuery(), s.store)
+		if err == nil {
+			s.statuses[sidx] = STATUS_DONE
+		} else {
+			s.statusMessages = append(s.statusMessages, err.Error())
+			s.statuses[sidx] = len(s.statusMessages) - 1
+		}
 	}()
 	return &pb.PutJobResponse{Status: sidx}, nil
 }
 
 func (s *siplicityServiceServer) CountRecords(ctx context.Context, in *pb.CountRecordsRequest) (*pb.CountRecordsResponse, error) {
-	return nil, nil
+	return &pb.CountRecordsResponse{Count: int32(siplicity.RecordCount(s.store, in.GetId(), in.GetGraph(), in.GetQuery(), in.GetTyps()))}, nil
+}
+
+func (s *siplicityServiceServer) TotalVolume(ctx context.Context, in *pb.TotalVolumeRequest) (*pb.TotalVolumeResponse, error) {
+	return &pb.TotalVolumeResponse{Volume: siplicity.TotalVolume(s.store, in.GetId(), in.GetGraph(), in.GetQuery())}, nil
 }
 
 func (s *siplicityServiceServer) CountFeatures(ctx context.Context, in *pb.CountFeaturesRequest) (*pb.CountFeaturesResponse, error) {
-	return nil, nil
+	return s.store.FeatureReport(in.GetId(), in.GetGraph(), in.GetFeature()), nil
 }
 
 func (s *siplicityServiceServer) PreparedFeatureCount(ctx context.Context, in *pb.PreparedFeatureCountRequest) (*pb.PreparedFeatureCountResponse, error) {
-	return s.store.Report(in.GetReport(), in.GetMax()), nil
+	return s.store.Report(in.GetReport()), nil
 }
 
 func (s *siplicityServiceServer) PreparedFeatureAvailable(ctx context.Context, in *pb.PreparedFeatureAvailableRequest) (*pb.PreparedFeatureAvailableResponse, error) {
