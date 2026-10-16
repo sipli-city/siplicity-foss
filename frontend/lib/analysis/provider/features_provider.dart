@@ -32,6 +32,14 @@ const List<Color> pallette = [
   Color(0xFF8ACBBB),
 ];
 
+Color Function(Map<String, dynamic>) tupleEncoder(int alpha) {
+  var index = -1;
+  return (Map<String, dynamic> tuple) {
+    index += 1;
+    return getColor(index).withAlpha(alpha);
+  };
+}
+
 Color getColor(int index) {
   if (index >= 0 && index < pallette.length) {
     return pallette[index];

@@ -7,7 +7,7 @@ import (
 func matches(field *pb.Field, entry *pb.FieldPath_Entry, index int32) (bool, int32) {
 	if (entry.GetName() != field.GetName()) ||
 		(entry.GetNamespace() != "" && entry.GetNamespace() != field.GetNamespace()) ||
-		(entry.GetValue() != "" && entry.GetValue() != field.GetValue()) {
+		(entry.Value != nil && entry.GetValue() != field.GetValue()) {
 		return false, index
 	}
 	if entry.Index == nil || entry.GetIndex() == index {

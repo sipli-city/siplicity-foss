@@ -59,8 +59,20 @@ class InputRecords extends _$InputRecords {
               ],
             ),
             query: ref.watch(queryRecordsProvider)));
+    final query = ref.watch(queryRecordsProvider);
+    final root = (query == null)
+        ? Text(response.name)
+        : Row(children: [
+            Text(response.name),
+            SizedBox(width: 20),
+            Button(
+              child: Text("Clear query"),
+              onPressed: () =>
+                  ref.read(queryRecordsProvider.notifier).updateQuery(null),
+            )
+          ]);
     final tvi = TreeViewItem(
-        content: Text(response.name),
+        content: root,
         value: response.id,
         children: addChildren(response.children));
     return <TreeViewItem>[
@@ -190,7 +202,7 @@ class OutputRecords extends _$OutputRecords {
     final path = await result;
     if (path != null) {
       await siplicityServiceClient.updateField(UpdateFieldRequest(
-          id: 1,
+          id: 2,
           overwrite: true,
           field_4: Field(
               namespace: "siplicity", name: "output_location", value: path)));

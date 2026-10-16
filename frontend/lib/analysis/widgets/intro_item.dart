@@ -7,8 +7,9 @@ class IntroItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.topLeft,
       padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
-      child: Text(title, style: FluentTheme.of(context).typography.title),
+      child: Text(title, style: FluentTheme.of(context).typography.subtitle),
     );
   }
 }

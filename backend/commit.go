@@ -18,7 +18,7 @@ func commit() walkFunc {
 			if len(paths) == 0 {
 				return errors.New("output path not set")
 			}
-			closure_paths[0] = paths[0]
+			closure_paths[depth] = paths[0] // only need the first value
 			return os.MkdirAll(paths[0], 0777)
 		case pb.RecordType_RECORD_TYPE_DIRECTORY, pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY:
 			base := filepath.Base(rec.GetPath())

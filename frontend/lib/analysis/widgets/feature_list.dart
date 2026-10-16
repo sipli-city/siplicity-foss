@@ -26,8 +26,14 @@ class FeatureListState extends ConsumerState<FeatureList> {
   String? asQuery() {
     if (_featuresselection.isEmpty) return null;
     String query = switch (widget.typ) {
+      ReportType.REPORT_TYPE_SIZES => "Sizes",
       ReportType.REPORT_TYPE_EXTENSIONS => "Extension",
       ReportType.REPORT_TYPE_MODIFIED => "Modified",
+      ReportType.REPORT_TYPE_FILE_FORMAT => "Format",
+      ReportType.REPORT_TYPE_FORMAT_CLASS => "Class",
+      ReportType.REPORT_TYPE_MIME_TYPE => "Mime",
+      ReportType.REPORT_TYPE_DUPLICATES => "Duplicates",
+      ReportType.REPORT_TYPE_MULTIPLE_IDENTIFICATION => "MultipleID",
       _ => "",
     };
     return "$query=${_featuresselection.join(",")}";
@@ -44,7 +50,7 @@ class FeatureListState extends ConsumerState<FeatureList> {
     return switch (response) {
       AsyncData(:final value) => Column(children: [
           Container(
-              width: 200,
+              width: 300,
               height: 250,
               alignment: Alignment.center,
               child: ListView(
