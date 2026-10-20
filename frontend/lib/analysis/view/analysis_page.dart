@@ -13,7 +13,7 @@ class AnalysisPage extends ConsumerWidget {
     return switch (response) {
       AsyncData(:final value) => value.report.isEmpty
           ? Padding(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.all(8.0),
               child:
                   Text("Nothing to analyse yet - add content to the workspace"))
           : SingleChildScrollView(
@@ -23,7 +23,7 @@ class AnalysisPage extends ConsumerWidget {
                 ...value.report.map((typ) => AnalysisItem(typ: typ))
               ],
             )),
-      _ => const Padding(padding: EdgeInsets.all(20), child: Text('loading'))
+      _ => const Padding(padding: EdgeInsets.all(8.0), child: Text('loading'))
     };
   }
 }

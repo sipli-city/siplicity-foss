@@ -1262,6 +1262,7 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   factory ListRecordsRequest({
     $core.int? id,
     GraphType? graph,
+    $core.int? page,
     $core.String? query,
     FieldPath? display,
     $core.Iterable<FieldPath>? fields,
@@ -1272,6 +1273,9 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
     }
     if (graph != null) {
       $result.graph = graph;
+    }
+    if (page != null) {
+      $result.page = page;
     }
     if (query != null) {
       $result.query = query;
@@ -1291,9 +1295,10 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'ListRecordsRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
     ..a<$core.int>(1, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
     ..e<GraphType>(2, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
-    ..aOS(3, _omitFieldNames ? '' : 'query')
-    ..aOM<FieldPath>(4, _omitFieldNames ? '' : 'display', subBuilder: FieldPath.create)
-    ..pc<FieldPath>(5, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldPath.create)
+    ..a<$core.int>(3, _omitFieldNames ? '' : 'page', $pb.PbFieldType.O3)
+    ..aOS(4, _omitFieldNames ? '' : 'query')
+    ..aOM<FieldPath>(5, _omitFieldNames ? '' : 'display', subBuilder: FieldPath.create)
+    ..pc<FieldPath>(6, _omitFieldNames ? '' : 'fields', $pb.PbFieldType.PM, subBuilder: FieldPath.create)
     ..hasRequiredFields = false
   ;
 
@@ -1337,27 +1342,36 @@ class ListRecordsRequest extends $pb.GeneratedMessage {
   void clearGraph() => clearField(2);
 
   @$pb.TagNumber(3)
-  $core.String get query => $_getSZ(2);
+  $core.int get page => $_getIZ(2);
   @$pb.TagNumber(3)
-  set query($core.String v) { $_setString(2, v); }
+  set page($core.int v) { $_setSignedInt32(2, v); }
   @$pb.TagNumber(3)
-  $core.bool hasQuery() => $_has(2);
+  $core.bool hasPage() => $_has(2);
   @$pb.TagNumber(3)
-  void clearQuery() => clearField(3);
+  void clearPage() => clearField(3);
 
   @$pb.TagNumber(4)
-  FieldPath get display => $_getN(3);
+  $core.String get query => $_getSZ(3);
   @$pb.TagNumber(4)
-  set display(FieldPath v) { setField(4, v); }
+  set query($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasDisplay() => $_has(3);
+  $core.bool hasQuery() => $_has(3);
   @$pb.TagNumber(4)
-  void clearDisplay() => clearField(4);
-  @$pb.TagNumber(4)
-  FieldPath ensureDisplay() => $_ensure(3);
+  void clearQuery() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.List<FieldPath> get fields => $_getList(4);
+  FieldPath get display => $_getN(4);
+  @$pb.TagNumber(5)
+  set display(FieldPath v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasDisplay() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearDisplay() => clearField(5);
+  @$pb.TagNumber(5)
+  FieldPath ensureDisplay() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  $core.List<FieldPath> get fields => $_getList(5);
 }
 
 class Field extends $pb.GeneratedMessage {

@@ -60,6 +60,8 @@ func Job(action string, filter string, store Store) error {
 	default:
 		return fmt.Errorf("invalid action %s", action)
 	}
+	schema := store.Get(SCHEMA)
+	schema.Metadata = append(schema.Metadata, act.Schema())
 	for _, id := range store.Ids(filter) {
 		if err := act.Do(store.Get(id), store); err != nil {
 			return err

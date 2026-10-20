@@ -117,7 +117,7 @@ func (sa *siegfriedAction) Do(rec *pb.GetRecordResponse, s Store) error {
 // TODO - assumes a Fields length of 1 (static build of Siegfried with just pronom)
 func (sa *siegfriedAction) Schema() *pb.Metadata {
 	idFields := make([]*pb.Metadata, len(sa.sf.Fields()[0])-1)
-	ns := sa.sf.Fields()[0][0]
+	ns := "pronom"
 	for ii, vv := range sa.sf.Fields()[0][1:] {
 		idFields[ii] = &pb.Metadata{Field: &pb.Field{Namespace: ns, Name: vv}}
 	}

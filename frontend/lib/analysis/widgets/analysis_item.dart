@@ -25,19 +25,19 @@ class AnalysisItem extends StatelessWidget {
         title = "Duplicate files";
         chart = BarChart(typ: typ);
       case ReportType.REPORT_TYPE_EXTENSIONS:
-        title = "File format extensions";
+        title = "File extensions";
         chart = ProgressChart(typ: typ);
       case ReportType.REPORT_TYPE_FILE_FORMAT:
-        title = "File format ID (PRONOM)";
+        title = "File format (PRONOM)";
         chart = ProgressChart(typ: typ);
       case ReportType.REPORT_TYPE_MIME_TYPE:
         title = "MIME type (PRONOM)";
         chart = ProgressChart(typ: typ);
       case ReportType.REPORT_TYPE_FORMAT_CLASS:
-        title = "File format class (PRONOM)";
+        title = "Format class (PRONOM)";
         chart = ProgressChart(typ: typ);
       case ReportType.REPORT_TYPE_MULTIPLE_IDENTIFICATION:
-        title = "Multiple identificatoin (PRONOM)";
+        title = "Multiple identification (PRONOM)";
         chart = PieChart(typ: typ);
       default:
         title = "Unknown";

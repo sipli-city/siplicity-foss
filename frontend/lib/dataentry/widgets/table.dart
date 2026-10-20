@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/dataentry/widgets/cells.dart';
+import 'package:siplicity/dataentry/widgets/command_bar.dart';
 
 const contacts = ['Kendall', 'Collins'];
 
@@ -18,6 +19,7 @@ class DataEntryTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
+      DataEntryCommandBar(),
       Row(children: [
         DataEntryHeaderCell(width: 50, title: 'Type'),
         DataEntryHeaderCell(width: 200, title: 'Path'),
