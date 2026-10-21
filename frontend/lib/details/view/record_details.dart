@@ -44,11 +44,9 @@ class RecordDetails extends ConsumerWidget {
                     style: FluentTheme.of(context).typography.subtitle)),
             Expanded(
                 child: SingleChildScrollView(
-              controller: ScrollController(),
-              scrollDirection: Axis.vertical,
               child: TreeView(
                 shrinkWrap: true,
-                items: addChildren(value.metadata),
+                items: addChildren(value.metadata, {}),
                 onItemInvoked: (item, details) async {},
                 onSelectionChanged: (selectedItems) async {},
                 onSecondaryTap: (item, details) async {},
@@ -81,19 +79,24 @@ InfoLabel metadataInput(
   return InfoLabel(label: label);
 }
 
-List<TreeViewItem> addChildren(List<Metadata> metadata) {
-  int index = 0; // how do I increment this?
-  return metadata
-      .map((item) => TreeViewItem(
-          content: metadataInput(
-              namespace: item.field_1.namespace,
-              name: item.field_1.name,
-              value: item.field_1.value),
-          value: (
-            item.field_1.namespace,
-            item.field_1.name,
-            index
-          ), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
-          children: addChildren(item.children)))
-      .toList();
+List<TreeViewItem> addChildren(
+    List<Metadata> metadata, Map<(String, String), int> indexes) {
+  return metadata.map((item) {
+    indexes.update(
+      (item.field_1.namespace, item.field_1.name),
+      (value) => ++value,
+      ifAbsent: () => 0,
+    );
+    return TreeViewItem(
+        content: metadataInput(
+            namespace: item.field_1.namespace,
+            name: item.field_1.name,
+            value: item.field_1.value),
+        value: (
+          item.field_1.namespace,
+          item.field_1.name,
+          indexes[(item.field_1.namespace, item.field_1.name)],
+        ), // Record of (namespace, name, index). Get path by making a list of these by going up item tree.
+        children: addChildren(item.children, indexes));
+  }).toList();
 }
