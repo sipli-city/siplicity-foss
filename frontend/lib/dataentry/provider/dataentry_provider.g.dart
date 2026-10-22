@@ -20,7 +20,7 @@ final countEntriesProvider = AutoDisposeFutureProvider<int>.internal(
 );
 
 typedef CountEntriesRef = AutoDisposeFutureProviderRef<int>;
-String _$dataEntryHash() => r'ed3ea7804b0598703e86522870dafdd937a925a7';
+String _$dataEntryHash() => r'c5fd254d55ae829028f4b16702bdfaf48e08794c';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,10 +44,10 @@ class _SystemHash {
 }
 
 abstract class _$DataEntry
-    extends BuildlessAutoDisposeAsyncNotifier<List<List<String>>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<(int, List<String>)>> {
   late final int page;
 
-  FutureOr<List<List<String>>> build(
+  FutureOr<List<(int, List<String>)>> build(
     int page,
   );
 }
@@ -57,7 +57,7 @@ abstract class _$DataEntry
 const dataEntryProvider = DataEntryFamily();
 
 /// See also [DataEntry].
-class DataEntryFamily extends Family<AsyncValue<List<List<String>>>> {
+class DataEntryFamily extends Family<AsyncValue<List<(int, List<String>)>>> {
   /// See also [DataEntry].
   const DataEntryFamily();
 
@@ -96,7 +96,7 @@ class DataEntryFamily extends Family<AsyncValue<List<List<String>>>> {
 
 /// See also [DataEntry].
 class DataEntryProvider extends AutoDisposeAsyncNotifierProviderImpl<DataEntry,
-    List<List<String>>> {
+    List<(int, List<String>)>> {
   /// See also [DataEntry].
   DataEntryProvider(
     int page,
@@ -126,7 +126,7 @@ class DataEntryProvider extends AutoDisposeAsyncNotifierProviderImpl<DataEntry,
   final int page;
 
   @override
-  FutureOr<List<List<String>>> runNotifierBuild(
+  FutureOr<List<(int, List<String>)>> runNotifierBuild(
     covariant DataEntry notifier,
   ) {
     return notifier.build(
@@ -151,7 +151,7 @@ class DataEntryProvider extends AutoDisposeAsyncNotifierProviderImpl<DataEntry,
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<DataEntry, List<List<String>>>
+  AutoDisposeAsyncNotifierProviderElement<DataEntry, List<(int, List<String>)>>
       createElement() {
     return _DataEntryProviderElement(this);
   }
@@ -170,13 +170,14 @@ class DataEntryProvider extends AutoDisposeAsyncNotifierProviderImpl<DataEntry,
   }
 }
 
-mixin DataEntryRef on AutoDisposeAsyncNotifierProviderRef<List<List<String>>> {
+mixin DataEntryRef
+    on AutoDisposeAsyncNotifierProviderRef<List<(int, List<String>)>> {
   /// The parameter `page` of this provider.
   int get page;
 }
 
 class _DataEntryProviderElement extends AutoDisposeAsyncNotifierProviderElement<
-    DataEntry, List<List<String>>> with DataEntryRef {
+    DataEntry, List<(int, List<String>)>> with DataEntryRef {
   _DataEntryProviderElement(super.provider);
 
   @override

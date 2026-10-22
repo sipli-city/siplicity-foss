@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
-import 'package:siplicity/dataentry/provider/fieldselection_provider.dart';
+import 'package:siplicity/details/provider/fieldpaths_provider.dart';
 
 part 'dataentry_provider.g.dart';
 
@@ -27,13 +27,13 @@ String typToStr(RecordType typ) {
 @riverpod
 class DataEntry extends _$DataEntry {
   @override
-  Future<List<List<String>>> build(int page) async {
+  Future<List<(int, List<String>)>> build(int page) async {
     final response = await siplicityServiceClient.listRecords(
         ListRecordsRequest(
             id: -1,
             graph: GraphType.GRAPH_TYPE_INPUT,
             page: page,
-            fields: ref.watch(fieldSelectionProvider)));
+            fields: ref.watch(fieldpathsProvider)));
     if (response.children.isEmpty) {
       return [];
     }
@@ -42,7 +42,7 @@ class DataEntry extends _$DataEntry {
       for (var field in child.fields) {
         li.add(field.value);
       }
-      return li;
+      return (child.id, li);
     }).toList();
   }
 }

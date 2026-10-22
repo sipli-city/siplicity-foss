@@ -1,4 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:siplicity/details/provider/fieldpaths_provider.dart';
 
 class DataEntryHeaderCell extends StatelessWidget {
   final double width;
@@ -38,14 +40,17 @@ class DataEntryTextCell extends StatelessWidget {
   }
 }
 
-class DataEntryEditableCell extends StatelessWidget {
+class DataEntryEditableCell extends ConsumerWidget {
   final double width;
   final String text;
+  final int id;
+  final int index;
   const DataEntryEditableCell(
-      {super.key, required this.width, required this.text});
+      {super.key, required this.width, required this.text, required this.id, required this.index});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final TextEditingController controller = TextEditingController();
     return Container(
         padding: EdgeInsets.all(4.0),
         width: width,
@@ -55,6 +60,14 @@ class DataEntryEditableCell extends StatelessWidget {
               right: BorderSide(color: Color(0x0f000000)),
               bottom: BorderSide(color: Color(0x0f000000)),
             )),
-        child: TextBox(placeholder: text));
+        child: TextBox(
+          controller: controller,
+          onEditingComplete: () {
+            if (controller.text == text) {
+              return;
+            }
+            ref.read(fieldpathsProvider.notifier).putValue(id, index, controller.text);
+          },
+          placeholder: text));
   }
 }
