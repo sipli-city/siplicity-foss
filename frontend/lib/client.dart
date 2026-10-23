@@ -4,7 +4,7 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pbgrpc.dart';
 final siplicityServiceClient = SiplicityServiceClient(
   ClientChannel(
     'localhost',
-    port: 50051,
+    port: 51911,
     options: const ChannelOptions(credentials: ChannelCredentials.insecure()),
   ),
 );

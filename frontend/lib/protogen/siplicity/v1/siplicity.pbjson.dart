@@ -408,16 +408,17 @@ const ListRecordsRequest$json = {
     {'1': 'id', '3': 1, '4': 1, '5': 5, '9': 0, '10': 'id', '17': true},
     {'1': 'graph', '3': 2, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '9': 1, '10': 'graph', '17': true},
     {'1': 'page', '3': 3, '4': 1, '5': 5, '9': 2, '10': 'page', '17': true},
-    {'1': 'query', '3': 4, '4': 1, '5': 9, '9': 3, '10': 'query', '17': true},
-    {'1': 'display', '3': 5, '4': 1, '5': 11, '6': '.siplicity.v1.FieldPath', '9': 4, '10': 'display', '17': true},
-    {'1': 'fields', '3': 6, '4': 3, '5': 11, '6': '.siplicity.v1.FieldPath', '10': 'fields'},
+    {'1': 'display', '3': 4, '4': 1, '5': 8, '9': 3, '10': 'display', '17': true},
+    {'1': 'query', '3': 5, '4': 1, '5': 9, '9': 4, '10': 'query', '17': true},
+    {'1': 'typs', '3': 6, '4': 3, '5': 14, '6': '.siplicity.v1.RecordType', '10': 'typs'},
+    {'1': 'fields', '3': 7, '4': 3, '5': 11, '6': '.siplicity.v1.FieldPath', '10': 'fields'},
   ],
   '8': [
     {'1': '_id'},
     {'1': '_graph'},
     {'1': '_page'},
-    {'1': '_query'},
     {'1': '_display'},
+    {'1': '_query'},
   ],
 };
 
@@ -425,10 +426,10 @@ const ListRecordsRequest$json = {
 final $typed_data.Uint8List listRecordsRequestDescriptor = $convert.base64Decode(
     'ChJMaXN0UmVjb3Jkc1JlcXVlc3QSEwoCaWQYASABKAVIAFICaWSIAQESMgoFZ3JhcGgYAiABKA'
     '4yFy5zaXBsaWNpdHkudjEuR3JhcGhUeXBlSAFSBWdyYXBoiAEBEhcKBHBhZ2UYAyABKAVIAlIE'
-    'cGFnZYgBARIZCgVxdWVyeRgEIAEoCUgDUgVxdWVyeYgBARI2CgdkaXNwbGF5GAUgASgLMhcuc2'
-    'lwbGljaXR5LnYxLkZpZWxkUGF0aEgEUgdkaXNwbGF5iAEBEi8KBmZpZWxkcxgGIAMoCzIXLnNp'
-    'cGxpY2l0eS52MS5GaWVsZFBhdGhSBmZpZWxkc0IFCgNfaWRCCAoGX2dyYXBoQgcKBV9wYWdlQg'
-    'gKBl9xdWVyeUIKCghfZGlzcGxheQ==');
+    'cGFnZYgBARIdCgdkaXNwbGF5GAQgASgISANSB2Rpc3BsYXmIAQESGQoFcXVlcnkYBSABKAlIBF'
+    'IFcXVlcnmIAQESLAoEdHlwcxgGIAMoDjIYLnNpcGxpY2l0eS52MS5SZWNvcmRUeXBlUgR0eXBz'
+    'Ei8KBmZpZWxkcxgHIAMoCzIXLnNpcGxpY2l0eS52MS5GaWVsZFBhdGhSBmZpZWxkc0IFCgNfaW'
+    'RCCAoGX2dyYXBoQgcKBV9wYWdlQgoKCF9kaXNwbGF5QggKBl9xdWVyeQ==');
 
 @$core.Deprecated('Use fieldDescriptor instead')
 const Field$json = {

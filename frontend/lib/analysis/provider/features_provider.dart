@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:primer_progress_bar/primer_progress_bar.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:siplicity/client.dart';
@@ -7,8 +8,7 @@ import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 part 'features_provider.g.dart';
 
 @riverpod
-Future<PreparedFeatureAvailableResponse> featuresAvailable(
-    FeaturesAvailableRef ref) async {
+Future<PreparedFeatureAvailableResponse> featuresAvailable(Ref ref) async {
   final response = await siplicityServiceClient
       .preparedFeatureAvailable(PreparedFeatureAvailableRequest());
   return response;

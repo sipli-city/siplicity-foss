@@ -11,7 +11,8 @@ class DataEntryHeaderCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(4.0),
+        padding: EdgeInsets.symmetric(horizontal: 4),
+        height: 25,
         width: width,
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Color(0x0f000000)))),
@@ -46,11 +47,15 @@ class DataEntryEditableCell extends ConsumerWidget {
   final int id;
   final int index;
   const DataEntryEditableCell(
-      {super.key, required this.width, required this.text, required this.id, required this.index});
+      {super.key,
+      required this.width,
+      required this.text,
+      required this.id,
+      required this.index});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final TextEditingController controller = TextEditingController();
+    // final TextEditingController controller = TextEditingController();
     return Container(
         padding: EdgeInsets.all(4.0),
         width: width,
@@ -61,13 +66,13 @@ class DataEntryEditableCell extends ConsumerWidget {
               bottom: BorderSide(color: Color(0x0f000000)),
             )),
         child: TextBox(
-          controller: controller,
-          onEditingComplete: () {
-            if (controller.text == text) {
-              return;
-            }
-            ref.read(fieldpathsProvider.notifier).putValue(id, index, controller.text);
-          },
-          placeholder: text));
+            // controller: controller,
+            onChanged: (str) {
+              if (str == text) {
+                return;
+              }
+              ref.read(fieldpathsProvider.notifier).putValue(id, index, str);
+            },
+            placeholder: text));
   }
 }

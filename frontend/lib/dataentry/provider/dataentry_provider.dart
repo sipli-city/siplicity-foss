@@ -1,17 +1,24 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:siplicity/client.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 import 'package:siplicity/details/provider/fieldpaths_provider.dart';
+import 'package:siplicity/dataentry/provider/filter_provider.dart';
 
 part 'dataentry_provider.g.dart';
 
 @riverpod
-Future<int> countEntries(CountEntriesRef ref) async {
+Future<int> countEntries(Ref ref) async {
   final response =
       await siplicityServiceClient.countRecords(CountRecordsRequest(
     id: -1,
-    graph: GraphType.GRAPH_TYPE_INPUT,
+    graph: ref.watch(graphTypProvider),
+    query: ref.watch(queryStringProvider),
+    typs: ref.watch(recordTypesProvider),
   ));
+  if (ref.read(recordTypesProvider.notifier).includesRoot()) {
+    return response.count - 1; // less one for the root node
+  }
   return response.count;
 }
 
@@ -31,7 +38,9 @@ class DataEntry extends _$DataEntry {
     final response = await siplicityServiceClient.listRecords(
         ListRecordsRequest(
             id: -1,
-            graph: GraphType.GRAPH_TYPE_INPUT,
+            graph: ref.watch(graphTypProvider),
+            query: ref.watch(queryStringProvider),
+            typs: ref.watch(recordTypesProvider),
             page: page,
             fields: ref.watch(fieldpathsProvider)));
     if (response.children.isEmpty) {

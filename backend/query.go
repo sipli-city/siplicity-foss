@@ -236,10 +236,25 @@ func metadataQuery(ns, name, val string) queryFunc {
       ReportType.REPORT_TYPE_MULTIPLE_IDENTIFICATION => "MultipleID",
 */
 
+func trueQuery() queryFunc {
+	return func(rec *pb.GetRecordResponse) bool {
+		return true
+	}
+}
+
+func falseQuery() queryFunc {
+	return func(rec *pb.GetRecordResponse) bool {
+		return false
+	}
+}
+
 func parseQuery(query string) queryFunc {
+	if query == "" {
+		return trueQuery()
+	}
 	spl := strings.SplitN(query, "=", 2)
 	if len(spl) != 2 {
-		return nil
+		return falseQuery()
 	}
 	spl2 := strings.SplitN(spl[0], ":", 2)
 	if len(spl2) == 2 {
@@ -269,5 +284,37 @@ func parseQuery(query string) queryFunc {
 	if spl[0] == "Duplicates" {
 		return metadataQuery("siplicity", "hash", spl[1])
 	}
-	return nil
+	return falseQuery()
+}
+
+func recordTypQuery(typs []pb.RecordType) queryFunc {
+	if len(typs) == 0 {
+		return trueQuery()
+	}
+	return func(rec *pb.GetRecordResponse) bool {
+		for _, t := range typs {
+			if t == rec.GetTyp() {
+				return true
+			}
+		}
+		return false
+	}
+}
+
+func jointQuery(a, b queryFunc) queryFunc {
+	return func(rec *pb.GetRecordResponse) bool {
+		return a(rec) && b(rec)
+	}
+}
+
+type wrappedQuery func(int32) bool
+
+func makeWrappedQuery(s Store, qf queryFunc) wrappedQuery {
+	return func(id int32) bool {
+		rec := s.Get(id)
+		if rec == nil {
+			return false
+		}
+		return qf(rec)
+	}
 }

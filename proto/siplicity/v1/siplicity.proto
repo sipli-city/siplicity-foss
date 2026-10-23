@@ -148,9 +148,10 @@ message ListRecordsRequest {
   optional int32 id = 1;
   optional GraphType graph = 2;
   optional int32 page = 3; // page sizes of 100, starting at 1
-  optional string query = 4;
-  optional FieldPath display = 5;
-  repeated FieldPath fields = 6;
+  optional bool display = 4;
+  optional string query = 5;
+  repeated RecordType typs = 6;
+  repeated FieldPath fields = 7;
 }
 
 enum RecordType {
