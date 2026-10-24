@@ -1,19 +1,11 @@
-// Package main implements a simple gRPC server that demonstrates how to use gRPC-Go libraries
-// to perform unary, client streaming, server streaming and full duplex RPCs.
-//
-// It implements the route guide service whose definition can be found in routeguide/route_guide.proto.
 package main
 
 import (
 	"context"
 	"flag"
-	"fmt"
-	"log"
-	"net"
-
-	"google.golang.org/grpc"
 
 	"github.com/sipli-city/siplicity"
+	"google.golang.org/grpc"
 
 	pb "github.com/sipli-city/siplicity/protogen/siplicityv1"
 )
@@ -138,21 +130,4 @@ func (s *siplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.Unlin
 func (s *siplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
 	go s.srv.Stop()
 	return &pb.ShutdownResponse{Success: true}, nil
-}
-
-func main() {
-	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
-	if err != nil {
-		log.Fatalf("grpc server tcp failure: %v\n", err)
-	}
-	log.Printf("starting grpc server at localhost:%d\n", *port)
-	grpcServer := grpc.NewServer()
-	sss := &siplicityServiceServer{srv: grpcServer, store: siplicity.NewMemStore()}
-	pb.RegisterSiplicityServiceServer(grpcServer, sss)
-	err = grpcServer.Serve(lis)
-	if err != nil {
-		log.Fatalf("grpc server failure: %v\n", err)
-	}
-	log.Print("grpc server shutting down\n")
 }
