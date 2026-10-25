@@ -391,7 +391,7 @@ func (m *MemStore) ListRecords(id int32, graph pb.GraphType, page int32, display
 		return resp
 	}
 	if page > 0 {
-		ids := t.page(page, makeWrappedQuery(m, jointQuery(parseQuery(query), recordTypQuery(typs))))
+		ids := t.page(page, makeWrappedQuery(m, orQuery(rootQuery, jointQuery(parseQuery(query), recordTypQuery(typs)))))
 		if ids == nil {
 			return nil
 		}

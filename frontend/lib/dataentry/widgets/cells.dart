@@ -66,13 +66,12 @@ class DataEntryEditableCell extends ConsumerWidget {
               bottom: BorderSide(color: Color(0x0f000000)),
             )),
         child: TextBox(
-            // controller: controller,
+            controller: TextEditingController(text: text),
             onChanged: (str) {
               if (str == text) {
                 return;
               }
               ref.read(fieldpathsProvider.notifier).putValue(id, index, str);
-            },
-            placeholder: text));
+            }));
   }
 }

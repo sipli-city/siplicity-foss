@@ -51,7 +51,7 @@ class FilterSelectionState extends ConsumerState<FilterSelection> {
         Align(
             alignment: Alignment.bottomLeft,
             child: InfoLabel(
-              label: 'Graph',
+              label: 'Record Types',
               child: ComboBox<int>(
                 value: _rectyp,
                 items: [
@@ -74,7 +74,13 @@ class FilterSelectionState extends ConsumerState<FilterSelection> {
         InfoLabel(
           label: 'Query',
           child: TextBox(
-            placeholder: _query ?? "E.g. Extension=jpg",
+            controller: TextEditingController.fromValue(TextEditingValue(
+                text: _query ?? "",
+                selection: TextSelection(
+                  baseOffset: _query?.length ?? 0,
+                  extentOffset: _query?.length ?? 0,
+                ))),
+            placeholder: _query == null ? "E.g. Extension=jpg" : "",
             onChanged: (value) =>
                 setState(() => value.isEmpty ? _query = null : _query = value),
           ),

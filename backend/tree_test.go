@@ -2,6 +2,8 @@ package siplicity
 
 import "testing"
 
+// ORDER: 1, 2, 5, 7, 8, 6, 3, 9, 4
+
 var TEST_TREE = &tree{
 	root: 1,
 	parents: map[int32]int32{
@@ -40,36 +42,57 @@ func TestNth(t *testing.T) {
 	}
 }
 
+var test_matches = []bool{true, false, false, true, false, true, true, true, true}
 var testQuery = func(i int32) bool {
-	return true
+	return test_matches[int(i)-1]
 }
+
+var testQueryTrue = func(i int32) bool { return true }
 
 func TestPage(t *testing.T) {
 	PAGESZ = 3
-	pg := TEST_TREE.page(2, testQuery)
+	pg := TEST_TREE.page(2, testQueryTrue)
 	if len(pg) != PAGESZ {
 		t.Fatalf("pg is wrong size, got %d", len(pg))
 	}
 	if pg[0] != 8 || pg[1] != 6 || pg[2] != 3 {
 		t.Fatalf("pg has wrong contents got %v", pg)
 	}
-	first := TEST_TREE.page(1, testQuery)
+	first := TEST_TREE.page(1, testQueryTrue)
 	if len(first) != PAGESZ {
 		t.Fatalf("first is wrong size, got %d", len(first))
 	}
 	if first[0] != 2 || first[1] != 5 || first[2] != 7 {
 		t.Fatalf("first has wrong contents got %v", first)
 	}
-	last := TEST_TREE.page(3, testQuery)
+	last := TEST_TREE.page(3, testQueryTrue)
 	if len(last) != 2 {
 		t.Fatalf("first is wrong size, got %d", len(last))
 	}
 	if last[0] != 9 || last[1] != 4 {
 		t.Fatalf("last has wrong contents got %v", last)
 	}
-	finished := TEST_TREE.page(4, testQuery)
+	finished := TEST_TREE.page(4, testQueryTrue)
 	if finished != nil {
 		t.Fatal("finished is not nil")
+	}
+}
+
+func TestPageQuery(t *testing.T) {
+	PAGESZ = 3
+	pg := TEST_TREE.page(1, testQuery)
+	if len(pg) != PAGESZ {
+		t.Fatalf("pg is wrong size, got %d", len(pg))
+	}
+	if pg[0] != 7 || pg[1] != 8 || pg[2] != 6 {
+		t.Fatalf("pg has wrong contents got %v", pg)
+	}
+	pg = TEST_TREE.page(2, testQuery)
+	if len(pg) != 2 {
+		t.Fatalf("pg is wrong size, got %d", len(pg))
+	}
+	if pg[0] != 9 || pg[1] != 4 {
+		t.Fatalf("pg has wrong contents got %v", pg)
 	}
 }
 

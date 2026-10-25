@@ -35,16 +35,16 @@ func (t *tree) nth(n, this int, idx int32) (int, int32) {
 
 func (t *tree) addToPage(start int, end int, this int, idx int32, ret []int32, w wrappedQuery) int {
 	matches := w(idx)
+	if matches {
+		this += 1
+	}
 	if this >= start && matches {
 		ret[this-start] = idx
 	}
-	if matches && this == end {
+	if this == end {
 		return this
 	}
 	for _, child := range t.children[idx] {
-		if matches {
-			this += 1
-		}
 		this = t.addToPage(start, end, this, child, ret, w)
 		if this == end {
 			return this
@@ -59,7 +59,7 @@ func (t *tree) page(pg int32, w wrappedQuery) []int32 {
 	ret := make([]int32, PAGESZ)
 	start := ((int(pg) - 1) * PAGESZ) + 1
 	end := start + PAGESZ - 1
-	len := t.addToPage(start, end, 0, t.root, ret, w)
+	len := t.addToPage(start, end, -1, t.root, ret, w)
 	if len < start {
 		return nil
 	}

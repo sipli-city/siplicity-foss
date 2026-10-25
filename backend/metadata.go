@@ -78,17 +78,18 @@ func findMetas(metas []*pb.Metadata, entry *pb.FieldPath_Entry) []*pb.Metadata {
 
 func getMetas(meta []*pb.Metadata, path *pb.FieldPath) []*pb.Metadata {
 	entries := path.GetEntries()
+	this := meta
 	for idx, entry := range entries {
-		m := findMetas(meta, entry)
+		m := findMetas(this, entry)
 		if len(m) == 0 {
 			return nil
 		}
 		if idx == len(entries)-1 {
 			return m
 		}
-		meta = meta[:0]
+		this = make([]*pb.Metadata, 0, 10)
 		for _, mm := range m {
-			meta = append(meta, mm.GetChildren()...)
+			this = append(this, mm.GetChildren()...)
 		}
 	}
 	return nil

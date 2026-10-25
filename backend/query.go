@@ -301,9 +301,19 @@ func recordTypQuery(typs []pb.RecordType) queryFunc {
 	}
 }
 
+func rootQuery(rec *pb.GetRecordResponse) bool {
+	return rec.GetTyp() == pb.RecordType_RECORD_TYPE_ROOT
+}
+
 func jointQuery(a, b queryFunc) queryFunc {
 	return func(rec *pb.GetRecordResponse) bool {
 		return a(rec) && b(rec)
+	}
+}
+
+func orQuery(a, b queryFunc) queryFunc {
+	return func(rec *pb.GetRecordResponse) bool {
+		return a(rec) || b(rec)
 	}
 }
 
