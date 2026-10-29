@@ -33,6 +33,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/PutJob',
       ($0.PutJobRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.PutJobResponse.fromBuffer(value));
+  static final _$putLicense = $grpc.ClientMethod<$0.PutLicenseRequest, $0.PutLicenseResponse>(
+      '/siplicity.v1.SiplicityService/PutLicense',
+      ($0.PutLicenseRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.PutLicenseResponse.fromBuffer(value));
   static final _$countRecords = $grpc.ClientMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
       '/siplicity.v1.SiplicityService/CountRecords',
       ($0.CountRecordsRequest value) => value.writeToBuffer(),
@@ -102,6 +106,10 @@ class SiplicityServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.PutJobResponse> putJob($0.PutJobRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$putJob, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.PutLicenseResponse> putLicense($0.PutLicenseRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$putLicense, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CountRecordsResponse> countRecords($0.CountRecordsRequest request, {$grpc.CallOptions? options}) {
@@ -183,6 +191,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.PutJobRequest.fromBuffer(value),
         ($0.PutJobResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.PutLicenseRequest, $0.PutLicenseResponse>(
+        'PutLicense',
+        putLicense_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.PutLicenseRequest.fromBuffer(value),
+        ($0.PutLicenseResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
         'CountRecords',
         countRecords_Pre,
@@ -288,6 +303,10 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return putJob(call, await request);
   }
 
+  $async.Future<$0.PutLicenseResponse> putLicense_Pre($grpc.ServiceCall call, $async.Future<$0.PutLicenseRequest> request) async {
+    return putLicense(call, await request);
+  }
+
   $async.Future<$0.CountRecordsResponse> countRecords_Pre($grpc.ServiceCall call, $async.Future<$0.CountRecordsRequest> request) async {
     return countRecords(call, await request);
   }
@@ -343,6 +362,7 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.GetStatusResponse> getStatus($grpc.ServiceCall call, $0.GetStatusRequest request);
   $async.Future<$0.PutFilePathResponse> putFilePath($grpc.ServiceCall call, $0.PutFilePathRequest request);
   $async.Future<$0.PutJobResponse> putJob($grpc.ServiceCall call, $0.PutJobRequest request);
+  $async.Future<$0.PutLicenseResponse> putLicense($grpc.ServiceCall call, $0.PutLicenseRequest request);
   $async.Future<$0.CountRecordsResponse> countRecords($grpc.ServiceCall call, $0.CountRecordsRequest request);
   $async.Future<$0.TotalVolumeResponse> totalVolume($grpc.ServiceCall call, $0.TotalVolumeRequest request);
   $async.Future<$0.CountFeaturesResponse> countFeatures($grpc.ServiceCall call, $0.CountFeaturesRequest request);

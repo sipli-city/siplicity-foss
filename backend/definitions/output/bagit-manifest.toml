@@ -1,0 +1,10 @@
+[file]
+filename = "manifest-sha512.txt"
+format = "text"
+
+[content]
+for-each.path = "data"
+for-each.types = [ "FILE" ]
+requires = [ "${siplicity.checksum(siplicity.algorithm=sha512)|siplicity.hash}" ]
+join.values = [ "${siplicity.checksum(siplicity.algorithm=sha512)|siplicity.hash}", "${bagit.datapath}" ]
+join.sep = " "

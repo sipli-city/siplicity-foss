@@ -22,6 +22,7 @@ const (
 	SiplicityService_GetStatus_FullMethodName                = "/siplicity.v1.SiplicityService/GetStatus"
 	SiplicityService_PutFilePath_FullMethodName              = "/siplicity.v1.SiplicityService/PutFilePath"
 	SiplicityService_PutJob_FullMethodName                   = "/siplicity.v1.SiplicityService/PutJob"
+	SiplicityService_PutLicense_FullMethodName               = "/siplicity.v1.SiplicityService/PutLicense"
 	SiplicityService_CountRecords_FullMethodName             = "/siplicity.v1.SiplicityService/CountRecords"
 	SiplicityService_TotalVolume_FullMethodName              = "/siplicity.v1.SiplicityService/TotalVolume"
 	SiplicityService_CountFeatures_FullMethodName            = "/siplicity.v1.SiplicityService/CountFeatures"
@@ -44,6 +45,7 @@ type SiplicityServiceClient interface {
 	GetStatus(ctx context.Context, in *GetStatusRequest, opts ...grpc.CallOption) (*GetStatusResponse, error)
 	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
 	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
+	PutLicense(ctx context.Context, in *PutLicenseRequest, opts ...grpc.CallOption) (*PutLicenseResponse, error)
 	CountRecords(ctx context.Context, in *CountRecordsRequest, opts ...grpc.CallOption) (*CountRecordsResponse, error)
 	TotalVolume(ctx context.Context, in *TotalVolumeRequest, opts ...grpc.CallOption) (*TotalVolumeResponse, error)
 	CountFeatures(ctx context.Context, in *CountFeaturesRequest, opts ...grpc.CallOption) (*CountFeaturesResponse, error)
@@ -91,6 +93,16 @@ func (c *siplicityServiceClient) PutJob(ctx context.Context, in *PutJobRequest, 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PutJobResponse)
 	err := c.cc.Invoke(ctx, SiplicityService_PutJob_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) PutLicense(ctx context.Context, in *PutLicenseRequest, opts ...grpc.CallOption) (*PutLicenseResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PutLicenseResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_PutLicense_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -234,6 +246,7 @@ type SiplicityServiceServer interface {
 	GetStatus(context.Context, *GetStatusRequest) (*GetStatusResponse, error)
 	PutFilePath(context.Context, *PutFilePathRequest) (*PutFilePathResponse, error)
 	PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error)
+	PutLicense(context.Context, *PutLicenseRequest) (*PutLicenseResponse, error)
 	CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error)
 	TotalVolume(context.Context, *TotalVolumeRequest) (*TotalVolumeResponse, error)
 	CountFeatures(context.Context, *CountFeaturesRequest) (*CountFeaturesResponse, error)
@@ -265,6 +278,9 @@ func (UnimplementedSiplicityServiceServer) PutFilePath(context.Context, *PutFile
 }
 func (UnimplementedSiplicityServiceServer) PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutJob not implemented")
+}
+func (UnimplementedSiplicityServiceServer) PutLicense(context.Context, *PutLicenseRequest) (*PutLicenseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PutLicense not implemented")
 }
 func (UnimplementedSiplicityServiceServer) CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountRecords not implemented")
@@ -376,6 +392,24 @@ func _SiplicityService_PutJob_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SiplicityServiceServer).PutJob(ctx, req.(*PutJobRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_PutLicense_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PutLicenseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).PutLicense(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_PutLicense_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).PutLicense(ctx, req.(*PutLicenseRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -632,6 +666,10 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PutJob",
 			Handler:    _SiplicityService_PutJob_Handler,
+		},
+		{
+			MethodName: "PutLicense",
+			Handler:    _SiplicityService_PutLicense_Handler,
 		},
 		{
 			MethodName: "CountRecords",
