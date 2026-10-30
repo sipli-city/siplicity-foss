@@ -19,15 +19,14 @@ func Job(action string, filter string, store Store) error {
 	var act Action
 	switch action {
 	case "commit":
-		err := store.Walk(-1, pb.GraphType_GRAPH_TYPE_OUTPUT, commit())
+		err := store.Walk(-1, pb.GraphType_GRAPH_TYPE_OUTPUT, commit(store))
 		if err != nil {
 			return err
 		}
 		store.Purge(pb.GraphType_GRAPH_TYPE_OUTPUT)
 		return nil
 	case "bagit":
-		Bagit(filter, store)
-		return nil
+		return Bagit(filter, store)
 	case "uuid4":
 		gen := uuid.NewGen()
 		act = &uuidAction{gen: gen, version: "v4", fn: gen.NewV4}

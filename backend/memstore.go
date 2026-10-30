@@ -2,6 +2,7 @@ package siplicity
 
 import (
 	"fmt"
+	"io"
 	"slices"
 	"strings"
 
@@ -10,10 +11,11 @@ import (
 )
 
 type MemStore struct {
-	records []*pb.GetRecordResponse
-	lTree   *tree
-	rTree   *tree
-	reports map[string]map[string]int32
+	records         []*pb.GetRecordResponse
+	lTree           *tree
+	rTree           *tree
+	reports         map[string]map[string]int32
+	virtualContents map[int32]io.Reader
 }
 
 const (
@@ -32,10 +34,11 @@ func NewMemStore() *MemStore {
 	// populate schema
 	records[int(SCHEMA)].Metadata = append(records[int(SCHEMA)].Metadata, fileinfoSchema())
 	return &MemStore{
-		records: records,
-		lTree:   newTree(INPUT_GRAPH),
-		rTree:   newTree(OUTPUT_GRAPH),
-		reports: make(map[string]map[string]int32),
+		records:         records,
+		lTree:           newTree(INPUT_GRAPH),
+		rTree:           newTree(OUTPUT_GRAPH),
+		reports:         make(map[string]map[string]int32),
+		virtualContents: make(map[int32]io.Reader),
 	}
 }
 
@@ -449,7 +452,7 @@ func (m *MemStore) Purge(g pb.GraphType) {
 
 func (m *MemStore) walkChildren(t *tree, nodes []int32, depth int, fn walkFunc) error {
 	for _, n := range nodes {
-		if err := fn(m.records[n], depth); err != nil {
+		if err := fn(m.records[n], n, depth); err != nil {
 			return err
 		}
 		if err := m.walkChildren(t, t.children[n], depth+1, fn); err != nil {
@@ -465,7 +468,7 @@ func (m *MemStore) Walk(root int32, g pb.GraphType, fn walkFunc) error {
 			if i <= int(OUTPUT_GRAPH) {
 				continue
 			}
-			if err := fn(rec, 0); err != nil {
+			if err := fn(rec, int32(i), 0); err != nil {
 				return err
 			}
 		}
@@ -475,8 +478,15 @@ func (m *MemStore) Walk(root int32, g pb.GraphType, fn walkFunc) error {
 	if root < 0 {
 		root = t.root
 	}
-	if err := fn(m.records[root], 0); err != nil {
+	if err := fn(m.records[root], root, 0); err != nil {
 		return err
 	}
 	return m.walkChildren(t, t.children[root], 1, fn)
+}
+
+func (m *MemStore) Contents(id int32) io.Reader {
+	return m.virtualContents[id]
+}
+func (m *MemStore) PutContents(id int32, r io.Reader) {
+	m.virtualContents[id] = r
 }
