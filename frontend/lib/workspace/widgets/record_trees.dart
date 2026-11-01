@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:siplicity/workspace/provider/treeselection_provider.dart';
 import 'package:siplicity/workspace/provider/workspace_provider.dart';
 import 'package:siplicity/details/view/record_details.dart';
+import 'package:siplicity/workspace/widgets/context_menu.dart';
 
 class InputRecordsTree extends ConsumerWidget {
   const InputRecordsTree({super.key});
@@ -36,31 +37,46 @@ class InputRecordsTree extends ConsumerWidget {
 }
 
 class OutputRecordsTree extends ConsumerWidget {
-  const OutputRecordsTree({super.key});
+  OutputRecordsTree({super.key});
+  final contextController = FlyoutController();
+  final contextAttachKey = GlobalKey();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final records = ref.watch(outputRecordsProvider);
     return switch (records) {
-      AsyncData(:final value) => TreeView(
-          includePartiallySelectedItems: true,
-          selectionMode: TreeViewSelectionMode.multiple,
-          shrinkWrap: true,
-          items: value,
-          onItemInvoked: (item, details) async {
-            if (details == TreeViewItemInvokeReason.pressed) {
-              await showDialog<String>(
-                  context: context,
-                  builder: (context) => RecordDetails(item: item.value));
-            }
-          },
-          onSelectionChanged: (selectedItems) async {
-            ref
-                .read(outputSelectionProvider.notifier)
-                .selectionChanged(selectedItems.map((item) => item.value));
-          },
-          onSecondaryTap: (item, details) async {},
-        ),
+      AsyncData(:final value) => FlyoutTarget(
+          controller: contextController,
+          key: contextAttachKey,
+          child: TreeView(
+              includePartiallySelectedItems: false,
+              selectionMode: TreeViewSelectionMode.multiple,
+              shrinkWrap: true,
+              items: value,
+              onItemInvoked: (item, details) async {
+                if (details == TreeViewItemInvokeReason.pressed) {
+                  await showDialog<String>(
+                      context: context,
+                      builder: (context) => RecordDetails(item: item.value));
+                }
+              },
+              onSelectionChanged: (selectedItems) async {
+                ref
+                    .read(outputSelectionProvider.notifier)
+                    .selectionChanged(selectedItems.map((item) => item.value));
+              },
+              onSecondaryTap: (item, details) async {
+                if (item.value == 2) return;
+                final targetContext = contextAttachKey.currentContext;
+                if (targetContext == null) return;
+                contextController.showFlyout(
+                    position: details.globalPosition,
+                    barrierDismissible: true,
+                    dismissOnPointerMoveAway: false,
+                    dismissWithEsc: true,
+                    builder: contextBuilder(item.value, item.parent!.value,
+                        item.children.length, ref));
+              })),
       _ => const Text(''),
     };
   }

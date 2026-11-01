@@ -33,12 +33,19 @@ func NewMemStore() *MemStore {
 	records[int(OUTPUT_GRAPH)] = &pb.GetRecordResponse{Typ: pb.RecordType_RECORD_TYPE_ROOT, Metadata: []*pb.Metadata{{Field: &pb.Field{Namespace: "siplicity", Name: "output_name", Value: "Output"}}}}
 	// populate schema
 	records[int(SCHEMA)].Metadata = append(records[int(SCHEMA)].Metadata, fileinfoSchema())
-	return &MemStore{
+	m := &MemStore{
 		records:         records,
-		lTree:           newTree(INPUT_GRAPH),
-		rTree:           newTree(OUTPUT_GRAPH),
 		reports:         make(map[string]map[string]int32),
 		virtualContents: make(map[int32]io.Reader),
+	}
+	m.lTree = newTree(INPUT_GRAPH, sortIDs(m, pb.GraphType_GRAPH_TYPE_INPUT))
+	m.rTree = newTree(OUTPUT_GRAPH, sortIDs(m, pb.GraphType_GRAPH_TYPE_OUTPUT))
+	return m
+}
+
+func sortIDs(m *MemStore, graph pb.GraphType) func(a, b int32) int {
+	return func(a, b int32) int {
+		return strings.Compare(m.Name(graph, a), m.Name(graph, b))
 	}
 }
 
@@ -294,36 +301,46 @@ func (m *MemStore) Get(n int32) *pb.GetRecordResponse {
 	return m.records[int(n)]
 }
 
-func sortFn(a, b *pb.ListRecordsResponse) int {
-	return strings.Compare(a.GetName(), b.GetName())
-}
-
 var siplNamespace = "siplicity"
 
-func (m *MemStore) makeResponse(id int32, display displayTyp, fields []*pb.FieldPath) *pb.ListRecordsResponse {
-	name := m.records[int(id)].GetPath()
+func (m *MemStore) Name(graph pb.GraphType, id int32) string {
+	var dtyp displayTyp
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+		dtyp = OUTPUT_DISPLAY
+	} else {
+		dtyp = INPUT_DISPLAY
+	}
+	return name(m.records[int(id)], dtyp)
+}
+
+func name(rec *pb.GetRecordResponse, display displayTyp) string {
+	name := rec.GetPath()
 	if display > 0 {
 		if display == OUTPUT_DISPLAY {
-			nm := getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "output_name"}}})
+			nm := getFieldValues(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "output_name"}}})
 			if len(nm) > 0 {
 				name = nm[0]
 			} else {
-				nm = getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
+				nm = getFieldValues(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
 				if len(nm) > 0 {
 					name = nm[0]
 				}
 			}
 		} else {
-			nm := getFieldValues(m.records[int(id)].GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
+			nm := getFieldValues(rec.GetMetadata(), &pb.FieldPath{Entries: []*pb.FieldPath_Entry{{Namespace: &siplNamespace, Name: "input_name"}}})
 			if len(nm) > 0 {
 				name = nm[0]
 			}
 		}
 	}
+	return name
+}
+
+func (m *MemStore) makeResponse(id int32, display displayTyp, fields []*pb.FieldPath) *pb.ListRecordsResponse {
 	ret := &pb.ListRecordsResponse{
 		Id:   id,
 		Typ:  m.records[int(id)].GetTyp(),
-		Name: name,
+		Name: name(m.records[int(id)], display),
 	}
 	if fields != nil {
 		ret.Fields = make([]*pb.Field, len(fields))
@@ -342,7 +359,6 @@ func (m *MemStore) addNode(id int32, hierarchy map[int32][]int32, display displa
 	for idx, v := range children {
 		ret.Children[idx] = m.addNode(v, hierarchy, display, fields)
 	}
-	slices.SortFunc(ret.Children, sortFn)
 	return ret
 }
 
@@ -489,4 +505,49 @@ func (m *MemStore) Contents(id int32) io.Reader {
 }
 func (m *MemStore) PutContents(id int32, r io.Reader) {
 	m.virtualContents[id] = r
+}
+
+func (m *MemStore) Empty(graph pb.GraphType) bool {
+	if graph == pb.GraphType_GRAPH_TYPE_INPUT {
+		return m.lTree.empty()
+	}
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+		return m.rTree.empty()
+	}
+	return true
+}
+
+func (m *MemStore) Parent(graph pb.GraphType, child int32) int32 {
+	if graph == pb.GraphType_GRAPH_TYPE_INPUT {
+		return m.lTree.parents[child]
+	}
+	if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+		return m.rTree.parents[child]
+	}
+	return 0
+}
+
+func isContainer(m *MemStore) func(int32) bool {
+	return func(idx int32) bool {
+		if m.records[int(idx)].Typ == pb.RecordType_RECORD_TYPE_DIRECTORY || m.records[int(idx)].Typ == pb.RecordType_RECORD_TYPE_VIRTUAL_DIRECTORY {
+			return true
+		}
+		return false
+	}
+}
+
+func (m *MemStore) Up(graph pb.GraphType, idx int32) {
+	if graph == pb.GraphType_GRAPH_TYPE_INPUT {
+		m.lTree.up(idx, isContainer(m))
+	} else if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+		m.rTree.up(idx, isContainer(m))
+	}
+}
+
+func (m *MemStore) Down(graph pb.GraphType, idx int32) {
+	if graph == pb.GraphType_GRAPH_TYPE_INPUT {
+		m.lTree.down(idx, isContainer(m))
+	} else if graph == pb.GraphType_GRAPH_TYPE_OUTPUT {
+		m.rTree.down(idx, isContainer(m))
+	}
 }

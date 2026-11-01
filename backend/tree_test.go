@@ -1,11 +1,14 @@
 package siplicity
 
-import "testing"
+import (
+	"testing"
+)
 
 // ORDER: 1, 2, 5, 7, 8, 6, 3, 9, 4
 
 var TEST_TREE = &tree{
-	root: 1,
+	root:   1,
+	sortFn: func(a, b int32) int { return 0 },
 	parents: map[int32]int32{
 		2: 1,
 		3: 1,
@@ -110,5 +113,30 @@ func TestHierarchy(t *testing.T) {
 	}
 	if len(hierarchy[2]) != 1 || hierarchy[2][0] != 6 {
 		t.Fatalf("test hierarchy failed, expected 6 as contents, got %v", hierarchy[2])
+	}
+}
+
+func dummyContainer(a int32) bool {
+	switch a {
+	case 1, 2, 5, 3:
+		return true
+	}
+	return false
+}
+
+func TestUpAndDown(t *testing.T) {
+	TEST_TREE.up(9, dummyContainer)
+	if len(TEST_TREE.children[3]) != 0 {
+		t.Fatal("Expected 0 children for 3 after moving 9")
+	}
+	if len(TEST_TREE.children[5]) != 3 || TEST_TREE.children[5][2] != 9 {
+		t.Fatal("Expected 9 to move to the end of 2")
+	}
+	TEST_TREE.down(9, dummyContainer)
+	if len(TEST_TREE.children[2]) != 2 {
+		t.Fatal("Expected 2 children again for 2")
+	}
+	if len(TEST_TREE.children[3]) != 1 || TEST_TREE.children[3][0] != 9 {
+		t.Fatal("Expected 9 to move back to 3")
 	}
 }

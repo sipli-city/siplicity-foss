@@ -408,9 +408,13 @@ class PutJobResponse extends $pb.GeneratedMessage {
 
 class PutLicenseRequest extends $pb.GeneratedMessage {
   factory PutLicenseRequest({
+    $core.String? key,
     $core.String? license,
   }) {
     final $result = create();
+    if (key != null) {
+      $result.key = key;
+    }
     if (license != null) {
       $result.license = license;
     }
@@ -421,7 +425,8 @@ class PutLicenseRequest extends $pb.GeneratedMessage {
   factory PutLicenseRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PutLicenseRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
-    ..aOS(1, _omitFieldNames ? '' : 'license')
+    ..aOS(1, _omitFieldNames ? '' : 'key')
+    ..aOS(2, _omitFieldNames ? '' : 'license')
     ..hasRequiredFields = false
   ;
 
@@ -447,13 +452,22 @@ class PutLicenseRequest extends $pb.GeneratedMessage {
   static PutLicenseRequest? _defaultInstance;
 
   @$pb.TagNumber(1)
-  $core.String get license => $_getSZ(0);
+  $core.String get key => $_getSZ(0);
   @$pb.TagNumber(1)
-  set license($core.String v) { $_setString(0, v); }
+  set key($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasLicense() => $_has(0);
+  $core.bool hasKey() => $_has(0);
   @$pb.TagNumber(1)
-  void clearLicense() => clearField(1);
+  void clearKey() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get license => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set license($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasLicense() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearLicense() => clearField(2);
 }
 
 class PutLicenseResponse extends $pb.GeneratedMessage {
@@ -518,6 +532,130 @@ class PutLicenseResponse extends $pb.GeneratedMessage {
   $core.bool hasMessage() => $_has(1);
   @$pb.TagNumber(2)
   void clearMessage() => clearField(2);
+}
+
+class GetLicensedRequest extends $pb.GeneratedMessage {
+  factory GetLicensedRequest() => create();
+  GetLicensedRequest._() : super();
+  factory GetLicensedRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLicensedRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetLicensedRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLicensedRequest clone() => GetLicensedRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLicensedRequest copyWith(void Function(GetLicensedRequest) updates) => super.copyWith((message) => updates(message as GetLicensedRequest)) as GetLicensedRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetLicensedRequest create() => GetLicensedRequest._();
+  GetLicensedRequest createEmptyInstance() => create();
+  static $pb.PbList<GetLicensedRequest> createRepeated() => $pb.PbList<GetLicensedRequest>();
+  @$core.pragma('dart2js:noInline')
+  static GetLicensedRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLicensedRequest>(create);
+  static GetLicensedRequest? _defaultInstance;
+}
+
+class GetLicensedResponse extends $pb.GeneratedMessage {
+  factory GetLicensedResponse({
+    $core.bool? success,
+    $core.String? message,
+    $core.String? key,
+    $core.String? license,
+  }) {
+    final $result = create();
+    if (success != null) {
+      $result.success = success;
+    }
+    if (message != null) {
+      $result.message = message;
+    }
+    if (key != null) {
+      $result.key = key;
+    }
+    if (license != null) {
+      $result.license = license;
+    }
+    return $result;
+  }
+  GetLicensedResponse._() : super();
+  factory GetLicensedResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetLicensedResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'GetLicensedResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'success')
+    ..aOS(2, _omitFieldNames ? '' : 'message')
+    ..aOS(3, _omitFieldNames ? '' : 'key')
+    ..aOS(4, _omitFieldNames ? '' : 'license')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  GetLicensedResponse clone() => GetLicensedResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  GetLicensedResponse copyWith(void Function(GetLicensedResponse) updates) => super.copyWith((message) => updates(message as GetLicensedResponse)) as GetLicensedResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static GetLicensedResponse create() => GetLicensedResponse._();
+  GetLicensedResponse createEmptyInstance() => create();
+  static $pb.PbList<GetLicensedResponse> createRepeated() => $pb.PbList<GetLicensedResponse>();
+  @$core.pragma('dart2js:noInline')
+  static GetLicensedResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<GetLicensedResponse>(create);
+  static GetLicensedResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.bool get success => $_getBF(0);
+  @$pb.TagNumber(1)
+  set success($core.bool v) { $_setBool(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasSuccess() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSuccess() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get message => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set message($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasMessage() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMessage() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get key => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set key($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasKey() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearKey() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get license => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set license($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasLicense() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearLicense() => clearField(4);
 }
 
 class TotalVolumeRequest extends $pb.GeneratedMessage {
@@ -2454,6 +2592,132 @@ class UnlinkRecordsResponse extends $pb.GeneratedMessage {
   @$core.pragma('dart2js:noInline')
   static UnlinkRecordsResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<UnlinkRecordsResponse>(create);
   static UnlinkRecordsResponse? _defaultInstance;
+}
+
+class EditGraphRequest extends $pb.GeneratedMessage {
+  factory EditGraphRequest({
+    EditType? typ,
+    $core.int? id,
+    GraphType? graph,
+    Selection? records,
+  }) {
+    final $result = create();
+    if (typ != null) {
+      $result.typ = typ;
+    }
+    if (id != null) {
+      $result.id = id;
+    }
+    if (graph != null) {
+      $result.graph = graph;
+    }
+    if (records != null) {
+      $result.records = records;
+    }
+    return $result;
+  }
+  EditGraphRequest._() : super();
+  factory EditGraphRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EditGraphRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EditGraphRequest', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..e<EditType>(1, _omitFieldNames ? '' : 'typ', $pb.PbFieldType.OE, defaultOrMaker: EditType.EDIT_TYPE_UNSPECIFIED, valueOf: EditType.valueOf, enumValues: EditType.values)
+    ..a<$core.int>(2, _omitFieldNames ? '' : 'id', $pb.PbFieldType.O3)
+    ..e<GraphType>(3, _omitFieldNames ? '' : 'graph', $pb.PbFieldType.OE, defaultOrMaker: GraphType.GRAPH_TYPE_UNSPECIFIED, valueOf: GraphType.valueOf, enumValues: GraphType.values)
+    ..aOM<Selection>(4, _omitFieldNames ? '' : 'records', subBuilder: Selection.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EditGraphRequest clone() => EditGraphRequest()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EditGraphRequest copyWith(void Function(EditGraphRequest) updates) => super.copyWith((message) => updates(message as EditGraphRequest)) as EditGraphRequest;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static EditGraphRequest create() => EditGraphRequest._();
+  EditGraphRequest createEmptyInstance() => create();
+  static $pb.PbList<EditGraphRequest> createRepeated() => $pb.PbList<EditGraphRequest>();
+  @$core.pragma('dart2js:noInline')
+  static EditGraphRequest getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EditGraphRequest>(create);
+  static EditGraphRequest? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  EditType get typ => $_getN(0);
+  @$pb.TagNumber(1)
+  set typ(EditType v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasTyp() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTyp() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get id => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set id($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasId() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearId() => clearField(2);
+
+  @$pb.TagNumber(3)
+  GraphType get graph => $_getN(2);
+  @$pb.TagNumber(3)
+  set graph(GraphType v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasGraph() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearGraph() => clearField(3);
+
+  @$pb.TagNumber(4)
+  Selection get records => $_getN(3);
+  @$pb.TagNumber(4)
+  set records(Selection v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasRecords() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearRecords() => clearField(4);
+  @$pb.TagNumber(4)
+  Selection ensureRecords() => $_ensure(3);
+}
+
+class EditGraphResponse extends $pb.GeneratedMessage {
+  factory EditGraphResponse() => create();
+  EditGraphResponse._() : super();
+  factory EditGraphResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory EditGraphResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'EditGraphResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'siplicity.v1'), createEmptyInstance: create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  EditGraphResponse clone() => EditGraphResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  EditGraphResponse copyWith(void Function(EditGraphResponse) updates) => super.copyWith((message) => updates(message as EditGraphResponse)) as EditGraphResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static EditGraphResponse create() => EditGraphResponse._();
+  EditGraphResponse createEmptyInstance() => create();
+  static $pb.PbList<EditGraphResponse> createRepeated() => $pb.PbList<EditGraphResponse>();
+  @$core.pragma('dart2js:noInline')
+  static EditGraphResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<EditGraphResponse>(create);
+  static EditGraphResponse? _defaultInstance;
 }
 
 class ShutdownRequest extends $pb.GeneratedMessage {

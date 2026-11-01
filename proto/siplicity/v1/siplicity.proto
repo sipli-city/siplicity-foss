@@ -9,6 +9,7 @@ service SiplicityService {
   rpc PutFilePath(PutFilePathRequest) returns (PutFilePathResponse) {}
   rpc PutJob(PutJobRequest) returns (PutJobResponse) {}
   rpc PutLicense(PutLicenseRequest) returns (PutLicenseResponse) {}
+  rpc GetLicensed(GetLicensedRequest) returns (GetLicensedResponse) {}
   rpc CountRecords(CountRecordsRequest) returns (CountRecordsResponse) {}
   rpc TotalVolume(TotalVolumeRequest) returns (TotalVolumeResponse) {}
   rpc CountFeatures(CountFeaturesRequest) returns (CountFeaturesResponse) {}
@@ -21,6 +22,7 @@ service SiplicityService {
   rpc UpdateField(UpdateFieldRequest) returns (UpdateFieldResponse) {}
   rpc LinkRecords(LinkRecordsRequest) returns (LinkRecordsResponse) {}
   rpc UnlinkRecords(UnlinkRecordsRequest) returns (UnlinkRecordsResponse) {}
+  rpc EditGraph(EditGraphRequest) returns (EditGraphResponse) {}
   rpc Shutdown(ShutdownRequest) returns (ShutdownResponse) {}
 }
 
@@ -63,12 +65,22 @@ message PutJobResponse {
 }
 
 message PutLicenseRequest {
-  string license = 1;
+  string key = 1;
+  string license = 2;
 }
 
 message PutLicenseResponse {
   bool success = 1;
   optional string message = 2;
+}
+
+message GetLicensedRequest {}
+
+message GetLicensedResponse {
+  bool success = 1;
+  optional string message = 2;
+  optional string key = 3;
+  optional string license = 4;
 }
 
 enum GraphType {
@@ -248,6 +260,23 @@ message UnlinkRecordsRequest {
 }
 
 message UnlinkRecordsResponse {}
+
+enum EditType {
+  EDIT_TYPE_UNSPECIFIED = 0;
+  EDIT_TYPE_FLATTEN = 1;
+  EDIT_TYPE_MOVE_UP = 2;
+  EDIT_TYPE_MOVE_DOWN = 3;
+  EDIT_TYPE_NEW_PARENT = 4;
+}
+
+message EditGraphRequest{
+  EditType typ = 1;
+  int32 id = 2;
+  GraphType graph = 3;
+  Selection records = 4;
+}
+
+message EditGraphResponse{}
 
 message ShutdownRequest {}
 

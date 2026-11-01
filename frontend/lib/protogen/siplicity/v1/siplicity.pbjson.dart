@@ -93,6 +93,24 @@ final $typed_data.Uint8List recordTypeDescriptor = $convert.base64Decode(
     'IhCh1SRUNPUkRfVFlQRV9WSVJUVUFMX0RJUkVDVE9SWRAGEhcKE1JFQ09SRF9UWVBFX0FSQ0hJ'
     'VkUQBxIfChtSRUNPUkRfVFlQRV9WSVJUVUFMX0FSQ0hJVkUQCA==');
 
+@$core.Deprecated('Use editTypeDescriptor instead')
+const EditType$json = {
+  '1': 'EditType',
+  '2': [
+    {'1': 'EDIT_TYPE_UNSPECIFIED', '2': 0},
+    {'1': 'EDIT_TYPE_FLATTEN', '2': 1},
+    {'1': 'EDIT_TYPE_MOVE_UP', '2': 2},
+    {'1': 'EDIT_TYPE_MOVE_DOWN', '2': 3},
+    {'1': 'EDIT_TYPE_NEW_PARENT', '2': 4},
+  ],
+};
+
+/// Descriptor for `EditType`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List editTypeDescriptor = $convert.base64Decode(
+    'CghFZGl0VHlwZRIZChVFRElUX1RZUEVfVU5TUEVDSUZJRUQQABIVChFFRElUX1RZUEVfRkxBVF'
+    'RFThABEhUKEUVESVRfVFlQRV9NT1ZFX1VQEAISFwoTRURJVF9UWVBFX01PVkVfRE9XThADEhgK'
+    'FEVESVRfVFlQRV9ORVdfUEFSRU5UEAQ=');
+
 @$core.Deprecated('Use getStatusRequestDescriptor instead')
 const GetStatusRequest$json = {
   '1': 'GetStatusRequest',
@@ -195,13 +213,15 @@ final $typed_data.Uint8List putJobResponseDescriptor = $convert.base64Decode(
 const PutLicenseRequest$json = {
   '1': 'PutLicenseRequest',
   '2': [
-    {'1': 'license', '3': 1, '4': 1, '5': 9, '10': 'license'},
+    {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    {'1': 'license', '3': 2, '4': 1, '5': 9, '10': 'license'},
   ],
 };
 
 /// Descriptor for `PutLicenseRequest`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List putLicenseRequestDescriptor = $convert.base64Decode(
-    'ChFQdXRMaWNlbnNlUmVxdWVzdBIYCgdsaWNlbnNlGAEgASgJUgdsaWNlbnNl');
+    'ChFQdXRMaWNlbnNlUmVxdWVzdBIQCgNrZXkYASABKAlSA2tleRIYCgdsaWNlbnNlGAIgASgJUg'
+    'dsaWNlbnNl');
 
 @$core.Deprecated('Use putLicenseResponseDescriptor instead')
 const PutLicenseResponse$json = {
@@ -219,6 +239,37 @@ const PutLicenseResponse$json = {
 final $typed_data.Uint8List putLicenseResponseDescriptor = $convert.base64Decode(
     'ChJQdXRMaWNlbnNlUmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIdCgdtZXNzYW'
     'dlGAIgASgJSABSB21lc3NhZ2WIAQFCCgoIX21lc3NhZ2U=');
+
+@$core.Deprecated('Use getLicensedRequestDescriptor instead')
+const GetLicensedRequest$json = {
+  '1': 'GetLicensedRequest',
+};
+
+/// Descriptor for `GetLicensedRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLicensedRequestDescriptor = $convert.base64Decode(
+    'ChJHZXRMaWNlbnNlZFJlcXVlc3Q=');
+
+@$core.Deprecated('Use getLicensedResponseDescriptor instead')
+const GetLicensedResponse$json = {
+  '1': 'GetLicensedResponse',
+  '2': [
+    {'1': 'success', '3': 1, '4': 1, '5': 8, '10': 'success'},
+    {'1': 'message', '3': 2, '4': 1, '5': 9, '9': 0, '10': 'message', '17': true},
+    {'1': 'key', '3': 3, '4': 1, '5': 9, '9': 1, '10': 'key', '17': true},
+    {'1': 'license', '3': 4, '4': 1, '5': 9, '9': 2, '10': 'license', '17': true},
+  ],
+  '8': [
+    {'1': '_message'},
+    {'1': '_key'},
+    {'1': '_license'},
+  ],
+};
+
+/// Descriptor for `GetLicensedResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List getLicensedResponseDescriptor = $convert.base64Decode(
+    'ChNHZXRMaWNlbnNlZFJlc3BvbnNlEhgKB3N1Y2Nlc3MYASABKAhSB3N1Y2Nlc3MSHQoHbWVzc2'
+    'FnZRgCIAEoCUgAUgdtZXNzYWdliAEBEhUKA2tleRgDIAEoCUgBUgNrZXmIAQESHQoHbGljZW5z'
+    'ZRgEIAEoCUgCUgdsaWNlbnNliAEBQgoKCF9tZXNzYWdlQgYKBF9rZXlCCgoIX2xpY2Vuc2U=');
 
 @$core.Deprecated('Use totalVolumeRequestDescriptor instead')
 const TotalVolumeRequest$json = {
@@ -680,6 +731,33 @@ const UnlinkRecordsResponse$json = {
 /// Descriptor for `UnlinkRecordsResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List unlinkRecordsResponseDescriptor = $convert.base64Decode(
     'ChVVbmxpbmtSZWNvcmRzUmVzcG9uc2U=');
+
+@$core.Deprecated('Use editGraphRequestDescriptor instead')
+const EditGraphRequest$json = {
+  '1': 'EditGraphRequest',
+  '2': [
+    {'1': 'typ', '3': 1, '4': 1, '5': 14, '6': '.siplicity.v1.EditType', '10': 'typ'},
+    {'1': 'id', '3': 2, '4': 1, '5': 5, '10': 'id'},
+    {'1': 'graph', '3': 3, '4': 1, '5': 14, '6': '.siplicity.v1.GraphType', '10': 'graph'},
+    {'1': 'records', '3': 4, '4': 1, '5': 11, '6': '.siplicity.v1.Selection', '10': 'records'},
+  ],
+};
+
+/// Descriptor for `EditGraphRequest`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List editGraphRequestDescriptor = $convert.base64Decode(
+    'ChBFZGl0R3JhcGhSZXF1ZXN0EigKA3R5cBgBIAEoDjIWLnNpcGxpY2l0eS52MS5FZGl0VHlwZV'
+    'IDdHlwEg4KAmlkGAIgASgFUgJpZBItCgVncmFwaBgDIAEoDjIXLnNpcGxpY2l0eS52MS5HcmFw'
+    'aFR5cGVSBWdyYXBoEjEKB3JlY29yZHMYBCABKAsyFy5zaXBsaWNpdHkudjEuU2VsZWN0aW9uUg'
+    'dyZWNvcmRz');
+
+@$core.Deprecated('Use editGraphResponseDescriptor instead')
+const EditGraphResponse$json = {
+  '1': 'EditGraphResponse',
+};
+
+/// Descriptor for `EditGraphResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List editGraphResponseDescriptor = $convert.base64Decode(
+    'ChFFZGl0R3JhcGhSZXNwb25zZQ==');
 
 @$core.Deprecated('Use shutdownRequestDescriptor instead')
 const ShutdownRequest$json = {

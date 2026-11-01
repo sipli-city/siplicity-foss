@@ -6,7 +6,7 @@ part of 'fieldpaths_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fieldpathsHash() => r'376a50d1d386d66c8b25999f25d31ea8af7590fb';
+String _$fieldpathsHash() => r'3bb4e6e084e4e5b3e00a478a8d4273055c9e6c5d';
 
 /// See also [Fieldpaths].
 @ProviderFor(Fieldpaths)

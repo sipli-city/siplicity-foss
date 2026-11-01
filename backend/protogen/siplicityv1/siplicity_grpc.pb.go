@@ -23,6 +23,7 @@ const (
 	SiplicityService_PutFilePath_FullMethodName              = "/siplicity.v1.SiplicityService/PutFilePath"
 	SiplicityService_PutJob_FullMethodName                   = "/siplicity.v1.SiplicityService/PutJob"
 	SiplicityService_PutLicense_FullMethodName               = "/siplicity.v1.SiplicityService/PutLicense"
+	SiplicityService_GetLicensed_FullMethodName              = "/siplicity.v1.SiplicityService/GetLicensed"
 	SiplicityService_CountRecords_FullMethodName             = "/siplicity.v1.SiplicityService/CountRecords"
 	SiplicityService_TotalVolume_FullMethodName              = "/siplicity.v1.SiplicityService/TotalVolume"
 	SiplicityService_CountFeatures_FullMethodName            = "/siplicity.v1.SiplicityService/CountFeatures"
@@ -35,6 +36,7 @@ const (
 	SiplicityService_UpdateField_FullMethodName              = "/siplicity.v1.SiplicityService/UpdateField"
 	SiplicityService_LinkRecords_FullMethodName              = "/siplicity.v1.SiplicityService/LinkRecords"
 	SiplicityService_UnlinkRecords_FullMethodName            = "/siplicity.v1.SiplicityService/UnlinkRecords"
+	SiplicityService_EditGraph_FullMethodName                = "/siplicity.v1.SiplicityService/EditGraph"
 	SiplicityService_Shutdown_FullMethodName                 = "/siplicity.v1.SiplicityService/Shutdown"
 )
 
@@ -46,6 +48,7 @@ type SiplicityServiceClient interface {
 	PutFilePath(ctx context.Context, in *PutFilePathRequest, opts ...grpc.CallOption) (*PutFilePathResponse, error)
 	PutJob(ctx context.Context, in *PutJobRequest, opts ...grpc.CallOption) (*PutJobResponse, error)
 	PutLicense(ctx context.Context, in *PutLicenseRequest, opts ...grpc.CallOption) (*PutLicenseResponse, error)
+	GetLicensed(ctx context.Context, in *GetLicensedRequest, opts ...grpc.CallOption) (*GetLicensedResponse, error)
 	CountRecords(ctx context.Context, in *CountRecordsRequest, opts ...grpc.CallOption) (*CountRecordsResponse, error)
 	TotalVolume(ctx context.Context, in *TotalVolumeRequest, opts ...grpc.CallOption) (*TotalVolumeResponse, error)
 	CountFeatures(ctx context.Context, in *CountFeaturesRequest, opts ...grpc.CallOption) (*CountFeaturesResponse, error)
@@ -58,6 +61,7 @@ type SiplicityServiceClient interface {
 	UpdateField(ctx context.Context, in *UpdateFieldRequest, opts ...grpc.CallOption) (*UpdateFieldResponse, error)
 	LinkRecords(ctx context.Context, in *LinkRecordsRequest, opts ...grpc.CallOption) (*LinkRecordsResponse, error)
 	UnlinkRecords(ctx context.Context, in *UnlinkRecordsRequest, opts ...grpc.CallOption) (*UnlinkRecordsResponse, error)
+	EditGraph(ctx context.Context, in *EditGraphRequest, opts ...grpc.CallOption) (*EditGraphResponse, error)
 	Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error)
 }
 
@@ -103,6 +107,16 @@ func (c *siplicityServiceClient) PutLicense(ctx context.Context, in *PutLicenseR
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PutLicenseResponse)
 	err := c.cc.Invoke(ctx, SiplicityService_PutLicense_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *siplicityServiceClient) GetLicensed(ctx context.Context, in *GetLicensedRequest, opts ...grpc.CallOption) (*GetLicensedResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetLicensedResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_GetLicensed_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -229,6 +243,16 @@ func (c *siplicityServiceClient) UnlinkRecords(ctx context.Context, in *UnlinkRe
 	return out, nil
 }
 
+func (c *siplicityServiceClient) EditGraph(ctx context.Context, in *EditGraphRequest, opts ...grpc.CallOption) (*EditGraphResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EditGraphResponse)
+	err := c.cc.Invoke(ctx, SiplicityService_EditGraph_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *siplicityServiceClient) Shutdown(ctx context.Context, in *ShutdownRequest, opts ...grpc.CallOption) (*ShutdownResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ShutdownResponse)
@@ -247,6 +271,7 @@ type SiplicityServiceServer interface {
 	PutFilePath(context.Context, *PutFilePathRequest) (*PutFilePathResponse, error)
 	PutJob(context.Context, *PutJobRequest) (*PutJobResponse, error)
 	PutLicense(context.Context, *PutLicenseRequest) (*PutLicenseResponse, error)
+	GetLicensed(context.Context, *GetLicensedRequest) (*GetLicensedResponse, error)
 	CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error)
 	TotalVolume(context.Context, *TotalVolumeRequest) (*TotalVolumeResponse, error)
 	CountFeatures(context.Context, *CountFeaturesRequest) (*CountFeaturesResponse, error)
@@ -259,6 +284,7 @@ type SiplicityServiceServer interface {
 	UpdateField(context.Context, *UpdateFieldRequest) (*UpdateFieldResponse, error)
 	LinkRecords(context.Context, *LinkRecordsRequest) (*LinkRecordsResponse, error)
 	UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error)
+	EditGraph(context.Context, *EditGraphRequest) (*EditGraphResponse, error)
 	Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error)
 	mustEmbedUnimplementedSiplicityServiceServer()
 }
@@ -281,6 +307,9 @@ func (UnimplementedSiplicityServiceServer) PutJob(context.Context, *PutJobReques
 }
 func (UnimplementedSiplicityServiceServer) PutLicense(context.Context, *PutLicenseRequest) (*PutLicenseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutLicense not implemented")
+}
+func (UnimplementedSiplicityServiceServer) GetLicensed(context.Context, *GetLicensedRequest) (*GetLicensedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLicensed not implemented")
 }
 func (UnimplementedSiplicityServiceServer) CountRecords(context.Context, *CountRecordsRequest) (*CountRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CountRecords not implemented")
@@ -317,6 +346,9 @@ func (UnimplementedSiplicityServiceServer) LinkRecords(context.Context, *LinkRec
 }
 func (UnimplementedSiplicityServiceServer) UnlinkRecords(context.Context, *UnlinkRecordsRequest) (*UnlinkRecordsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlinkRecords not implemented")
+}
+func (UnimplementedSiplicityServiceServer) EditGraph(context.Context, *EditGraphRequest) (*EditGraphResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method EditGraph not implemented")
 }
 func (UnimplementedSiplicityServiceServer) Shutdown(context.Context, *ShutdownRequest) (*ShutdownResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Shutdown not implemented")
@@ -410,6 +442,24 @@ func _SiplicityService_PutLicense_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(SiplicityServiceServer).PutLicense(ctx, req.(*PutLicenseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SiplicityService_GetLicensed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetLicensedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).GetLicensed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_GetLicensed_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).GetLicensed(ctx, req.(*GetLicensedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -630,6 +680,24 @@ func _SiplicityService_UnlinkRecords_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SiplicityService_EditGraph_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditGraphRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SiplicityServiceServer).EditGraph(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SiplicityService_EditGraph_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SiplicityServiceServer).EditGraph(ctx, req.(*EditGraphRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SiplicityService_Shutdown_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ShutdownRequest)
 	if err := dec(in); err != nil {
@@ -670,6 +738,10 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PutLicense",
 			Handler:    _SiplicityService_PutLicense_Handler,
+		},
+		{
+			MethodName: "GetLicensed",
+			Handler:    _SiplicityService_GetLicensed_Handler,
 		},
 		{
 			MethodName: "CountRecords",
@@ -718,6 +790,10 @@ var SiplicityService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnlinkRecords",
 			Handler:    _SiplicityService_UnlinkRecords_Handler,
+		},
+		{
+			MethodName: "EditGraph",
+			Handler:    _SiplicityService_EditGraph_Handler,
 		},
 		{
 			MethodName: "Shutdown",

@@ -45,33 +45,27 @@ func manifestWalk(m *[]string) walkFunc {
 			if first {
 				empty = true
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("SHA512")}) {
-					this := append(*m, "SHA512")
-					m = &this
+					*m = append(*m, "SHA512")
 					empty = false
 				}
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("SHA256")}) {
-					this := append(*m, "SHA256")
-					m = &this
+					*m = append(*m, "SHA256")
 					empty = false
 				}
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("SHA1")}) {
-					this := append(*m, "SHA1")
-					m = &this
+					*m = append(*m, "SHA1")
 					empty = false
 				}
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("MD5")}) {
-					this := append(*m, "MD5")
-					m = &this
+					*m = append(*m, "MD5")
 					empty = false
 				}
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("blake2b-512")}) {
-					this := append(*m, "blake2b-512")
-					m = &this
+					*m = append(*m, "blake2b-512")
 					empty = false
 				}
 				if queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: ptr("blake2b-256")}) {
-					this := append(*m, "blake2b-256")
-					m = &this
+					*m = append(*m, "blake2b-256")
 					empty = false
 				}
 				first = false
@@ -79,8 +73,7 @@ func manifestWalk(m *[]string) walkFunc {
 			}
 			for _, v := range *m {
 				if !queryMetas(rec.Metadata, &pb.FieldPath_Entry{Namespace: &siplNamespace, Name: "algorithm", Value: &v}) {
-					this := slices.DeleteFunc(*m, func(e string) bool { return e == v })
-					m = &this
+					*m = slices.DeleteFunc(*m, func(e string) bool { return e == v })
 				}
 			}
 			if len(*m) == 0 {
@@ -98,6 +91,8 @@ func manifestName(algo string) string {
 		return "manifest-sha512.txt"
 	case "SHA256":
 		return "manifest-sha256.txt"
+	case "SHA1":
+		return "manifest-sha1.txt"
 	case "MD5":
 		return "manifest-md5.txt"
 	case "blake2b-512":

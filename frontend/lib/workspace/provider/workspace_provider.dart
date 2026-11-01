@@ -24,11 +24,21 @@ Icon? getIcon(RecordType typ) {
     case RecordType.RECORD_TYPE_DIRECTORY:
       return Icon(
         FluentIcons.fabric_folder,
-        color: Colors.orange,
+        color: Color(0xFFFF7F3E),
       );
     case RecordType.RECORD_TYPE_FILE:
       return Icon(
         FluentIcons.text_document,
+      );
+    case RecordType.RECORD_TYPE_VIRTUAL_DIRECTORY:
+      return Icon(
+        FluentIcons.fabric_folder,
+        color: Color(0xFF604CC3),
+      );
+    case RecordType.RECORD_TYPE_VIRTUAL_FILE:
+      return Icon(
+        FluentIcons.text_document,
+        color: Color(0xFF604CC3),
       );
     default:
       return null;
@@ -110,7 +120,7 @@ class InputRecords extends _$InputRecords {
     }
   }
 
-  Future<void> putAction({String? query, String? action}) async {
+  Future<(bool, String)> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
         .putJob(PutJobRequest(query: query, action: action));
     while (true) {
@@ -118,7 +128,7 @@ class InputRecords extends _$InputRecords {
           .getStatus(GetStatusRequest(status: status.status));
       if (done.status != StatusType.STATUS_TYPE_WORKING) {
         ref.invalidateSelf();
-        break;
+        return (done.status == StatusType.STATUS_TYPE_DONE, done.message);
       }
       await Future.delayed(const Duration(milliseconds: 20));
     }
@@ -163,7 +173,7 @@ class OutputRecords extends _$OutputRecords {
     ];
   }
 
-  Future<void> putAction({String? query, String? action}) async {
+  Future<(bool, String)> putAction({String? query, String? action}) async {
     final status = await siplicityServiceClient
         .putJob(PutJobRequest(query: query, action: action));
     while (true) {
@@ -171,7 +181,7 @@ class OutputRecords extends _$OutputRecords {
           .getStatus(GetStatusRequest(status: status.status));
       if (done.status != StatusType.STATUS_TYPE_WORKING) {
         ref.invalidateSelf();
-        break;
+        return (done.status == StatusType.STATUS_TYPE_DONE, done.message);
       }
       await Future.delayed(const Duration(milliseconds: 20));
     }
@@ -200,5 +210,38 @@ class OutputRecords extends _$OutputRecords {
               namespace: "siplicity", name: "output_location", value: path)));
       ref.invalidateSelf();
     }
+  }
+
+  Future<void> flatten(int id) async {
+    await siplicityServiceClient.editGraph(EditGraphRequest(
+        typ: EditType.EDIT_TYPE_FLATTEN,
+        id: id,
+        graph: GraphType.GRAPH_TYPE_OUTPUT));
+    ref.invalidateSelf();
+  }
+
+  Future<void> addParent(int id) async {
+    await siplicityServiceClient.editGraph(EditGraphRequest(
+        typ: EditType.EDIT_TYPE_NEW_PARENT,
+        id: id,
+        graph: GraphType.GRAPH_TYPE_OUTPUT,
+        records: Selection(id: ref.read(outputSelectionProvider))));
+    ref.invalidateSelf();
+  }
+
+  Future<void> moveUp(int id) async {
+    await siplicityServiceClient.editGraph(EditGraphRequest(
+        typ: EditType.EDIT_TYPE_MOVE_UP,
+        id: id,
+        graph: GraphType.GRAPH_TYPE_OUTPUT));
+    ref.invalidateSelf();
+  }
+
+  Future<void> moveDown(int id) async {
+    await siplicityServiceClient.editGraph(EditGraphRequest(
+        typ: EditType.EDIT_TYPE_MOVE_DOWN,
+        id: id,
+        graph: GraphType.GRAPH_TYPE_OUTPUT));
+    ref.invalidateSelf();
   }
 }

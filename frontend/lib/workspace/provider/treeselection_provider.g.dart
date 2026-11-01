@@ -22,7 +22,7 @@ final inputSelectionProvider =
 );
 
 typedef _$InputSelection = Notifier<Iterable<int>>;
-String _$outputSelectionHash() => r'98aee3475755e23de176f3f0c557ffb579ff782a';
+String _$outputSelectionHash() => r'e610c034efaef181c301af8333f9f263a566ddf6';
 
 /// See also [OutputSelection].
 @ProviderFor(OutputSelection)

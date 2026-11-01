@@ -121,6 +121,21 @@ func (d *dSiplicityServiceServer) UnlinkRecords(ctx context.Context, in *pb.Unli
 	return d.ss.UnlinkRecords(ctx, in)
 }
 
+func (d *siplicityServiceServer) EditGraph(ctx context.Context, in *pb.EditGraphRequest) (*pb.EditGraphResponse, error) {
+	log.Printf("Edit graph request %d for graph %d, for %d with for %v", in.GetTyp(), in.GetGraph(), in.GetId(), in.GetRecords().GetId())
+	return d.ss.EditGraph(ctx, in)
+}
+
+func (d *siplicityServiceServer) PutLicense(ctx context.Context, in *pb.PutLicenseRequest) (*pb.PutLicenseResponse, error) {
+	log.Printf("Putting license key %s value:\n %s", in.GetKey(), in.GetLicense())
+	return d.ss.PutLicense(ctx, in)
+}
+
+func (s *siplicityServiceServer) GetLicensed(ctx context.Context, in *pb.GetLicensedRequest) (*pb.GetLicensedResponse, error) {
+	log.Println("Getting licensed status")
+	return d.ss.GetLicensed(ctx, in)
+}
+
 func (d *dSiplicityServiceServer) Shutdown(ctx context.Context, in *pb.ShutdownRequest) (*pb.ShutdownResponse, error) {
 	log.Print("SHUTDOWN request\n")
 	return d.ss.Shutdown(ctx, in)

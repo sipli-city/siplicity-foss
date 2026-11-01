@@ -24,4 +24,8 @@ class OutputSelection extends _$OutputSelection {
   void selectionChanged(Iterable<int> selection) {
     state = selection;
   }
+
+  int length() {
+    return state.length;
+  }
 }

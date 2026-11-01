@@ -37,6 +37,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/PutLicense',
       ($0.PutLicenseRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.PutLicenseResponse.fromBuffer(value));
+  static final _$getLicensed = $grpc.ClientMethod<$0.GetLicensedRequest, $0.GetLicensedResponse>(
+      '/siplicity.v1.SiplicityService/GetLicensed',
+      ($0.GetLicensedRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.GetLicensedResponse.fromBuffer(value));
   static final _$countRecords = $grpc.ClientMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
       '/siplicity.v1.SiplicityService/CountRecords',
       ($0.CountRecordsRequest value) => value.writeToBuffer(),
@@ -85,6 +89,10 @@ class SiplicityServiceClient extends $grpc.Client {
       '/siplicity.v1.SiplicityService/UnlinkRecords',
       ($0.UnlinkRecordsRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.UnlinkRecordsResponse.fromBuffer(value));
+  static final _$editGraph = $grpc.ClientMethod<$0.EditGraphRequest, $0.EditGraphResponse>(
+      '/siplicity.v1.SiplicityService/EditGraph',
+      ($0.EditGraphRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.EditGraphResponse.fromBuffer(value));
   static final _$shutdown = $grpc.ClientMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
       '/siplicity.v1.SiplicityService/Shutdown',
       ($0.ShutdownRequest value) => value.writeToBuffer(),
@@ -110,6 +118,10 @@ class SiplicityServiceClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$0.PutLicenseResponse> putLicense($0.PutLicenseRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$putLicense, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.GetLicensedResponse> getLicensed($0.GetLicensedRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$getLicensed, request, options: options);
   }
 
   $grpc.ResponseFuture<$0.CountRecordsResponse> countRecords($0.CountRecordsRequest request, {$grpc.CallOptions? options}) {
@@ -160,6 +172,10 @@ class SiplicityServiceClient extends $grpc.Client {
     return $createUnaryCall(_$unlinkRecords, request, options: options);
   }
 
+  $grpc.ResponseFuture<$0.EditGraphResponse> editGraph($0.EditGraphRequest request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$editGraph, request, options: options);
+  }
+
   $grpc.ResponseFuture<$0.ShutdownResponse> shutdown($0.ShutdownRequest request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$shutdown, request, options: options);
   }
@@ -198,6 +214,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.PutLicenseRequest.fromBuffer(value),
         ($0.PutLicenseResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetLicensedRequest, $0.GetLicensedResponse>(
+        'GetLicensed',
+        getLicensed_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetLicensedRequest.fromBuffer(value),
+        ($0.GetLicensedResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.CountRecordsRequest, $0.CountRecordsResponse>(
         'CountRecords',
         countRecords_Pre,
@@ -282,6 +305,13 @@ abstract class SiplicityServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.UnlinkRecordsRequest.fromBuffer(value),
         ($0.UnlinkRecordsResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.EditGraphRequest, $0.EditGraphResponse>(
+        'EditGraph',
+        editGraph_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.EditGraphRequest.fromBuffer(value),
+        ($0.EditGraphResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.ShutdownRequest, $0.ShutdownResponse>(
         'Shutdown',
         shutdown_Pre,
@@ -305,6 +335,10 @@ abstract class SiplicityServiceBase extends $grpc.Service {
 
   $async.Future<$0.PutLicenseResponse> putLicense_Pre($grpc.ServiceCall call, $async.Future<$0.PutLicenseRequest> request) async {
     return putLicense(call, await request);
+  }
+
+  $async.Future<$0.GetLicensedResponse> getLicensed_Pre($grpc.ServiceCall call, $async.Future<$0.GetLicensedRequest> request) async {
+    return getLicensed(call, await request);
   }
 
   $async.Future<$0.CountRecordsResponse> countRecords_Pre($grpc.ServiceCall call, $async.Future<$0.CountRecordsRequest> request) async {
@@ -355,6 +389,10 @@ abstract class SiplicityServiceBase extends $grpc.Service {
     return unlinkRecords(call, await request);
   }
 
+  $async.Future<$0.EditGraphResponse> editGraph_Pre($grpc.ServiceCall call, $async.Future<$0.EditGraphRequest> request) async {
+    return editGraph(call, await request);
+  }
+
   $async.Future<$0.ShutdownResponse> shutdown_Pre($grpc.ServiceCall call, $async.Future<$0.ShutdownRequest> request) async {
     return shutdown(call, await request);
   }
@@ -363,6 +401,7 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.PutFilePathResponse> putFilePath($grpc.ServiceCall call, $0.PutFilePathRequest request);
   $async.Future<$0.PutJobResponse> putJob($grpc.ServiceCall call, $0.PutJobRequest request);
   $async.Future<$0.PutLicenseResponse> putLicense($grpc.ServiceCall call, $0.PutLicenseRequest request);
+  $async.Future<$0.GetLicensedResponse> getLicensed($grpc.ServiceCall call, $0.GetLicensedRequest request);
   $async.Future<$0.CountRecordsResponse> countRecords($grpc.ServiceCall call, $0.CountRecordsRequest request);
   $async.Future<$0.TotalVolumeResponse> totalVolume($grpc.ServiceCall call, $0.TotalVolumeRequest request);
   $async.Future<$0.CountFeaturesResponse> countFeatures($grpc.ServiceCall call, $0.CountFeaturesRequest request);
@@ -375,5 +414,6 @@ abstract class SiplicityServiceBase extends $grpc.Service {
   $async.Future<$0.UpdateFieldResponse> updateField($grpc.ServiceCall call, $0.UpdateFieldRequest request);
   $async.Future<$0.LinkRecordsResponse> linkRecords($grpc.ServiceCall call, $0.LinkRecordsRequest request);
   $async.Future<$0.UnlinkRecordsResponse> unlinkRecords($grpc.ServiceCall call, $0.UnlinkRecordsRequest request);
+  $async.Future<$0.EditGraphResponse> editGraph($grpc.ServiceCall call, $0.EditGraphRequest request);
   $async.Future<$0.ShutdownResponse> shutdown($grpc.ServiceCall call, $0.ShutdownRequest request);
 }
