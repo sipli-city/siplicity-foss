@@ -7,8 +7,10 @@ import 'package:siplicity/client.dart';
 import 'package:siplicity/home/view/home.dart';
 import 'package:siplicity/protogen/siplicity/v1/siplicity.pb.dart';
 
+const String siplicityServer = 'siplicityServer';
+
 void main() {
-  if (foundation.kReleaseMode) Process.run('server', []);
+  if (foundation.kReleaseMode) Process.run('siplicityServer', []);
   runApp(const ProviderScope(child: MyApp()));
 }
 

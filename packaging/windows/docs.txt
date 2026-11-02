@@ -1,1 +1,4 @@
 https://docs.flutter.dev/platform-integration/windows/building
+
+wix build -ext WixToolset.UI.wixext -out siplicity.msi install.wxs
+
