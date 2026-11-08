@@ -222,13 +222,16 @@ func (t *tree) adopt(old, new int32) {
 		t.children[new] = append(t.children[new], t.children[old]...)
 	}
 	for _, id := range t.children[old] {
+		if id == new { // new can't be a child of itself
+			continue
+		}
 		t.parents[id] = new
 	}
 	if t.parents[old] == new { // if we are flattening, remove the old node
 		t.children[new] = deleteIdx(t.children[new], old)
 		delete(t.parents, old)
 		return
-	} 
+	}
 	// otherwise we are inserting
 	t.children[new] = deleteIdx(t.children[new], new)
 	t.children[old] = []int32{new}
@@ -251,9 +254,11 @@ func (t *tree) unlinkDescendants(descendants []int32) {
 	}
 }
 
-func (t *tree) unlink(node int32) {
-	t.unlinkDescendants(t.children[node])
-	delete(t.children, node)
+func (t *tree) unlink(node int32, descend bool) {
+	if descend {
+		t.unlinkDescendants(t.children[node])
+		delete(t.children, node)
+	}
 	parent, ok := t.parents[node]
 	if ok {
 		t.children[parent] = deleteIdx(t.children[parent], node)
@@ -269,8 +274,10 @@ func (t *tree) softunlinkDescendants(descendants []int32) {
 }
 
 // a softunlink leaves parent links intact
-func (t *tree) softunlink(node int32) {
-	t.softunlinkDescendants([]int32{node})
+func (t *tree) softunlink(node int32, descend bool) {
+	if descend {
+		t.softunlinkDescendants([]int32{node})
+	}
 	parent, ok := t.parents[node]
 	if ok {
 		t.children[parent] = deleteIdx(t.children[parent], node)
@@ -342,17 +349,17 @@ func (t *tree) unlinkList(nodes []int32, soft bool) {
 	for key, len := range branchlen {
 		if len == 0 {
 			if soft {
-				t.softunlink(key)
+				t.softunlink(key, true)
 			} else {
-				t.unlink(key)
+				t.unlink(key, true)
 			}
 		}
 	}
 	for key := range leaves {
 		if soft {
-			t.softunlink(key)
+			t.softunlink(key, true)
 		} else {
-			t.unlink(key)
+			t.unlink(key, true)
 		}
 	}
 }
