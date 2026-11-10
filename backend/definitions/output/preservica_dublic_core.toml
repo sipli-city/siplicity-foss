@@ -1,0 +1,20 @@
+[preservica]
+namespace = "dc:element"
+fields = [
+    "file or folder name", # auto
+    "Contributor",
+    "Coverage",
+    "Creator",
+    "Date",
+    "Description",
+    "Format",
+    "Identifier",
+    "Language",
+    "Publisher",
+    "Relation",
+    "Rights",
+    "Source",
+    "Subject",
+    "Title",
+    "Type",
+]
